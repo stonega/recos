@@ -1,85 +1,60 @@
-import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
-import { AnimatePresence, motion } from "framer-motion";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
-import { ReactNode } from "react";
-import useScroll from "@/lib/hooks/use-scroll";
-import Meta from "./meta";
-import { useSignInModal } from "./sign-in-modal";
-import UserDropdown from "./user-dropdown";
+import Head from "next/head";
+import { NextSeo } from "next-seo";
+import { Meta } from "../../types";
+import NavBar from "./NavBar";
+import Footer from "./Footer";
 
-export default function Layout({
-  meta,
-  children,
-}: {
-  meta?: {
-    title?: string;
-    description?: string;
-    image?: string;
-  };
-  children: ReactNode;
-}) {
-  const { data: session, status } = useSession();
-  const { SignInModal, setShowSignInModal } = useSignInModal();
-  const scrolled = useScroll(50);
+export interface LayoutProps {
+  meta: Meta;
+  children?: React.ReactNode;
+}
 
+const Layout = ({ children, meta }: LayoutProps) => {
+  const favicon = "https://web3helpers.xyz/favicon.png";
+  const title = "Recommends";
+  const description = "Recommends.";
   return (
     <>
-      <Meta {...meta} />
-      <SignInModal />
-      <div className="fixed h-screen w-full bg-gradient-to-br from-indigo-50 via-white to-cyan-100" />
-      <div
-        className={`fixed top-0 w-full ${
-          scrolled
-            ? "border-b border-gray-200 bg-white/50 backdrop-blur-xl"
-            : "bg-white/0"
-        } z-30 transition-all`}
-      >
-        <div className="mx-5 flex h-16 max-w-screen-xl items-center justify-between xl:mx-auto">
-          <Link href="/" className="flex items-center font-display text-2xl">
-            <Image
-              src="/logo.png"
-              alt="Precedent logo"
-              width="30"
-              height="30"
-              className="mr-2 rounded-sm"
-            ></Image>
-            <p>Precedent</p>
-          </Link>
-          <div>
-            <AnimatePresence>
-              {!session && status !== "loading" ? (
-                <motion.button
-                  className="rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all hover:bg-white hover:text-black"
-                  onClick={() => setShowSignInModal(true)}
-                  {...FADE_IN_ANIMATION_SETTINGS}
-                >
-                  Sign In
-                </motion.button>
-              ) : (
-                <UserDropdown />
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-      </div>
-      <main className="flex w-full flex-col items-center justify-center py-32">
-        {children}
-      </main>
-      <div className="absolute w-full border-t border-gray-200 bg-white py-5 text-center">
-        <p className="text-gray-500">
-          A free template by{" "}
-          <a
-            className="font-medium text-gray-800 underline transition-colors"
-            href="https://twitter.com/steventey"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Steven Tey
-          </a>
-        </p>
+      <Head>
+        <title>{meta?.title ?? title}</title>
+        <link rel="icon" type="image/x-icon" href="/favicon.png" />
+        <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="theme-color" content="#00501e" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content={meta?.description ?? description} />
+
+        <link rel="shortcut icon" type="image/x-icon" href={meta?.logo ?? favicon} />
+        <link rel="apple-touch-icon" sizes="180x180" href={meta?.logo ?? favicon} />
+      </Head>
+      <NextSeo
+        title={meta.title ?? title}
+        description={meta?.description ?? description}
+        openGraph={{
+          url: meta.ogUrl,
+          title: meta.title ?? title,
+          description: meta.description ?? description,
+          images: [
+            {
+              url: meta.ogImage ?? favicon,
+              alt: "Web3.0 Helpers",
+              type: "image/jpeg"
+            }
+          ],
+          site_name: "Web3.0 Helpers"
+        }}
+        twitter={{
+          handle: "",
+          site: meta.twitter,
+          cardType: "summary_large_image"
+        }}
+      />
+      <div className="bg-gradient-to-br from-red-200 via-red-100 to-green-100 dark:from-black dark:via-black dark:to-gray-800 relative w-full min-h-screen flex flex-col items-center">
+        <NavBar></NavBar>
+        <div className="max-w-6xl w-full px-4 py-10 min-h-[80vh]">{children}</div>
+        <Footer></Footer>
       </div>
     </>
   );
-}
+};
+
+export default Layout;
