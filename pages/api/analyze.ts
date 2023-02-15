@@ -23,7 +23,9 @@ export default async function handler(
       frequency_penalty: 0,
       presence_penalty: 0,
     });
-    const result = response.data.choices.map(c => c.text)
+    const result = response.data.choices.map((c) =>
+      c.text?.trim().replaceAll("\n", ""),
+    );
     res.status(200).json({ data: result });
   } else {
     res.status(404).json({ data: "not found" });

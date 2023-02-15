@@ -3,7 +3,10 @@ import { useState } from "react";
 import { object, string } from "yup";
 import Button from "../shared/button";
 
-export const SearchBar = () => {
+interface SearchBarProps {
+  onResult: (result: string[]) => void
+}
+export const SearchBar = ({onResult}: SearchBarProps) => {
   const [result, setResult] = useState<string | undefined>();
   const schema = object({
     data: string().required("Required"),
@@ -22,7 +25,7 @@ export const SearchBar = () => {
       });
       const result = await res.json();
       console.log(result.data);
-
+      onResult(result.data)
     } catch (error) {
       if (error instanceof Error) setResult(error.message);
     }
@@ -58,7 +61,7 @@ export const SearchBar = () => {
             >
               Get Recos
             </Button>
-            <span>Books supported right now</span>
+            <span className="text-light-700 dark:text-light-200">Books supported right now</span>
           </div>
         </Form>
       )}
