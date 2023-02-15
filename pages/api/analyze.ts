@@ -18,7 +18,7 @@ export default async function handler(
       input: "Get book names from the text: " + input,
       model: "text-embedding-ada-002",
     });
-    res.status(200).json({ data: JSON.stringify(response) });
+    res.status(200).json({ data: response.data });
   } else {
     res.status(500).json({ data: "error" });
   }
