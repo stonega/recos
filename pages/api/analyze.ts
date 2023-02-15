@@ -14,9 +14,14 @@ export default async function handler(
   if (req.method === "POST") {
     const { data } = JSON.parse(req.body);
     const input = data.replace("\n", " ");
-    const response = await openai.createEmbedding({
-      input: "Get book names from the text: " + input,
-      model: "text-embedding-ada-002",
+    const response = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: "return book names from the text: " + input,
+      temperature: 0.7,
+      max_tokens: 256,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
     });
     res.status(200).json({ data: response.data });
   } else {
