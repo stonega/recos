@@ -1,8 +1,8 @@
 import Head from "next/head";
 import { NextSeo } from "next-seo";
 import { Meta } from "../../types";
-import NavBar from "./NavBar";
-import Footer from "./Footer";
+import NavBar from "./nav-bar";
+import Footer from "./footer";
 
 export interface LayoutProps {
   meta: Meta;
@@ -36,7 +36,7 @@ const Layout = ({ children, meta }: LayoutProps) => {
           images: [
             {
               url: meta.ogImage ?? favicon,
-              alt: "Web3.0 Helpers",
+              alt: "Recommends",
               type: "image/jpeg"
             }
           ],

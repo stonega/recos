@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ThemeModeButton from "./ThemeModeButton";
+import ThemeModeButton from "./theme-mode-button";
 
 const NavBar = () => {
   return (

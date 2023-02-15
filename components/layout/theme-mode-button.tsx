@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ThemeModeButton = () => {
   let currentMode = "";
+  const [mode, setMode] = useState(currentMode);
+  useEffect(() => {
   if (
     localStorage.theme === "dark" ||
     (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
@@ -12,7 +14,8 @@ const ThemeModeButton = () => {
     document.documentElement.classList.remove("dark");
     currentMode = "light";
   }
-  const [mode, setMode] = useState(currentMode);
+
+  }, [])
   const toggleTheme = () => {
     if (mode === "dark") {
       document.documentElement.classList.remove("dark");
@@ -64,6 +67,3 @@ const ThemeModeButton = () => {
 };
 
 export default ThemeModeButton;
-function setState(): [any, any] {
-  throw new Error("Function not implemented.");
-}
