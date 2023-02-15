@@ -48,7 +48,7 @@ const Layout = ({ children, meta }: LayoutProps) => {
           cardType: "summary_large_image"
         }}
       />
-      <div className="bg-gradient-to-br from-green-200 via-green-100 to-green-100 dark:from-black dark:via-black dark:to-gray-800 relative w-full min-h-screen flex flex-col items-center">
+      <div className="bg-gradient-to-br from-green-200 via-green-100 to-green-100 dark:from-[#202020] dark:via-[#303030] dark:to-gray-800 relative w-full min-h-screen flex flex-col items-center">
         <NavBar></NavBar>
         <div className="max-w-6xl w-full px-4 py-10 min-h-[80vh]">{children}</div>
         <Footer></Footer>

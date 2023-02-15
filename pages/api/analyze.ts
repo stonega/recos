@@ -23,8 +23,9 @@ export default async function handler(
       frequency_penalty: 0,
       presence_penalty: 0,
     });
-    res.status(200).json({ data: response.data });
+    const result = response.data.choices.map(c => c.text)
+    res.status(200).json({ data: result });
   } else {
-    res.status(500).json({ data: "error" });
+    res.status(404).json({ data: "not found" });
   }
 }

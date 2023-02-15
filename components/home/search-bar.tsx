@@ -21,7 +21,8 @@ export const SearchBar = () => {
         body: JSON.stringify({ data }),
       });
       const result = await res.json();
-      console.log(result);
+      console.log(result.data);
+
     } catch (error) {
       if (error instanceof Error) setResult(error.message);
     }
@@ -35,28 +36,29 @@ export const SearchBar = () => {
     >
       {({ isSubmitting }) => (
         <Form className="flex flex-col gap-4">
-          <label className="w-full">
+          <label className="w-full relative">
             <span className="mb-4 block text-2xl"></span>
             <Field
               className="textarea"
               as="textarea"
-              rows="10"
+              rows="6"
               type="value"
               name="data"
             />
             <ErrorMessage name="data">
-              {(msg) => <div className="text-error">{msg}</div>}
+              {(msg) => <div className="text-red-600 absolute right-4 bottom-2">{msg}</div>}
             </ErrorMessage>
           </label>
-          <div className="flex w-full flex-row items-center">
+          <div className="flex flex-col w-full space-2 items-center justify-center">
             <Button
               type="submit"
               disabled={isSubmitting}
               loading={isSubmitting}
-              className="bg-green border-green mb-4"
+              className="bg-green border-green-500 mb-4 text-dark dark:text-white"
             >
               Get Recos
             </Button>
+            <span>Books supported right now</span>
           </div>
         </Form>
       )}

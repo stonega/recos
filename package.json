@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "start:local": "PORT=4000 node ./server-local.js",
+    "start:local": "next dev -p 3001  | local-ssl-proxy --key certs/localhost.key --cert certs/localhost.crt --source 3000 --target 3001 ",
     "build": "next build",
     "format:write": "prettier --write \"**/*.{css,js,json,jsx,ts,tsx}\"",
     "format": "prettier \"**/*.{css,js,json,jsx,ts,tsx}\"",
@@ -51,6 +51,7 @@
     "@types/ms": "^0.7.31",
     "autoprefixer": "^10.4.13",
     "concurrently": "^7.6.0",
+    "local-ssl-proxy": "^1.3.0",
     "postcss": "^8.4.21",
     "prettier": "^2.8.2",
     "prettier-plugin-tailwindcss": "^0.2.1",
