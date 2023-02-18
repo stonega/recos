@@ -20,8 +20,7 @@ export default async function handler(req, res) {
         safe_mode: 0,
         unique_podcasts: 0,
       });
-      console.log(response.data);
-      res.status(200).json({ data: response.data });
+      res.status(200).json({ data: {...response.data} });
     } catch (e) {
       //TODO handle the exception
     }

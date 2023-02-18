@@ -32,13 +32,14 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
   const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
-    if (search !== "") {
+    if (search.trim() !== "") {
       if (!openMenu) setOpenMenu(true);
     } else {
       if (openMenu) setOpenMenu(false);
     }
   }, [openMenu, search, setOpenMenu]);
-  const debouncedSearch = useDebounce(search, 1000);
+
+  const debouncedSearch = useDebounce(search.trim(), 1000);
   const { episodes, error, isLoading } = useEpisodes(debouncedSearch);
 
   const submit = async ({ data }: { data: string }) => {
