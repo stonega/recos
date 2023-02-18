@@ -1,3 +1,3 @@
-# Recommends
+# Recos
 
-Powered by vercel.
+Powered by vercel & openai.

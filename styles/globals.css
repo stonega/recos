@@ -4,15 +4,15 @@
 
 @layer components {
   .textarea {
-    @apply text-black dark:text-white border-4 w-full p-2 border-green-300 rounded-lg bg-transparent font-mono active:border-green-500 focus:border-green-500;
+    @apply w-full rounded-lg border-4 border-green-300 bg-transparent p-2 font-mono text-black focus:border-green-500 active:border-green-500 dark:text-white;
   }
   .input {
-    @apply border-2 w-full md:w-[30rem] max-w-full p-2 border-black rounded-md bg-white font-mono;
+    @apply block w-full max-w-full rounded-md border-2 border-green-300 bg-white px-2 py-4 font-mono focus:ring-green-300  focus:border-green-500 active:border-green-500 md:w-[40rem];
   }
   .select {
-    @apply border-2 px-2 h-12 border-black rounded-md bg-white;
+    @apply h-12 rounded-md border-2 border-black bg-white px-2;
   }
   .label {
-    @apply block text-2xl mb-4;
+    @apply mb-4 block text-2xl;
   }
 }

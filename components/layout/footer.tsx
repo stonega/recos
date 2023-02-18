@@ -2,7 +2,7 @@ import { Github, Twitter } from "lucide-react";
 
 const Footer = () => {
   return (
-    <div className="flex flex-col justify-center">
+    <div className="flex flex-col">
       <div className="flex gap-4 mb-2">
         <a
           href="https://twitter.com/shimenmen"
@@ -23,7 +23,7 @@ const Footer = () => {
           GitHub
         </a>
       </div>
-      <span className="mb-4 text-center text-gray-500">© 2023 Recommends</span>
+      <span className="mb-4 text-center text-gray-500">© 2023 Recos.</span>
     </div>
   );
 };

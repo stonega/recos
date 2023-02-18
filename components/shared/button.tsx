@@ -42,7 +42,7 @@ const Button = forwardRef(function Button(
       break;
   }
   const basicClassName =
-    "relative transition-ease bg-green-500 text-black hover:text-black w-auto font-bold text-center border-4 rounded-md active:border-transparent outline-green-500 active:outline active:outline-2 active:outline-offset-2";
+    "relative transition-ease flex flex-row space-x-2 items-center bg-green-500 text-black hover:text-black w-auto font-bold text-center border-4 rounded-md active:border-transparent outline-green-500 active:outline active:outline-2 active:outline-offset-2";
   const props = {
     onClick,
     type,

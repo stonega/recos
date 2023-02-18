@@ -6,4 +6,10 @@ export interface Meta {
     title?: string;
     twitter?: string;
   }
-  
+ 
+export interface Episode {
+  id: string,
+  audio: string,
+  image: string,
+  title_original: string
+}
