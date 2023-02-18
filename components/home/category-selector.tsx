@@ -32,7 +32,7 @@ export const CategorySelector = ({
       <ToggleGroup.Item
         className={classNames(
           toggleGroupItemClasses,
-          "bg-white/40 dark:bg-black/40 dark:text-white data-[state=on]:bg-blue-400 dark:data-[state=on]:bg-blue-400",
+          "bg-white/40 dark:bg-black/40 dark:text-white data-[state=on]:bg-green-400 dark:data-[state=on]:bg-green-400",
         )}
         value="page"
         aria-label="Page"

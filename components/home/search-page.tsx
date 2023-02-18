@@ -37,7 +37,7 @@ export const SearchPage = ({ onResult }: SearchPageProps) => {
         <Form className="flex flex-col gap-4">
           <label className="w-full">
             <div className="relative flex flex-row">
-              <Field placeholder="Page url" className="input" as="input" type="url" name="data" />
+              <Field placeholder="Enter page url" className="input" as="input" type="url" name="data" />
               <Button
                 type="submit"
                 disabled={isSubmitting}

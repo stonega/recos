@@ -16,6 +16,7 @@ function useEpisodes(search: string) {
     /// disable auto refresh.
     { refreshInterval: 1000000 },
   );
+  console.log(data);
 
   return {
     episodes: (data?.data.results as Episode[]) ?? [],
