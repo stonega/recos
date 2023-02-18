@@ -13,10 +13,12 @@ function useEpisodes(search: string) {
   const { data, error, isLoading } = useSWR(
     () => (search !== "" ? `/api/episode?search=${search}` : null),
     fetcher,
+    /// disable auto refresh.
+    { refreshInterval: 1000000 },
   );
 
   return {
-    episodes: (data?.results as Episode[]) ?? [],
+    episodes: (data?.data.results as Episode[]) ?? [],
     isLoading,
     error,
   };
