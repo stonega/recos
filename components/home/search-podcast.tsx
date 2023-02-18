@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Command } from "cmdk";
 import useDebounce from "hooks/use-debounce";
 import { Episode } from "types";
+import { LoadingCircle } from "../shared/icons";
 
 interface SearchPodcastProps {
   onResult: (result: string[]) => void;
@@ -48,29 +49,22 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
   };
   return (
     <div className="flex flex-row gap-4">
-      <Command label="Episodes" shouldFilter={false} className="flex flex-col gap-4">
-        <Command.Input
+      <div className="relative flex flex-col gap-4">
+        <input
           className="input"
           placeholder="Search podcast episode"
           value={search}
-          onValueChange={setSearch}
+          onChange={(e) => setSearch(e.target.value)}
         />
-        {search.trim() !== "" && (
-          <Command.List className="rounded-md border-2 border-green-500 bg-white/40 px-4 py-2">
-            {isLoading && (
-              <Command.Loading>Fetching episodes...</Command.Loading>
-            )}
-            {data &&
-              data.data.results.map((item: Episode) => {
-                return (
-                  <Command.Item key={item.id} value={item.id}>
-                    {item.title_original}
-                  </Command.Item>
-                );
-              })}
-          </Command.List>
+        <div className="absolute top-5 right-4">{isLoading && <LoadingCircle />}</div>
+        {data && (
+          <div className="absolute top-16 w-full rounded-md border-2 border-green-500 bg-white/40 px-4 py-2 ">
+            {data.data.results.map((item: Episode) => {
+              return <div key={item.id}>{item.title_original}</div>;
+            })}
+          </div>
         )}
-      </Command>
+      </div>
     </div>
   );
 };
