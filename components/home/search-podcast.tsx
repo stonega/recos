@@ -17,7 +17,7 @@ function useEpisodes(search: string) {
     { refreshInterval: 1000000 },
   );
   return {
-    episodes: data?.data.results as Episode[] | undefined,
+    data: data?.data,
     isLoading,
     error,
   };
@@ -29,7 +29,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
   const [search, setSearch] = useState<string>("");
 
   const debouncedSearch = useDebounce(search.trim(), 1000);
-  const { episodes, error, isLoading } = useEpisodes(debouncedSearch);
+  const { data, error, isLoading } = useEpisodes(debouncedSearch);
 
   const submit = async ({ data }: { data: string }) => {
     try {
@@ -60,8 +60,8 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
             {isLoading && (
               <Command.Loading>Fetching episodes...</Command.Loading>
             )}
-            {episodes &&
-              episodes.map((item) => {
+            {data &&
+              data.results.map((item: Episode) => {
                 return (
                   <Command.Item key={item.id} value={item.id}>
                     {item.title_original}
