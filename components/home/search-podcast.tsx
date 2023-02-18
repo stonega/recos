@@ -61,7 +61,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
               <Command.Loading>Fetching episodes...</Command.Loading>
             )}
             {data &&
-              data.results.map((item: Episode) => {
+              data.data.results.map((item: Episode) => {
                 return (
                   <Command.Item key={item.id} value={item.id}>
                     {item.title_original}

@@ -5,7 +5,7 @@ const NavBar = () => {
   return (
     <div className="max-w-6xl w-full my-4 px-4 flex justify-between items-center">
       <Link href="/">
-        <span className="text-2xl font-mono text-green-600  px-4 md:px-0 md:text-4xl font-bold flex items-center">
+        <span className="text-2xl font-serif text-green-600  px-4 md:px-0 md:text-4xl font-bold flex items-center">
          Recos. 
         </span>
       </Link>

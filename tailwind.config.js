@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 const plugin = require("tailwindcss/plugin");
+const defaultTheme = require("tailwindcss/defaultTheme");
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -13,8 +15,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["var(--font-sf)", "system-ui", "sans-serif"],
         default: ["var(--font-inter)", "system-ui", "sans-serif"],
+        serif: ["Playfair Display", ...defaultTheme.fontFamily.sans]
       },
       animation: {
         // Tooltip
