@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   if (req.method === "GET") {
     const { search } = req.query;
     try {
-      const data = await client.search({
+      const response = await client.search({
         q: search,
         sort_by_date: 0,
         type: "episode",
@@ -20,7 +20,6 @@ export default async function handler(req, res) {
         safe_mode: 0,
         unique_podcasts: 0,
       });
-
       console.log(response.data);
       res.status(200).json({ data: response.data });
     } catch (e) {

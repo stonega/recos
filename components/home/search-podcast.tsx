@@ -11,7 +11,7 @@ interface SearchPodcastProps {
 
 function useEpisodes(search: string) {
   const { data, error, isLoading } = useSWR(
-    `/api/episode?search=${search}`,
+    () => (search !== "" ? `/api/episode?search=${search}` : null),
     fetcher,
   );
 
