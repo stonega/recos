@@ -1,6 +1,6 @@
 import { createToast } from "vercel-toast-center";
 import useSWR from "swr";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Command } from "cmdk";
 import useDebounce from "hooks/use-debounce";
 import { Episode } from "types";
@@ -48,7 +48,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
   };
   return (
     <div className="flex flex-row gap-4">
-      <Command label="Command Menu" className="flex flex-col gap-4">
+      <Command label="Episodes" shouldFilter={false} className="flex flex-col gap-4">
         <Command.Input
           className="input"
           placeholder="Search podcast episode"
