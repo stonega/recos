@@ -16,10 +16,8 @@ function useEpisodes(search: string) {
     /// disable auto refresh.
     { refreshInterval: 1000000 },
   );
-  console.log(data);
-
   return {
-    episodes: (data?.data.results as Episode[]) ?? [],
+    episodes: data.data.results as Episode[],
     isLoading,
     error,
   };
@@ -28,16 +26,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
-
-  useEffect(() => {
-    if (search.trim() !== "") {
-      if (!openMenu) setOpenMenu(true);
-    } else {
-      if (openMenu) setOpenMenu(false);
-    }
-  }, [openMenu, search, setOpenMenu]);
 
   const debouncedSearch = useDebounce(search.trim(), 1000);
   const { episodes, error, isLoading } = useEpisodes(debouncedSearch);
@@ -66,18 +55,19 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
           value={search}
           onValueChange={setSearch}
         />
-        {search !== "" && (
+        {search.trim() !== "" && (
           <Command.List className="rounded-md border-2 border-green-500 bg-white/40 px-4 py-2">
             {isLoading && (
               <Command.Loading>Fetching episodes...</Command.Loading>
             )}
-            {episodes.map((item) => {
-              return (
-                <Command.Item key={item.id} value={item.id}>
-                  {item.title_original}
-                </Command.Item>
-              );
-            })}
+            {episodes &&
+              episodes.map((item) => {
+                return (
+                  <Command.Item key={item.id} value={item.id}>
+                    {item.title_original}
+                  </Command.Item>
+                );
+              })}
           </Command.List>
         )}
       </Command>
