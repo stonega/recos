@@ -17,7 +17,7 @@ function useEpisodes(search: string) {
     { refreshInterval: 1000000 },
   );
   return {
-    episodes: data.data.results as Episode[],
+    episodes: data?.data.results as Episode[] | undefined,
     isLoading,
     error,
   };
