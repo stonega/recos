@@ -5,14 +5,20 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method === "POST") {
-    const { link } = JSON.parse(req.body);
+  if (req.method === "GET") {
+    const { link } = req.query;
+    if (!link) {
+      res.status(500).json({ error: "No link found" });
+    }
     try {
-      const article = await extract(link);
+      const article = await extract(link as string);
       console.log(article);
+      const regExp = /<[^>]*>/g;
+      article.content = article.content?.replace(regExp, "");
       res.status(200).json(article);
     } catch (err) {
       console.error(err);
+      res.status(500).json({ error: err });
     }
   } else {
     res.status(404).json({ data: "not found" });

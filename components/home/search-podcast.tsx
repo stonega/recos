@@ -72,9 +72,9 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
         <div className="absolute top-5 right-4">
           {isLoading && <LoadingCircle />}
         </div>
-        {data && (
+        {data && search && (
           <motion.div
-            animate={{ x: 100 }}
+            layoutId="underline" 
             className="absolute top-16 w-full rounded-md border-2 border-green-500 bg-white/40 px-2 py-2 "
           >
             {data.results.map((item: Episode) => {
@@ -89,7 +89,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
                     alt={item.title_original}
                     width="60"
                     height="60"
-                    className="m-2 rounded-fill object-cover"
+                    className="rounded-fill m-2 object-cover"
                     unoptimized
                   />
                   <div>
