@@ -12,4 +12,9 @@ export interface Episode {
   audio: string,
   image: string,
   title_original: string
+  podcast: {
+    id: string,
+    image: string,
+    title_original: string
+  }
 }
