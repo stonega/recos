@@ -6,6 +6,7 @@ import useDebounce from "hooks/use-debounce";
 import { Episode } from "types";
 import { LoadingCircle } from "../shared/icons";
 import { TEST_EPISODES } from "utils/constant";
+import { motion } from "framer-motion";
 
 interface SearchPodcastProps {
   onResult: (result: string[]) => void;
@@ -72,7 +73,10 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
           {isLoading && <LoadingCircle />}
         </div>
         {data && (
-          <div className="absolute top-16 w-full rounded-md border-2 border-green-500 bg-white/40 px-2 py-2 ">
+          <motion.div
+            animate={{ x: 100 }}
+            className="absolute top-16 w-full rounded-md border-2 border-green-500 bg-white/40 px-2 py-2 "
+          >
             {data.results.map((item: Episode) => {
               return (
                 <div
@@ -85,7 +89,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
                     alt={item.title_original}
                     width="60"
                     height="60"
-                    className="m-2 h-10 w-10 rounded-md object-cover"
+                    className="m-2 rounded-fill object-cover"
                     unoptimized
                   />
                   <div>
@@ -97,8 +101,23 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
                 </div>
               );
             })}
-          </div>
+          </motion.div>
         )}
+      </div>
+    </div>
+  );
+};
+
+const EpisodeLoader = () => {
+  return (
+    <div className="flex animate-pulse space-x-4">
+      <div className="h-10 w-10 rounded-full bg-slate-200"></div>
+      <div className="flex-1 space-y-6 py-1">
+        <div className="h-2 rounded bg-slate-200"></div>
+        <div className="space-y-3">
+          <div className="h-2 rounded bg-slate-200"></div>
+          <div className="h-2 rounded bg-slate-200"></div>
+        </div>
       </div>
     </div>
   );
