@@ -21,18 +21,18 @@ export default async function handler(req, res) {
           safe_mode: 0,
           unique_podcasts: 0,
         });
-        res.status(200).json({ ...response.data });
+        res.status(200).json(response.data);
       } catch (e) {
         //TODO handle the exception
       }
     }
     if (id) {
       try {
-        const response = client.fetchEpisodeById({
+        const response = await client.fetchEpisodeById({
           id,
           show_transcript: 1,
         });
-        res.status(200).json({ data: { ...response.data } });
+        res.status(200).json(response.data);
       } catch (e) {
         //TODO handle the exception
       }
