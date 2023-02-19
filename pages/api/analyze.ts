@@ -7,16 +7,24 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
+const REQUESTS = {
+  books: "return book names from the text: ",
+  summary: "return summary from the text: ",
+  movies: "return movie names from the text: ",
+};
+
+type RequestType = keyof typeof REQUESTS;
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   if (req.method === "POST") {
-    const { data } = JSON.parse(req.body);
+    const { data, type = "books" } = JSON.parse(req.body);
     const input = data.replace("\n", " ");
     const response = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: "return book names from the text: " + input,
+      prompt: REQUESTS[type as RequestType] + input,
       temperature: 0.7,
       max_tokens: 256,
       top_p: 1,

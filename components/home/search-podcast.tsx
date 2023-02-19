@@ -43,7 +43,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
         if (episode.transcript) {
           const res = await fetch("/api/analyze", {
             method: "post",
-            body: JSON.stringify({ data }),
+            body: JSON.stringify({ data: episode.transcript }),
           });
           const result = await res.json();
           setSearch("");
@@ -74,7 +74,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
         </div>
         {data && search && (
           <motion.div
-            layoutId="underline" 
+            layoutId="underline"
             className="absolute top-16 w-full rounded-md border-2 border-green-500 bg-white/40 px-2 py-2 "
           >
             {data.results.map((item: Episode) => {
