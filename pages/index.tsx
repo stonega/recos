@@ -1,13 +1,13 @@
 import Layout from "@/components/layout";
 import { Meta } from "types";
-import { SearchPage } from "@/components/home/search-page";
+import { SearchAudio } from "@/components/home/search-audio";
 import { useState } from "react";
-import { BookGrid } from "@/components/home/book-grid";
 import {
   Category,
   CategorySelector,
 } from "@/components/home/category-selector";
 import { SearchPodcast } from "@/components/home/search-podcast";
+import Result from "@/components/home/result";
 
 export default function Home() {
   const meta: Meta = {
@@ -16,7 +16,7 @@ export default function Home() {
     ogUrl: "http://recos.stonegate.me",
     title: "Recos.",
   };
-  const [result, setResult] = useState<string[]>([]);
+  const [result, setResult] = useState<File | string>();
   const [category, setCategory] = useState<Category>("podcast");
 
   return (
@@ -27,11 +27,11 @@ export default function Home() {
       </div>
       <CategorySelector onSelect={setCategory}></CategorySelector>
       {category === "podcast" ? (
-        <SearchPodcast onResult={(result) => setResult(result)}></SearchPodcast>
+        <SearchPodcast onResult={(result) => setResult(result[0])}></SearchPodcast>
       ) : (
-        <SearchPage onResult={(result) => setResult(result)}></SearchPage>
+        <SearchAudio onResult={(result) => setResult(result)}></SearchAudio>
       )}
-      {result.length > 0 && <BookGrid books={result}></BookGrid>}
+      {result && <Result input={result}/>}
     </Layout>
   );
 }

@@ -1,11 +1,10 @@
-import { createToast } from "vercel-toast-center";
 import useSWR from "swr";
+import { toast} from 'sonner'
 import { useCallback, useState } from "react";
 import Image from "next/image";
 import useDebounce from "hooks/use-debounce";
 import { Episode } from "types";
 import { LoadingCircle } from "../shared/icons";
-import { TEST_EPISODES } from "utils/constant";
 import { motion } from "framer-motion";
 
 interface SearchPodcastProps {
@@ -43,21 +42,21 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
         if (episode.transcript) {
           const res = await fetch("/api/analyze", {
             method: "post",
-            body: JSON.stringify({ data: episode.transcript }),
+            body: JSON.stringify({ data: episode.transcript, type: "summary" }),
           });
           const result = await res.json();
           setSearch("");
           onResult(result);
         } else {
-          createToast("Sorry, no transcript found in this episode.");
+          toast.error("Sorry, no transcript found in this episode.");
         }
       } catch (error) {
-        if (error instanceof Error) createToast(error.message);
+        if (error instanceof Error) toast.error(error.message);
       } finally {
         setIsSubmitting(false);
       }
     },
-    [data, onResult],
+    [onResult],
   );
 
   return (

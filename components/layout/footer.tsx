@@ -23,7 +23,7 @@ const Footer = () => {
           GitHub
         </a>
       </div>
-      <span className="mb-4 text-center text-gray-500">© 2023 Recos.</span>
+      <span className="mb-4 text-center text-gray-500">❤️ Made by Stone © 2023 Recos.</span>
     </div>
   );
 };

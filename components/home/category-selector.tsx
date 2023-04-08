@@ -2,7 +2,7 @@ import React from "react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import classNames from "classnames";
 
-export type Category = "podcast" | "page";
+export type Category = "podcast" | "audio";
 
 interface CategorySelectorProps {
   onSelect(category: Category): void;
@@ -34,10 +34,10 @@ export const CategorySelector = ({
           toggleGroupItemClasses,
           "bg-white/40 dark:bg-black/40 dark:text-white data-[state=on]:bg-green-400 dark:data-[state=on]:bg-green-400",
         )}
-        value="page"
-        aria-label="Page"
+        value="audio"
+        aria-label="Audio"
       >
-        Page
+        Audio
       </ToggleGroup.Item>
     </ToggleGroup.Root>
   );

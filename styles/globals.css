@@ -7,7 +7,7 @@
     @apply w-full rounded-lg border-4 border-green-300 bg-transparent p-2 font-mono text-black focus:border-green-500 active:border-green-500 dark:text-white;
   }
   .input {
-    @apply w-full max-w-full rounded-md border-2 border-green-300 bg-white/60 px-2 py-4 focus:border-green-500  focus:ring-green-300 focus-visible:border-green-500 active:border-green-500 md:w-[40rem];
+    @apply w-full max-w-full rounded-md border-2 border-green-300 bg-white/60 px-2 py-4 focus:outline-none focus:border-green-500  focus:ring-green-300 focus-visible:border-green-500 active:border-green-500 md:w-[40rem];
   }
   .select {
     @apply h-12 rounded-md border-2 border-black bg-white px-2;
