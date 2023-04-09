@@ -1,28 +1,40 @@
 import { useCallback, useEffect, useState } from "react";
 import Button from "../shared/button";
-import { formatDuration, getDuration, getFee, getTime, transcript } from "utils";
+import {
+  formatDuration,
+  getDuration,
+  getFee,
+  getTime,
+  transcript,
+  unzipAudios,
+} from "utils";
 import { useApiModal } from "./api-modal";
-import { toast} from 'sonner';
+import { toast } from "sonner";
+import { AudioInput } from "types";
+import { ofetch } from "ofetch";
 
 interface ResultProps {
-  input: File | string;
+  input: AudioInput;
 }
 
-type Step = "input" | "loading" | "result";
+type Step = "input" | "downloading" | "loading" | "result";
 
-const Result = (props: ResultProps) => {
+const Result = ({ input }: ResultProps) => {
   const [step, setStep] = useState<Step>("input");
-  const [duration, setDuration] = useState<number>(0);
+  const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState<number>(input.duration);
   const { setShowApiModal, ApiModal } = useApiModal();
   const [result, setResult] = useState("");
 
   useEffect(() => {
-    if(props.input) setStep('input')
-  }, [props.input])
+    if (input.input) setStep("input");
+  }, [input.input]);
 
   const getAudioDuration = () => {
-    if (typeof props.input === "string") return;
-    getDuration(props.input).then((result) => setDuration(result));
+    if (typeof input.input === "string") {
+      return;
+    }
+    getDuration(input.input).then((result) => setDuration(result));
   };
   getAudioDuration();
 
@@ -32,16 +44,38 @@ const Result = (props: ResultProps) => {
       setShowApiModal(true);
       return;
     }
+    let audioFiles = [input.input];
+    if (typeof input.input === "string") {
+      setStep("downloading");
+      try {
+        const response = await ofetch(
+          "https://recos-audio-slice-production.up.railway.app/download",
+          { query: { url: input.input }, responseType: "blob" },
+        );
+        const audios = await unzipAudios(response, async (progress) =>
+          setProgress(progress),
+        );
+        audioFiles = audios;
+      } catch (error) {
+        setStep("input");
+        if (error instanceof Error) toast.error(error.message);
+        return;
+      }
+    }
     setStep("loading");
     try {
-      const result = await transcript(props.input as File, apiKey);
+      const results = await Promise.all(
+        audioFiles.map(async (file) => {
+          await transcript(file as File, input.prompt ?? '', apiKey);
+        }),
+      );
       setStep("result");
-      setResult(result);
+      setResult(results.join(" "));
     } catch (error) {
-        setStep("input")
+      setStep("input");
       if (error instanceof Error) toast.error(error.message);
     }
-  }, [props.input, setShowApiModal]);
+  }, [input.input, setShowApiModal]);
   return (
     <>
       <div className="border-1 mt-4 min-h-[20rem] w-full rounded-md border border-green-400 bg-white/40">
@@ -58,7 +92,12 @@ const Result = (props: ResultProps) => {
         )}
         {step === "loading" && (
           <div className="flex h-60 flex-col items-center justify-center gap-2">
-            <span>Transcribing...</span>
+            <span>Transcribing audios...</span>
+          </div>
+        )}
+        {step === "downloading" && (
+          <div className="flex h-60 flex-col items-center justify-center gap-2">
+            <span>Downloading audios...</span>
           </div>
         )}
         {step === "result" && (

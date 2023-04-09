@@ -7,6 +7,13 @@ export interface Meta {
   twitter?: string;
 }
 
+export interface AudioInput {
+  input: File | string
+  duration: number // in seconds
+  prompt?: string
+  transcript?: string
+}
+
 export interface Episode {
   id: string;
   audio: string;

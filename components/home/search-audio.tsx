@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { AudioInput } from "types";
 
 interface SearchAudioProps {
-  onResult: (result: File) => void;
+  onResult: (result: AudioInput) => void;
 }
 export const SearchAudio = ({ onResult }: SearchAudioProps) => {
   const [files, setFiles] = useState<FileList | null>(null);
@@ -13,7 +14,7 @@ export const SearchAudio = ({ onResult }: SearchAudioProps) => {
       if(file.name && !file.name.match(/\.(mp3|mp4|mpeg|mpga|m4a|wav|webm)$/)) {
         setMsg('Wrong audio format')
       } else {
-        onResult(files[0])
+        onResult({input: files[0], duration: 0})
       }
     }
   }, [files, onResult])

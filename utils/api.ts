@@ -8,10 +8,11 @@ const openAiFetch = ofetch.create({
   },
 });
 
-export async function transcript(file: File, apiKey: string) {
+export async function transcript(file: File, prompt: string, apiKey: string) {
   const formData = new FormData()
   formData.append('file', file)
   formData.append('model', 'whisper-1')
+  formData.append('prompt', prompt)
   const  result = await openAiFetch('/audio/transcriptions', {
       method: 'POST',
       headers: {

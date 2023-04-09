@@ -3,12 +3,13 @@ import { toast} from 'sonner'
 import { useCallback, useState } from "react";
 import Image from "next/image";
 import useDebounce from "hooks/use-debounce";
-import { Episode } from "types";
+import { AudioInput, Episode } from "types";
 import { LoadingCircle } from "../shared/icons";
 import { motion } from "framer-motion";
+import { ofetch } from "ofetch";
 
 interface SearchPodcastProps {
-  onResult: (result: string[]) => void;
+  onResult: (result: AudioInput) => void;
 }
 
 function useEpisodes(search: string) {
@@ -24,7 +25,7 @@ function useEpisodes(search: string) {
     error,
   };
 }
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) => ofetch(url);
 
 export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -37,19 +38,13 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
     async (id: string) => {
       try {
         setIsSubmitting(true);
-        const episodeRes = await fetch(`/api/episode?id=${id}`);
-        const episode = await episodeRes.json();
-        if (episode.transcript) {
-          const res = await fetch("/api/analyze", {
-            method: "post",
-            body: JSON.stringify({ data: episode.transcript, type: "summary" }),
-          });
-          const result = await res.json();
-          setSearch("");
-          onResult(result);
-        } else {
-          toast.error("Sorry, no transcript found in this episode.");
-        }
+        const episode = await ofetch(`/api/episode?id=${id}`);
+        onResult({
+          input: episode.audio,
+          duration: episode.audio_length_sec,
+          prompt: episode.description,
+          transcript: episode.transcript
+        })
       } catch (error) {
         if (error instanceof Error) toast.error(error.message);
       } finally {

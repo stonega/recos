@@ -1,7 +1,7 @@
 import Layout from "@/components/layout";
-import { Meta } from "types";
+import { AudioInput, Meta } from "types";
 import { SearchAudio } from "@/components/home/search-audio";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Category,
   CategorySelector,
@@ -16,7 +16,7 @@ export default function Home() {
     ogUrl: "http://recos.stonegate.me",
     title: "Recos.",
   };
-  const [result, setResult] = useState<File | string>();
+  const [result, setResult] = useState<AudioInput>();
   const [category, setCategory] = useState<Category>("podcast");
 
   return (
@@ -27,7 +27,7 @@ export default function Home() {
       </div>
       <CategorySelector onSelect={setCategory}></CategorySelector>
       {category === "podcast" ? (
-        <SearchPodcast onResult={(result) => setResult(result[0])}></SearchPodcast>
+        <SearchPodcast onResult={(result) => setResult(result)}></SearchPodcast>
       ) : (
         <SearchAudio onResult={(result) => setResult(result)}></SearchAudio>
       )}
