@@ -26,17 +26,18 @@ const Result = ({ input }: ResultProps) => {
   const { setShowApiModal, ApiModal } = useApiModal();
   const [result, setResult] = useState("");
 
-  useEffect(() => {
-    if (input.input) setStep("input");
-  }, [input.input]);
-
-  const getAudioDuration = () => {
+  const getAudioDuration = useCallback(() => {
     if (typeof input.input === "string") {
+      setDuration(input.duration)
       return;
     }
     getDuration(input.input).then((result) => setDuration(result));
-  };
-  getAudioDuration();
+  }, [input.duration, input.input]);
+
+  useEffect(() => {
+    if (input.input) setStep("input");
+    getAudioDuration()
+  }, [getAudioDuration, input.input]);
 
   const submit = useCallback(async () => {
     const apiKey = localStorage.getItem("open-api-key");
@@ -75,7 +76,7 @@ const Result = ({ input }: ResultProps) => {
       setStep("input");
       if (error instanceof Error) toast.error(error.message);
     }
-  }, [input.input, setShowApiModal]);
+  }, [input.input, input.prompt, setShowApiModal]);
   return (
     <>
       <div className="border-1 mt-4 min-h-[20rem] w-full rounded-md border border-green-400 bg-white/40">
