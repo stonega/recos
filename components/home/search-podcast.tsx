@@ -39,6 +39,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
       try {
         setIsSubmitting(true);
         const episode = await ofetch(`/api/episode?id=${id}`);
+        setSearch('')
         onResult({
           input: episode.audio,
           duration: episode.audio_length_sec,
