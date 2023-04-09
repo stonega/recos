@@ -17,7 +17,6 @@ export default async function handler(req, res) {
           len_max: 90,
           published_after: 0,
           only_in: "title,description",
-          language: "English",
           safe_mode: 0,
           unique_podcasts: 0,
         });
