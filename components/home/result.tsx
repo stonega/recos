@@ -66,8 +66,8 @@ const Result = ({ input }: ResultProps) => {
     setStep("loading");
     try {
       const results = await Promise.all(
-        audioFiles.map(async (file) => {
-          await transcript(file as File, input.prompt ?? '', apiKey);
+        audioFiles.map( (file) => {
+         transcript(file as File, input.prompt ?? '', apiKey);
         }),
       );
       setStep("result");

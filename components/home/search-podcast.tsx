@@ -43,7 +43,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
         onResult({
           input: episode.audio,
           duration: episode.audio_length_sec,
-          prompt: episode.description,
+          prompt: episode.podcast.name + episode.name+ episode.description,
           transcript: episode.transcript
         })
       } catch (error) {
