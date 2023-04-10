@@ -12,6 +12,7 @@ import { useApiModal } from "./api-modal";
 import { toast } from "sonner";
 import { AudioInput } from "types";
 import { ofetch } from "ofetch";
+import InfoCard from "../shared/info-card";
 
 interface ResultProps {
   input: AudioInput;
@@ -79,15 +80,17 @@ const Result = ({ input }: ResultProps) => {
   }, [input.input, input.prompt, setShowApiModal]);
   return (
     <>
-      <div className="border-1 mt-4 min-h-[20rem] w-full rounded-md border border-green-400 bg-white/40">
+      <div className="border-1 mt-6 min-h-[20rem] w-full rounded-md border border-green-400 bg-white/40">
         {step === "input" && (
-          <div className="flex h-60 flex-col items-center justify-center gap-2">
+          <div className="flex h-60 flex-col items-center justify-start gap-2 p-2">
             <ApiModal />
-            <span>Audio duration: {formatDuration(duration)} </span>
-            <span>Estimated openai API fee: ~${getFee(duration)} </span>
-            <span>Estimated generate time: ~{getTime(duration)} </span>
-            <Button className="mt-4" onClick={submit}>
-              Transcript
+            <div className="w-full grid grid-cols-3 gap-2">
+              <InfoCard title="🎧" value={formatDuration(duration)} prefix=""></InfoCard>
+              <InfoCard title="💰" value={getFee(duration)} prefix="$"></InfoCard>
+              <InfoCard title="⌛" value={getTime(duration)} prefix=""></InfoCard>
+            </div>
+            <Button className="mt-8" onClick={submit}>
+              Generate Transcript
             </Button>
           </div>
         )}

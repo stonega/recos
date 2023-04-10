@@ -70,14 +70,14 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
         {data && search && (
           <motion.div
             layoutId="underline"
-            className="absolute top-16 w-full rounded-md border-2 border-green-500 bg-white/40 backdrop-blur-md px-2 py-2 "
+            className="absolute top-16 w-full rounded-md border-2 border-green-500 bg-white/40 z-10 backdrop-blur-md px-2 py-2 "
           >
             {data.results.map((item: Episode) => {
               return (
                 <div
                   onClick={() => submit(item.id)}
                   key={item.id}
-                  className="flex cursor-pointer flex-row space-x-2 hover:bg-green-100"
+                  className="flex cursor-pointer flex-row space-x-2 hover:bg-green-200/50"
                 >
                   <Image
                     src={item.podcast.image}
