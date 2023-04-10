@@ -70,7 +70,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
         {data && search && (
           <motion.div
             layoutId="underline"
-            className="absolute top-16 w-full rounded-md border-2 border-green-500 bg-white/40 px-2 py-2 "
+            className="absolute top-16 w-full rounded-md border-2 border-green-500 bg-white/40 backdrop-blur-md px-2 py-2 "
           >
             {data.results.map((item: Episode) => {
               return (
