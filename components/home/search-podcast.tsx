@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { toast} from 'sonner'
+import { toast } from "sonner";
 import { useCallback, useState } from "react";
 import Image from "next/image";
 import useDebounce from "hooks/use-debounce";
@@ -39,13 +39,14 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
       try {
         setIsSubmitting(true);
         const episode = await ofetch(`/api/episode?id=${id}`);
-        setSearch('')
+        setSearch("");
         onResult({
+          title: episode.name,
           input: episode.audio,
           duration: episode.audio_length_sec,
-          prompt: episode.podcast.name + episode.name+ episode.description,
-          transcript: episode.transcript
-        })
+          prompt: episode.podcast.name + episode.name + episode.description,
+          transcript: episode.transcript,
+        });
       } catch (error) {
         if (error instanceof Error) toast.error(error.message);
       } finally {
@@ -56,49 +57,47 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
   );
 
   return (
-    <div className="flex flex-row gap-4">
-      <div className="relative flex flex-col gap-4">
-        <input
-          className="input"
-          placeholder="Search podcast episode"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <div className="absolute top-5 right-4">
-          {isLoading && <LoadingCircle />}
-        </div>
-        {data && search && (
-          <motion.div
-            layoutId="underline"
-            className="absolute top-16 w-full rounded-md border-2 border-green-500 bg-white/40 z-10 backdrop-blur-md px-2 py-2 "
-          >
-            {data.results.map((item: Episode) => {
-              return (
-                <div
-                  onClick={() => submit(item.id)}
-                  key={item.id}
-                  className="flex cursor-pointer flex-row space-x-2 hover:bg-green-200/50"
-                >
-                  <Image
-                    src={item.podcast.image}
-                    alt={item.title_original}
-                    width="60"
-                    height="60"
-                    className="rounded-fill m-2 object-cover"
-                    unoptimized
-                  />
-                  <div>
-                    <div className="opacity-60">
-                      {item.podcast.title_original}
-                    </div>
-                    <div>{item.title_original}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </motion.div>
-        )}
+    <div className="relative flex flex-col gap-4 md:w-full">
+      <input
+        className="input"
+        placeholder="Search podcast episode"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <div className="absolute top-5 right-4">
+        {isLoading && <LoadingCircle />}
       </div>
+      {data && search && (
+        <motion.div
+          layoutId="underline"
+          className="absolute top-16 z-10 w-full rounded-md border-2 border-green-500 bg-white/40 px-2 py-2 backdrop-blur-md dark:bg-black/50 "
+        >
+          {data.results.map((item: Episode) => {
+            return (
+              <div
+                onClick={() => submit(item.id)}
+                key={item.id}
+                className="flex cursor-pointer flex-row space-x-2 hover:bg-green-200/50"
+              >
+                <Image
+                  src={item.podcast.image}
+                  alt={item.title_original}
+                  width="60"
+                  height="60"
+                  className="rounded-fill m-2 object-cover"
+                  unoptimized
+                />
+                <div>
+                  <div className="opacity-60">
+                    {item.podcast.title_original}
+                  </div>
+                  <div>{item.title_original}</div>
+                </div>
+              </div>
+            );
+          })}
+        </motion.div>
+      )}
     </div>
   );
 };

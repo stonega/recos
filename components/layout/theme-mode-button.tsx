@@ -4,18 +4,18 @@ const ThemeModeButton = () => {
   let currentMode = "";
   const [mode, setMode] = useState(currentMode);
   useEffect(() => {
-  if (
-    localStorage.theme === "dark" ||
-    (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
-  ) {
-    document.documentElement.classList.add("dark");
-    currentMode = "dark";
-  } else {
-    document.documentElement.classList.remove("dark");
-    currentMode = "light";
-  }
-
-  }, [])
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+      currentMode = "dark";
+    } else {
+      document.documentElement.classList.remove("dark");
+      currentMode = "light";
+    }
+  }, []);
   const toggleTheme = () => {
     if (mode === "dark") {
       document.documentElement.classList.remove("dark");
@@ -34,12 +34,12 @@ const ThemeModeButton = () => {
         id="theme-toggle"
         type="button"
         onClick={toggleTheme}
-        className="focus:outline-none rounded-lg text-sm p-2.5 text-black dark:text-white"
+        className="rounded-lg p-2.5 text-sm text-black focus:outline-none dark:text-white"
       >
         {mode === "light" ? (
           <svg
             id="theme-toggle-dark-icon"
-            className="w-8 h-5"
+            className="h-5 w-8"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +49,7 @@ const ThemeModeButton = () => {
         ) : (
           <svg
             id="theme-toggle-light-icon"
-            className="w-8 h-8"
+            className="h-8 w-8"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"

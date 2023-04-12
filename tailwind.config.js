@@ -14,12 +14,12 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
-          minHeight: {
-      '1/2': '50%',
-    },
+      minHeight: {
+        "1/2": "50%",
+      },
       fontFamily: {
         default: ["var(--font-inter)", "system-ui", "sans-serif"],
-        serif: ["Playfair Display", ...defaultTheme.fontFamily.sans]
+        serif: ["Playfair Display", ...defaultTheme.fontFamily.sans],
       },
       animation: {
         // Tooltip

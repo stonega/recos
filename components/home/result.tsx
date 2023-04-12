@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Button from "../shared/button";
 import {
   formatDuration,
@@ -20,16 +20,19 @@ interface ResultProps {
 
 type Step = "input" | "downloading" | "loading" | "result";
 
+const DEFAULT_PROMPT = "Add punctuation marks and format the text.";
+
 const Result = ({ input }: ResultProps) => {
   const [step, setStep] = useState<Step>("input");
   const [progress, setProgress] = useState(0);
+  const [prompt, setPrompt] = useState("");
   const [duration, setDuration] = useState<number>(input.duration);
   const { setShowApiModal, ApiModal } = useApiModal();
   const [result, setResult] = useState("");
 
   const getAudioDuration = useCallback(() => {
     if (typeof input.input === "string") {
-      setDuration(input.duration)
+      setDuration(input.duration);
       return;
     }
     getDuration(input.input).then((result) => setDuration(result));
@@ -37,8 +40,15 @@ const Result = ({ input }: ResultProps) => {
 
   useEffect(() => {
     if (input.input) setStep("input");
-    getAudioDuration()
+    getAudioDuration();
   }, [getAudioDuration, input.input]);
+
+  const audioSource = useMemo(() => {
+    if (typeof input.input === "string") {
+      return input.input;
+    }
+    return URL.createObjectURL(input.input);
+  }, [input.input]);
 
   const submit = useCallback(async () => {
     const apiKey = localStorage.getItem("open-api-key");
@@ -67,8 +77,8 @@ const Result = ({ input }: ResultProps) => {
     setStep("loading");
     try {
       const results = await Promise.all(
-        audioFiles.map( (file) => {
-         transcript(file as File, input.prompt ?? '', apiKey);
+        audioFiles.map((file) => {
+          return transcript(file as File, DEFAULT_PROMPT + prompt, apiKey);
         }),
       );
       setStep("result");
@@ -80,16 +90,46 @@ const Result = ({ input }: ResultProps) => {
   }, [input.input, input.prompt, setShowApiModal]);
   return (
     <>
-      <div className="border-1 mt-6 min-h-[20rem] w-full rounded-md border border-green-400 bg-white/40">
+      <div className="border-1 mt-6 min-h-[20rem] w-full rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
         {step === "input" && (
-          <div className="flex h-60 flex-col items-center justify-start gap-2 p-2">
+          <div className="flex flex-col items-center justify-start gap-2 p-2">
             <ApiModal />
-            <div className="w-full grid grid-cols-3 gap-2">
-              <InfoCard title="🎧" value={formatDuration(duration)} prefix=""></InfoCard>
-              <InfoCard title="💰" value={getFee(duration)} prefix="$"></InfoCard>
-              <InfoCard title="⌛" value={getTime(duration)} prefix=""></InfoCard>
+            <div className="py-6 text-2xl font-bold dark:text-white">
+              {input.title}
             </div>
-            <Button className="mt-8" onClick={submit}>
+            <div className="w-full rounded-md bg-green-200 px-4 py-6">
+              <audio className="w-full" controls src={audioSource}></audio>
+            </div>
+            <div className="grid w-full grid-cols-3 gap-2">
+              <InfoCard
+                title="🎧"
+                value={formatDuration(duration)}
+                prefix=""
+              ></InfoCard>
+              <InfoCard
+                title="💰"
+                value={getFee(duration)}
+                prefix="≈ $"
+              ></InfoCard>
+              <InfoCard
+                title="⌛"
+                value={getTime(duration)}
+                prefix="≈"
+              ></InfoCard>
+            </div>
+            <div className="flex w-full flex-col space-y-2 rounded-md bg-green-200 px-4 py-6">
+              <label htmlFor="prompt">Prompt</label>
+              <textarea
+                name="prompt"
+                cols={4}
+                className="textarea"
+                placeholder="Something about your audio, like language or keywords"
+                value={prompt}
+                onChange={(event) => setPrompt(event.target.value)}
+              />
+            </div>
+
+            <Button className="mt-16 mb-6" onClick={submit}>
               Generate Transcript
             </Button>
           </div>

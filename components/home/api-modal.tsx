@@ -10,8 +10,7 @@ import Button from "../shared/button";
 import { object, string } from "yup";
 import { LOCAL_STORAGE_API_KEY } from "utils/constant";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { toast} from 'sonner'
-
+import { toast } from "sonner";
 
 const ApiModal = ({
   showApiModal,

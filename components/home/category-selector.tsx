@@ -9,12 +9,10 @@ interface CategorySelectorProps {
 }
 const toggleGroupItemClasses = "text-xl px-4 py-2 rounded-md";
 
-export const CategorySelector = ({
-  onSelect,
-}: CategorySelectorProps) => {
+export const CategorySelector = ({ onSelect }: CategorySelectorProps) => {
   return (
     <ToggleGroup.Root
-      className="flex-rol flex space-x-4 mb-4"
+      className="flex-rol mb-4 flex space-x-4"
       type="single"
       onValueChange={onSelect}
       defaultValue="podcast"
@@ -22,7 +20,7 @@ export const CategorySelector = ({
       <ToggleGroup.Item
         className={classNames(
           toggleGroupItemClasses,
-          "bg-white/40 dark:bg-black/40 dark:text-white data-[state=on]:bg-green-400 dark:data-[state=on]:bg-green-400",
+          "bg-white/40 data-[state=on]:bg-green-400 dark:bg-black/40 dark:text-white dark:data-[state=on]:bg-green-400",
         )}
         value="podcast"
         aria-label="Podcast"
@@ -32,7 +30,7 @@ export const CategorySelector = ({
       <ToggleGroup.Item
         className={classNames(
           toggleGroupItemClasses,
-          "bg-white/40 dark:bg-black/40 dark:text-white data-[state=on]:bg-green-400 dark:data-[state=on]:bg-green-400",
+          "bg-white/40 data-[state=on]:bg-green-400 dark:bg-black/40 dark:text-white dark:data-[state=on]:bg-green-400",
         )}
         value="audio"
         aria-label="Audio"

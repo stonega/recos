@@ -23,8 +23,16 @@ const Layout = ({ children, meta }: LayoutProps) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content={meta?.description ?? description} />
 
-        <link rel="shortcut icon" type="image/x-icon" href={meta?.logo ?? favicon} />
-        <link rel="apple-touch-icon" sizes="180x180" href={meta?.logo ?? favicon} />
+        <link
+          rel="shortcut icon"
+          type="image/x-icon"
+          href={meta?.logo ?? favicon}
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href={meta?.logo ?? favicon}
+        />
       </Head>
       <NextSeo
         title={meta.title ?? title}
@@ -37,20 +45,22 @@ const Layout = ({ children, meta }: LayoutProps) => {
             {
               url: meta.ogImage ?? favicon,
               alt: "Recommends",
-              type: "image/jpeg"
-            }
+              type: "image/jpeg",
+            },
           ],
-          site_name: "Web3.0 Helpers"
+          site_name: "Web3.0 Helpers",
         }}
         twitter={{
           handle: "",
           site: meta.twitter,
-          cardType: "summary_large_image"
+          cardType: "summary_large_image",
         }}
       />
-      <div className="bg-gradient-to-br from-green-200 via-green-100 to-green-100 dark:from-[#202020] dark:via-[#303030] dark:to-gray-800 relative w-full min-h-screen flex flex-col items-center">
+      <div className="relative flex min-h-screen w-full flex-col items-center bg-gradient-to-br from-green-200 via-green-100 to-green-100 dark:from-[#101010] dark:via-[#202020] dark:to-[#101010]">
         <NavBar></NavBar>
-        <div className="max-w-6xl w-full px-4 py-10 min-h-[80vh]">{children}</div>
+        <div className="min-h-[80vh] w-full max-w-6xl px-4 py-10">
+          {children}
+        </div>
         <Footer></Footer>
       </div>
     </>

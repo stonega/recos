@@ -22,6 +22,12 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/api/episode.js", "pages/api/episode.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/api/episode.js",
+    "pages/api/episode.js"
+  ],
   "exclude": ["node_modules"]
 }
