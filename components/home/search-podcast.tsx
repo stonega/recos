@@ -60,7 +60,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
     <div className="relative flex flex-col gap-4 md:w-full">
       <input
         className="input"
-        placeholder="Search podcast episode"
+        placeholder="Search podcast episode with title or description"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />

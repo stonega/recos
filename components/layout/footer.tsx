@@ -1,29 +1,32 @@
-import { Github, Twitter } from "lucide-react";
+import { Coffee, Github, Twitter } from "lucide-react";
 
 const Footer = () => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col items-center">
       <div className="mb-2 flex gap-4">
         <a
           href="https://twitter.com/shimenmen"
           target="_blank"
-          className="rounded-md bg-[#1da1f2] p-3 text-white"
           rel="noreferrer"
         >
-          <Twitter className="mr-2 inline h-4 w-4 fill-white" />
-          Twitter
+          <Twitter className="mr-2 inline h-6 w-6 fill-[#1da1f2] dark:stroke-white" />
         </a>
         <a
           href="https://github.com/stonega/recommends"
           target="_blank"
-          className="rounded-md bg-[#24292F] p-3 text-white"
           rel="noreferrer"
         >
-          <Github className="mr-2 inline h-4 w-4 fill-white" />
-          GitHub
+          <Github className="mr-2 inline h-6 w-6 fill-[] dark:stroke-white" />
+        </a>
+        <a
+          href="https://www.buymeacoffee.com/stonegate"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Coffee className="mr-2 inline h-6 w-6 fill-[] fill-orange-300 dark:stroke-white" />
         </a>
       </div>
-      <span className="mb-4 text-center text-gray-500">
+      <span className="mb-2 text-center text-gray-500">
         Made with ❤️ Stone © 2023 Recos.
       </span>
     </div>
