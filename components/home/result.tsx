@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { saveAs } from "file-saver";
 import Button from "../shared/button";
 import {
   formatDuration,
@@ -12,7 +13,10 @@ import { useApiModal } from "./api-modal";
 import { toast } from "sonner";
 import { AudioInput } from "types";
 import { ofetch } from "ofetch";
+import { ArrowLeftCircle } from "lucide-react";
 import InfoCard from "../shared/info-card";
+import Tooltip from "../shared/tooltip";
+import { useClipboard } from "use-clipboard-copy";
 
 interface ResultProps {
   input: AudioInput;
@@ -29,6 +33,9 @@ const Result = ({ input }: ResultProps) => {
   const [duration, setDuration] = useState<number>(input.duration);
   const { setShowApiModal, ApiModal } = useApiModal();
   const [result, setResult] = useState("");
+  const clipboard = useClipboard({
+    copiedTimeout: 2000, // timeout duration in milliseconds
+  });
 
   const getAudioDuration = useCallback(() => {
     if (typeof input.input === "string") {
@@ -43,6 +50,15 @@ const Result = ({ input }: ResultProps) => {
     getAudioDuration();
   }, [getAudioDuration, input.input]);
 
+  const handleExport = () => {
+    const blob = new Blob([result], { type: "text/plain;charset=utf-8" });
+    saveAs(blob, `${input.title ?? "transcript"}.txt`);
+  };
+
+  const handleBack = () => {
+    setStep("input");
+    setResult("");
+  };
   const audioSource = useMemo(() => {
     if (typeof input.input === "string") {
       return input.input;
@@ -87,19 +103,21 @@ const Result = ({ input }: ResultProps) => {
       setStep("input");
       if (error instanceof Error) toast.error(error.message);
     }
-  }, [input.input, input.prompt, setShowApiModal]);
+  }, [input.input, prompt, setShowApiModal]);
   return (
     <>
       <div className="border-1 mt-6 min-h-[20rem] w-full rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
+        <div className="flex flex-col items-center justify-start gap-2 p-2">
+          <ApiModal />
+          <div className="py-6 text-2xl font-bold dark:text-white">
+            {input.title}
+          </div>
+          <div className="w-full rounded-md bg-green-200 px-4 py-6">
+            <audio className="w-full" controls src={audioSource}></audio>
+          </div>
+        </div>
         {step === "input" && (
           <div className="flex flex-col items-center justify-start gap-2 p-2">
-            <ApiModal />
-            <div className="py-6 text-2xl font-bold dark:text-white">
-              {input.title}
-            </div>
-            <div className="w-full rounded-md bg-green-200 px-4 py-6">
-              <audio className="w-full" controls src={audioSource}></audio>
-            </div>
             <div className="grid w-full grid-cols-3 gap-2">
               <InfoCard
                 title="🎧"
@@ -136,17 +154,50 @@ const Result = ({ input }: ResultProps) => {
         )}
         {step === "loading" && (
           <div className="flex h-60 flex-col items-center justify-center gap-2">
-            <span>Transcribing audios...</span>
+            <span className="mb-8">Transcribing...</span>
+            <span className="printer-loader"></span>
           </div>
         )}
         {step === "downloading" && (
           <div className="flex h-60 flex-col items-center justify-center gap-2">
-            <span>Downloading audios...</span>
+            <span>Preparing...</span>
+            <span className="player-loader"></span>
           </div>
         )}
         {step === "result" && (
           <div className="p-4">
-            <span className="text-bold">{result}</span>
+            <div className="flex flex-row justify-between">
+              <button className="flex flex-row items-center text-xl">
+                <ArrowLeftCircle className="inline" />
+                <span className="ml-2" onClick={handleBack}>
+                  Back
+                </span>
+              </button>
+              <div className="flex flex-row space-x-4">
+                <Tooltip content="Copy the text">
+                  <button className="button" onClick={clipboard.copy}>
+                    {clipboard.copied ? "Copied !" : "Copy"}
+                  </button>
+                </Tooltip>
+                <Tooltip content="Export ">
+                  <button className="button" onClick={handleExport}>
+                    File
+                  </button>
+                </Tooltip>
+                <Tooltip content="Buy me a coffee">
+                  <a
+                    href="https://www.buymeacoffee.com/stonegate"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Donate
+                  </a>
+                </Tooltip>
+              </div>
+            </div>
+            <span className="text-bold leading-loose" ref={clipboard.target}>
+              {result}
+            </span>
           </div>
         )}
       </div>

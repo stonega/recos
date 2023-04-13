@@ -22,7 +22,7 @@ export default function Home() {
 
   return (
     <Layout meta={meta}>
-      <div className="mb-20"></div>
+      <div className="mb-0 md:mb-20"></div>
       <CategorySelector onSelect={setCategory}></CategorySelector>
       {category === "podcast" ? (
         <SearchPodcast onResult={(result) => setResult(result)}></SearchPodcast>

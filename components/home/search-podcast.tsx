@@ -41,7 +41,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
         const episode = await ofetch(`/api/episode?id=${id}`);
         setSearch("");
         onResult({
-          title: episode.name,
+          title: episode.title,
           input: episode.audio,
           duration: episode.audio_length_sec,
           prompt: episode.podcast.name + episode.name + episode.description,

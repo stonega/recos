@@ -27,7 +27,7 @@ const Footer = () => {
         </a>
       </div>
       <span className="mb-2 text-center text-gray-500">
-        Made with ❤️ Stone © 2023 Recos.
+        Made with ❤️ by Stone © 2023 Recos.
       </span>
     </div>
   );
