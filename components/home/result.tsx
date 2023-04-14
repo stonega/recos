@@ -17,6 +17,7 @@ import { ArrowLeftCircle } from "lucide-react";
 import InfoCard from "../shared/info-card";
 import Tooltip from "../shared/tooltip";
 import { useClipboard } from "use-clipboard-copy";
+import PDFExportButton from "./pdf-export-button";
 
 interface ResultProps {
   input: AudioInput;
@@ -154,14 +155,16 @@ const Result = ({ input }: ResultProps) => {
         )}
         {step === "loading" && (
           <div className="flex h-60 flex-col items-center justify-center gap-2">
-            <span className="mb-8">Transcribing...</span>
-            <span className="printer-loader"></span>
+            <span>Generating...</span>
+            <span className="mb-10">Please don&apost close the tab, and wait a few minutes. </span>
+            <span className="printer-loader mb-10"></span>
           </div>
         )}
         {step === "downloading" && (
           <div className="flex h-60 flex-col items-center justify-center gap-2">
             <span>Preparing...</span>
-            <span className="player-loader"></span>
+            <span className="mb-10">Please don&apost close the tab, and wait a few minutes. </span>
+            <span className="player-loader mb-10"></span>
           </div>
         )}
         {step === "result" && (
@@ -181,7 +184,7 @@ const Result = ({ input }: ResultProps) => {
                 </Tooltip>
                 <Tooltip content="Export ">
                   <button className="button" onClick={handleExport}>
-                    File
+                    <PDFExportButton text={result} name={input.title}></PDFExportButton>
                   </button>
                 </Tooltip>
                 <Tooltip content="Buy me a coffee">
