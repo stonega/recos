@@ -26,6 +26,7 @@ const DEFAULT_PROMPT = "Add punctuation marks and format the text.";
 const DEFAULT_OPTION: TranscriptOption = {
   prompt: "",
   translate: false,
+  srt: false
 };
 
 const Result = ({ input }: ResultProps) => {
@@ -35,6 +36,12 @@ const Result = ({ input }: ResultProps) => {
   const [duration, setDuration] = useState<number>(input.duration);
   const { setShowApiModal, ApiModal } = useApiModal();
   const [result, setResult] = useState("");
+  const filename = useMemo(() => {
+    if (typeof input.input === "string") {
+      return input.title;
+    }
+    return input.title.split(".").slice(0, -1).join(".");
+  }, [input]);
 
   const getAudioDuration = useCallback(() => {
     if (typeof input.input === "string") {
@@ -93,6 +100,7 @@ const Result = ({ input }: ResultProps) => {
             {
               translate: option.translate,
               prompt: DEFAULT_PROMPT + option.prompt,
+              srt: option.srt
             },
             apiKey,
           );
@@ -104,7 +112,7 @@ const Result = ({ input }: ResultProps) => {
       setStep("input");
       if (error instanceof Error) toast.error(error.message);
     }
-  }, [input.input, option.prompt, option.translate, setShowApiModal]);
+  }, [input.input, option.prompt, option.translate, option.srt, setShowApiModal]);
   return (
     <>
       <div className="border-1 mt-6 min-h-[10rem] w-full rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
@@ -154,24 +162,21 @@ const Result = ({ input }: ResultProps) => {
                   />
                 </div>
                 <div className="col-span-1 flex flex-col items-center justify-between space-y-2 rounded-md bg-green-200 p-2 pt-4 dark:bg-green-400">
-                  <label htmlFor="airplane-mode" className="text-lg">
-                    Translate
+                  <label htmlFor="srt" className="text-lg">
+                    Timestamp
                   </label>
                   <Switch.Root
-                    className="relative h-[25px] w-[42px] cursor-default rounded-full bg-black outline-none focus:shadow-[0_0_0_2px] focus:shadow-black data-[state=checked]:bg-black"
-                    id="translate"
-                    checked={option.translate}
+                    className="relative h-[25px] w-[42px] cursor-default rounded-full bg-black outline-none focus:shadow-[0_0_0_2px] focus:shadow-black data-[state=checked]:bg-green-700"
+                    id="srt"
+                    checked={option.srt}
                     onCheckedChange={(value) =>
-                      setOption({ ...option, translate: value })
+                      setOption({ ...option, srt: value })
                     }
-                    // style={{
-                    //   "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)",
-                    // }}
                   >
                     <Switch.Thumb className="shadow-blackA7 block h-[21px] w-[21px] translate-x-0.5 rounded-full bg-white  transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px]" />
                   </Switch.Root>
                   <span className="text-xs">
-                    Only support translation into English
+                    Return srt format
                   </span>
                 </div>
               </div>
@@ -185,7 +190,7 @@ const Result = ({ input }: ResultProps) => {
         </Button>
       )}
       {step === "loading" && (
-        <div className="flex h-60 flex-col items-center justify-center gap-2 mt-10">
+        <div className="mt-10 flex h-60 flex-col items-center justify-center gap-2">
           <span className="text-2xl">Generating...</span>
           <span className="mb-12">
             Please don&apos;t close the tab, and wait a few minutes.{" "}
@@ -194,7 +199,7 @@ const Result = ({ input }: ResultProps) => {
         </div>
       )}
       {step === "downloading" && (
-        <div className="flex h-60 flex-col items-center justify-center gap-2 mt-10">
+        <div className="mt-10 flex h-60 flex-col items-center justify-center gap-2">
           <span className="text-2xl">Preparing...</span>
           <span className="mb-10">
             Please don&apos;t close the tab, and wait a few minutes.{" "}
@@ -203,8 +208,8 @@ const Result = ({ input }: ResultProps) => {
           <div className="my-10"></div>
         </div>
       )}
-      {step === "result" && (
-        <ResultEditor text={result} title={input.title} onBack={handleBack} />
+      {step === "input" && (
+        <ResultEditor text={result} title={filename} onBack={handleBack} srt={option.srt} />
       )}
     </>
   );

@@ -5,7 +5,6 @@ import {
   Page,
   Text,
   PDFDownloadLink,
-  Note,
 } from "@react-pdf/renderer";
 import { JSONContent } from "@tiptap/react";
 import { uuid } from "utils";

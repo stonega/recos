@@ -18,8 +18,10 @@ export async function transcript(
   const url = option.translate
     ? "/audio/translations"
     : "/audio/transcriptions";
+  const format = option.srt ? 'srt' : 'json'
   formData.append("file", file);
   formData.append("model", "whisper-1");
+  formData.append("response_format", format);
   if (!option.translate) formData.append("prompt", option.prompt);
   const result = await openAiFetch(url, {
     method: "POST",
@@ -29,6 +31,7 @@ export async function transcript(
     body: formData,
   });
   if (result.error) throw new Error(result.error.message);
+  if(option.srt) return result
   return result.text;
 }
 

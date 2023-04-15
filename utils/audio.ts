@@ -37,7 +37,7 @@ export function getFee(duration: number) {
 }
 
 export function getTime(duration: number) {
-  const time = duration / 10;
+  const time = Math.min(120, duration / 10);
   return formatDuration(time);
 }
 
