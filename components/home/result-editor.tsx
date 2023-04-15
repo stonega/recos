@@ -57,8 +57,7 @@ const ResultEditor = ({ text, title, onBack }: EditorProps) => {
 
   return (
     <>
-      <div>
-        <div className="mb-8 flex flex-row justify-between dark:text-white">
+        <div className="mt-16 mb-8 flex flex-row justify-between dark:text-white">
           <button className="flex flex-row items-center text-xl">
             <ArrowLeftCircle className="inline" />
             <span className="ml-2" onClick={onBack}>
@@ -104,7 +103,7 @@ const ResultEditor = ({ text, title, onBack }: EditorProps) => {
         </div>
 
         <EditorContent editor={editor} />
-      </div>
+
     </>
   );
 };

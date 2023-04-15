@@ -107,7 +107,7 @@ const Result = ({ input }: ResultProps) => {
   }, [input.input, option.prompt, option.translate, setShowApiModal]);
   return (
     <>
-      <div className="border-1 mt-6 min-h-[20rem] w-full rounded-md border border-2 border-green-400 bg-white/40 dark:bg-black/40">
+      <div className="border-1 mt-6 min-h-[10rem] w-full rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
         <div className="flex flex-col items-center justify-start gap-2 p-2">
           <ApiModal />
           <div className="pt-4 pb-2 text-2xl font-bold dark:text-white">
@@ -185,7 +185,7 @@ const Result = ({ input }: ResultProps) => {
         </Button>
       )}
       {step === "loading" && (
-        <div className="flex h-60 flex-col items-center justify-center gap-2">
+        <div className="flex h-60 flex-col items-center justify-center gap-2 mt-10">
           <span className="text-2xl">Generating...</span>
           <span className="mb-12">
             Please don&apos;t close the tab, and wait a few minutes.{" "}
@@ -194,7 +194,7 @@ const Result = ({ input }: ResultProps) => {
         </div>
       )}
       {step === "downloading" && (
-        <div className="flex h-60 flex-col items-center justify-center gap-2">
+        <div className="flex h-60 flex-col items-center justify-center gap-2 mt-10">
           <span className="text-2xl">Preparing...</span>
           <span className="mb-10">
             Please don&apos;t close the tab, and wait a few minutes.{" "}
