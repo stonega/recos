@@ -84,10 +84,10 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
                   alt={item.title_original}
                   width="60"
                   height="60"
-                  className="rounded-fill m-2 object-cover"
+                  className="rounded-fill m-2 object-cover aspect-square"
                   unoptimized
                 />
-                <div>
+                <div className="dark:text-white">
                   <div className="opacity-60">
                     {item.podcast.title_original}
                   </div>
