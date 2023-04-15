@@ -208,7 +208,7 @@ const Result = ({ input }: ResultProps) => {
           <div className="my-10"></div>
         </div>
       )}
-      {step === "input" && (
+      {step === "result" && (
         <ResultEditor text={result} title={filename} onBack={handleBack} srt={option.srt} />
       )}
     </>
