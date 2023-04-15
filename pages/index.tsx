@@ -30,6 +30,7 @@ export default function Home() {
         <SearchAudio onResult={(result) => setResult(result)}></SearchAudio>
       )}
       {result && <Result input={result} />}
+      {/* {!result && <div className="bear-loader w-full" />} */}
       <WhatIsRecos />
     </Layout>
   );

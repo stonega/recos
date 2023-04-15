@@ -5,7 +5,7 @@ interface InfoCardProps {
 }
 const InfoCard = ({ title, value, prefix }: InfoCardProps) => {
   return (
-    <div className="flex w-auto flex-col items-center justify-center space-y-2 rounded-md bg-green-200 py-4">
+    <div className="flex w-auto flex-col items-center justify-center space-y-2 rounded-md bg-green-200 py-4 dark:bg-green-400">
       <span className="text-xl font-bold">{title}</span>
       <span className="flex flex-row items-center">
         {prefix && <span>{prefix}</span>}

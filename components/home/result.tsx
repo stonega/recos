@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { saveAs } from "file-saver";
 import Button from "../shared/button";
 import {
   formatDuration,
@@ -11,13 +10,11 @@ import {
 } from "utils";
 import { useApiModal } from "./api-modal";
 import { toast } from "sonner";
-import { AudioInput } from "types";
+import { AudioInput, TranscriptOption } from "types";
 import { ofetch } from "ofetch";
-import { ArrowLeftCircle } from "lucide-react";
 import InfoCard from "../shared/info-card";
-import Tooltip from "../shared/tooltip";
-import { useClipboard } from "use-clipboard-copy";
-import PDFExportButton from "./pdf-export-button";
+import * as Switch from "@radix-ui/react-switch";
+import ResultEditor from "./result-editor";
 
 interface ResultProps {
   input: AudioInput;
@@ -26,17 +23,18 @@ interface ResultProps {
 type Step = "input" | "downloading" | "loading" | "result";
 
 const DEFAULT_PROMPT = "Add punctuation marks and format the text.";
+const DEFAULT_OPTION: TranscriptOption = {
+  prompt: "",
+  translate: false,
+};
 
 const Result = ({ input }: ResultProps) => {
   const [step, setStep] = useState<Step>("input");
   const [progress, setProgress] = useState(0);
-  const [prompt, setPrompt] = useState("");
+  const [option, setOption] = useState<TranscriptOption>(DEFAULT_OPTION);
   const [duration, setDuration] = useState<number>(input.duration);
   const { setShowApiModal, ApiModal } = useApiModal();
   const [result, setResult] = useState("");
-  const clipboard = useClipboard({
-    copiedTimeout: 2000, // timeout duration in milliseconds
-  });
 
   const getAudioDuration = useCallback(() => {
     if (typeof input.input === "string") {
@@ -50,11 +48,6 @@ const Result = ({ input }: ResultProps) => {
     if (input.input) setStep("input");
     getAudioDuration();
   }, [getAudioDuration, input.input]);
-
-  const handleExport = () => {
-    const blob = new Blob([result], { type: "text/plain;charset=utf-8" });
-    saveAs(blob, `${input.title ?? "transcript"}.txt`);
-  };
 
   const handleBack = () => {
     setStep("input");
@@ -95,7 +88,14 @@ const Result = ({ input }: ResultProps) => {
     try {
       const results = await Promise.all(
         audioFiles.map((file) => {
-          return transcript(file as File, DEFAULT_PROMPT + prompt, apiKey);
+          return transcript(
+            file as File,
+            {
+              translate: option.translate,
+              prompt: DEFAULT_PROMPT + option.prompt,
+            },
+            apiKey,
+          );
         }),
       );
       setStep("result");
@@ -104,106 +104,108 @@ const Result = ({ input }: ResultProps) => {
       setStep("input");
       if (error instanceof Error) toast.error(error.message);
     }
-  }, [input.input, prompt, setShowApiModal]);
+  }, [input.input, option.prompt, option.translate, setShowApiModal]);
   return (
     <>
-      <div className="border-1 mt-6 min-h-[20rem] w-full rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
+      <div className="border-1 mt-6 min-h-[20rem] w-full rounded-md border border-2 border-green-400 bg-white/40 dark:bg-black/40">
         <div className="flex flex-col items-center justify-start gap-2 p-2">
           <ApiModal />
-          <div className="py-6 text-2xl font-bold dark:text-white">
+          <div className="pt-4 pb-2 text-2xl font-bold dark:text-white">
             {input.title}
           </div>
-          <div className="w-full rounded-md bg-green-200 px-4 py-6">
+          <div className="w-full rounded-md bg-green-200 px-4 py-6 dark:bg-green-400">
             <audio className="w-full" controls src={audioSource}></audio>
           </div>
         </div>
         {step === "input" && (
-          <div className="flex flex-col items-center justify-start gap-2 p-2">
-            <div className="grid w-full grid-cols-3 gap-2">
-              <InfoCard
-                title="🎧"
-                value={formatDuration(duration)}
-                prefix=""
-              ></InfoCard>
-              <InfoCard
-                title="💰"
-                value={getFee(duration)}
-                prefix="≈ $"
-              ></InfoCard>
-              <InfoCard
-                title="⌛"
-                value={getTime(duration)}
-                prefix="≈"
-              ></InfoCard>
-            </div>
-            <div className="flex w-full flex-col space-y-2 rounded-md bg-green-200 px-4 py-6">
-              <label htmlFor="prompt">Prompt</label>
-              <textarea
-                name="prompt"
-                cols={4}
-                className="textarea"
-                placeholder="Something about your audio, like language or keywords"
-                value={prompt}
-                onChange={(event) => setPrompt(event.target.value)}
-              />
-            </div>
-
-            <Button className="mt-16 mb-6" onClick={submit}>
-              Generate Transcript
-            </Button>
-          </div>
-        )}
-        {step === "loading" && (
-          <div className="flex h-60 flex-col items-center justify-center gap-2">
-            <span>Generating...</span>
-            <span className="mb-10">Please don&apost close the tab, and wait a few minutes. </span>
-            <span className="printer-loader mb-10"></span>
-          </div>
-        )}
-        {step === "downloading" && (
-          <div className="flex h-60 flex-col items-center justify-center gap-2">
-            <span>Preparing...</span>
-            <span className="mb-10">Please don&apost close the tab, and wait a few minutes. </span>
-            <span className="player-loader mb-10"></span>
-          </div>
-        )}
-        {step === "result" && (
-          <div className="p-4">
-            <div className="flex flex-row justify-between">
-              <button className="flex flex-row items-center text-xl">
-                <ArrowLeftCircle className="inline" />
-                <span className="ml-2" onClick={handleBack}>
-                  Back
-                </span>
-              </button>
-              <div className="flex flex-row space-x-4">
-                <Tooltip content="Copy the text">
-                  <button className="button" onClick={clipboard.copy}>
-                    {clipboard.copied ? "Copied !" : "Copy"}
-                  </button>
-                </Tooltip>
-                <Tooltip content="Export ">
-                  <button className="button" onClick={handleExport}>
-                    <PDFExportButton text={result} name={input.title}></PDFExportButton>
-                  </button>
-                </Tooltip>
-                <Tooltip content="Buy me a coffee">
-                  <a
-                    href="https://www.buymeacoffee.com/stonegate"
-                    target="_blank"
-                    rel="noreferrer"
+          <>
+            <div className="flex flex-col items-center justify-start gap-2 p-2">
+              <div className="grid w-full grid-cols-3 gap-2">
+                <InfoCard
+                  title="🎧"
+                  value={formatDuration(duration)}
+                  prefix=""
+                ></InfoCard>
+                <InfoCard
+                  title="💰"
+                  value={getFee(duration)}
+                  prefix="≈ $"
+                ></InfoCard>
+                <InfoCard
+                  title="⌛"
+                  value={getTime(duration)}
+                  prefix="≈"
+                ></InfoCard>
+              </div>
+              <div className="grid w-full grid-cols-3 gap-2 md:grid-cols-5">
+                <div className="col-span-2 flex flex-col space-y-2 rounded-md bg-green-200 p-4 dark:bg-green-400 md:col-span-4">
+                  <label htmlFor="prompt" className="text-lg">
+                    Prompt
+                  </label>
+                  <textarea
+                    name="prompt"
+                    cols={6}
+                    className="textarea"
+                    placeholder="Something about your audio, like language or keywords"
+                    value={option.prompt}
+                    onChange={(event) =>
+                      setOption({ ...option, prompt: event.target.value })
+                    }
+                  />
+                </div>
+                <div className="col-span-1 flex flex-col items-center justify-between space-y-2 rounded-md bg-green-200 p-2 pt-4 dark:bg-green-400">
+                  <label htmlFor="airplane-mode" className="text-lg">
+                    Translate
+                  </label>
+                  <Switch.Root
+                    className="relative h-[25px] w-[42px] cursor-default rounded-full bg-black outline-none focus:shadow-[0_0_0_2px] focus:shadow-black data-[state=checked]:bg-black"
+                    id="translate"
+                    checked={option.translate}
+                    onCheckedChange={(value) =>
+                      setOption({ ...option, translate: value })
+                    }
+                    // style={{
+                    //   "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)",
+                    // }}
                   >
-                    Donate
-                  </a>
-                </Tooltip>
+                    <Switch.Thumb className="shadow-blackA7 block h-[21px] w-[21px] translate-x-0.5 rounded-full bg-white  transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px]" />
+                  </Switch.Root>
+                  <span className="text-xs">
+                    Only support translation into English
+                  </span>
+                </div>
               </div>
             </div>
-            <span className="text-bold leading-loose" ref={clipboard.target}>
-              {result}
-            </span>
-          </div>
+          </>
         )}
       </div>
+      {step === "input" && (
+        <Button className="mx-auto mt-10 mb-6 px-8" onClick={submit}>
+          Generate Transcription
+        </Button>
+      )}
+      {step === "loading" && (
+        <div className="flex h-60 flex-col items-center justify-center gap-2">
+          <span className="text-2xl">Generating...</span>
+          <span className="mb-12">
+            Please don&apos;t close the tab, and wait a few minutes.{" "}
+          </span>
+          <span className="printer-loader mb-24"></span>
+        </div>
+      )}
+      {step === "downloading" && (
+        <div className="flex h-60 flex-col items-center justify-center gap-2">
+          <span className="text-2xl">Preparing...</span>
+          <span className="mb-10">
+            Please don&apos;t close the tab, and wait a few minutes.{" "}
+          </span>
+          <span className="player-loader"></span>
+          <div className="my-10"></div>
+        </div>
+      )}
+      {step === "result" && (
+        <ResultEditor text={result} title={input.title} onBack={handleBack} />
+      )}
     </>
   );
 };

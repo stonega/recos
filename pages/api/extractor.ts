@@ -13,8 +13,7 @@ export default async function handler(
     try {
       const article = await extract(link as string);
       const regExp = /<[^>]*>/g;
-      if(article)
-      article.content = article.content?.replace(regExp, "");
+      if (article) article.content = article.content?.replace(regExp, "");
       res.status(200).json(article);
     } catch (err) {
       console.error(err);

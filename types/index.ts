@@ -39,3 +39,8 @@ export interface Article {
   links: string[]; // list of alternative links
   ttr: number; // time to read in second, 0 = unknown
 }
+
+export type TranscriptOption = {
+  prompt: string;
+  translate: boolean;
+};
