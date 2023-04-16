@@ -5,6 +5,7 @@ import {
   getDuration,
   getFee,
   getTime,
+  mergeMultipleSrtStrings,
   transcript,
   unzipAudios,
 } from "utils";
@@ -26,7 +27,7 @@ const DEFAULT_PROMPT = "Add punctuation marks and format the text.";
 const DEFAULT_OPTION: TranscriptOption = {
   prompt: "",
   translate: false,
-  srt: false
+  srt: false,
 };
 
 const Result = ({ input }: ResultProps) => {
@@ -100,19 +101,28 @@ const Result = ({ input }: ResultProps) => {
             {
               translate: option.translate,
               prompt: DEFAULT_PROMPT + option.prompt,
-              srt: option.srt
+              srt: option.srt,
             },
             apiKey,
           );
         }),
       );
       setStep("result");
-      setResult(results.join(" "));
+      const finalResult = option.srt
+        ? mergeMultipleSrtStrings(...results)
+        : results.join(" ");
+      setResult(finalResult);
     } catch (error) {
       setStep("input");
       if (error instanceof Error) toast.error(error.message);
     }
-  }, [input.input, option.prompt, option.translate, option.srt, setShowApiModal]);
+  }, [
+    input.input,
+    option.prompt,
+    option.translate,
+    option.srt,
+    setShowApiModal,
+  ]);
   return (
     <>
       <div className="border-1 mt-6 min-h-[10rem] w-full rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
@@ -175,9 +185,7 @@ const Result = ({ input }: ResultProps) => {
                   >
                     <Switch.Thumb className="shadow-blackA7 block h-[21px] w-[21px] translate-x-0.5 rounded-full bg-white  transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px]" />
                   </Switch.Root>
-                  <span className="text-xs">
-                    Return srt format
-                  </span>
+                  <span className="text-xs">Return srt format</span>
                 </div>
               </div>
             </div>
@@ -209,7 +217,12 @@ const Result = ({ input }: ResultProps) => {
         </div>
       )}
       {step === "result" && (
-        <ResultEditor text={result} title={filename} onBack={handleBack} srt={option.srt} />
+        <ResultEditor
+          text={result}
+          title={filename}
+          onBack={handleBack}
+          srt={option.srt}
+        />
       )}
     </>
   );

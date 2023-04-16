@@ -43,5 +43,5 @@ export interface Article {
 export type TranscriptOption = {
   prompt: string;
   translate: boolean;
-  srt: boolean
+  srt: boolean;
 };

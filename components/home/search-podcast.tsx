@@ -57,7 +57,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
   );
 
   return (
-    <div className="relative flex flex-col gap-4 w-full md:w-[40rem]">
+    <div className="relative flex w-full flex-col gap-4 md:w-[40rem]">
       <input
         className="input"
         placeholder="Search podcast episode with title or description"
@@ -84,7 +84,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
                   alt={item.title_original}
                   width="60"
                   height="60"
-                  className="rounded-fill m-2 object-cover aspect-square"
+                  className="rounded-fill m-2 aspect-square object-cover"
                   unoptimized
                 />
                 <div className="dark:text-white">
