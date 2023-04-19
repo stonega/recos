@@ -112,17 +112,12 @@ const Result = ({ input }: ResultProps) => {
         ? mergeMultipleSrtStrings(5, ...results)
         : results.join(" ");
       setResult(finalResult);
+      document.title = "Task Completed, " + filename;
     } catch (error) {
       setStep("input");
       if (error instanceof Error) toast.error(error.message);
     }
-  }, [
-    input.input,
-    option.prompt,
-    option.translate,
-    option.srt,
-    setShowApiModal,
-  ]);
+  }, [input.input, setShowApiModal, option.srt, option.translate, option.prompt, filename]);
   return (
     <>
       <div className="border-1 mt-6 min-h-[10rem] w-full rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
