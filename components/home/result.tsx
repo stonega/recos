@@ -198,8 +198,8 @@ const Result = ({ input }: ResultProps) => {
         </Button>
       )}
       {step === "loading" && (
-        <div className="mt-10 flex h-60 flex-col items-center justify-center gap-2">
-          <span className="text-2xl">Generating...</span>
+        <div className="mt-10 flex h-60 flex-col items-center justify-center gap-2 darK:text-white">
+          <span className="text-2xl dot-loader">Generating</span>
           <span className="mb-12">
             Please don&apos;t close the tab, and wait a few minutes.{" "}
           </span>
@@ -207,8 +207,8 @@ const Result = ({ input }: ResultProps) => {
         </div>
       )}
       {step === "downloading" && (
-        <div className="mt-10 flex h-60 flex-col items-center justify-center gap-2">
-          <span className="text-2xl">Preparing...</span>
+        <div className="mt-10 flex h-60 flex-col items-center justify-center gap-2 dark:text-white">
+          <span className="text-2xl dot-loader">Preparing</span>
           <span className="mb-10">
             Please don&apos;t close the tab, and wait a few minutes.{" "}
           </span>

@@ -2,9 +2,10 @@ import { ArrowLeftCircle } from "lucide-react";
 import Tooltip from "../shared/tooltip";
 import { useClipboard } from "use-clipboard-copy";
 import { saveAs } from "file-saver";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { formatTranscription } from "utils";
 import TextareaAutosize from "react-textarea-autosize";
+import * as SliderPrimitive from '@radix-ui/react-slider';
 
 interface EditorProps {
   title: string;
@@ -35,6 +36,8 @@ const ResultEditor = ({ text, title, srt, onBack }: EditorProps) => {
   // });
   // const [json, setJson] = useState<JSONContent>({ content: [] });
   const [content, setContent] = useState(text);
+  const [compact, setCompact] = useState(1)
+  
   const clipboard = useClipboard({
     copiedTimeout: 2000, // timeout duration in milliseconds
   });
@@ -68,6 +71,7 @@ const ResultEditor = ({ text, title, srt, onBack }: EditorProps) => {
           <Tooltip content="Copy the text">
             <button
               className="button px-2"
+              style={{ opacity: clipboard.copied ? "0.6" : "1" }}
               onClick={() => clipboard.copy(content)}
             >
               {clipboard.copied ? "Copied !" : "COPY"}
