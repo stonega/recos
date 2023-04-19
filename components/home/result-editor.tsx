@@ -5,7 +5,6 @@ import { saveAs } from "file-saver";
 import { useState } from "react";
 import { formatTranscription } from "utils";
 import TextareaAutosize from "react-textarea-autosize";
-import * as SliderPrimitive from '@radix-ui/react-slider';
 
 interface EditorProps {
   title: string;
