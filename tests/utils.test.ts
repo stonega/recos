@@ -48,14 +48,23 @@ Third subtitle
 Fourth subtitle`;
 
   test("merge srt", () => {
-    const result = mergeSrtStrings(srt1, srt2);
+    const result = mergeSrtStrings(srt1, srt2)
+      .map((subtitle) => `${subtitle.id}\n${subtitle.time}\n${subtitle.text}`)
+      .join("\n\n");
     console.log(result);
     expect(result).toBe(expectedResult);
   });
 
   test("merge multiple srt", () => {
-    const result = mergeMultipleSrtStrings(srt1, srt2, srt3);
+    const result = mergeMultipleSrtStrings(3, srt1, srt2, srt3);
+    const expectedResult = `1
+00:00:00,000 --> 00:00:03,000
+First subtitle Second subtitle Fifth subtitle
+
+2
+00:00:03,000 --> 00:00:04,000
+Sixth subtitle`
     console.log(result);
-    expect(result).toBe(mergeSrtStrings(expectedResult, srt3));
+    expect(result).toBe(expectedResult);
   });
 });

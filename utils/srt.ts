@@ -1,6 +1,14 @@
+import { log } from "console";
+
+type SrtItem = {
+  id: number,
+  time: string,
+  text: string
+}
+
 function parseSrt(
   srtString: string,
-): { id: number; time: string; text: string }[] {
+): SrtItem[] {
   const srtLines = srtString.trim().split("\n\n");
   return srtLines.map((line) => {
     const parts = line.trim().split("\n");
@@ -12,7 +20,7 @@ function parseSrt(
   });
 }
 
-export function mergeSrtStrings(srt1: string, srt2: string): string {
+export function mergeSrtStrings(srt1: string, srt2: string): SrtItem[] {
   const srt1Parsed = parseSrt(srt1);
   const srt2Parsed = parseSrt(srt2);
 
@@ -57,17 +65,41 @@ export function mergeSrtStrings(srt1: string, srt2: string): string {
   });
 
   return mergedSubtitles
-    .map((subtitle) => `${subtitle.id}\n${subtitle.time}\n${subtitle.text}`)
-    .join("\n\n");
 }
 
-export function mergeMultipleSrtStrings(...srts: string[]): string {
+function mergeMultiSrtItems(...items: SrtItem[]) {
+  const startTime = items[0].time.split(" --> ")[0];
+  const endTime = items[items.length - 1].time.split(" --> ")[1];
+  return {
+    id: items[0].id,
+    time: startTime + " --> " + endTime,
+    text: items.map((item) => item.text).join(" "),
+  }
+}
+
+export function mergeMultipleSrtStrings(compact = 5,...srts: string[]): string {
   const [firstSrt, ...remainingSrts] = srts;
-  let mergedSrt: string = firstSrt;
+  let mergedSrt: SrtItem[] = parseSrt(firstSrt);
 
   remainingSrts.forEach((srt) => {
-    mergedSrt = mergeSrtStrings(mergedSrt, srt);
+    mergedSrt = mergeSrtStrings(firstSrt, srt);
   });
+  if(compact === 1) return mergedSrt.map((subtitle) => `${subtitle.id}\n${subtitle.time}\n${subtitle.text}`).join("\n\n");
+  let tempItems: SrtItem[] = []
+  let mergedSubtitles: SrtItem[] = [];
+  mergedSrt.forEach((item, index) => {
+    console.log((index+1) % compact, compact);
+    tempItems.push(item)
+    if((index + 1) % compact === 0 || index === mergedSrt.length - 1) {
+      mergedSubtitles.push(mergeMultiSrtItems(...tempItems))
+      tempItems = []
+    }
+  })
 
-  return mergedSrt;
+  mergedSubtitles.forEach((subtitle, index) => {
+    subtitle.id = index + 1;
+  });
+  return mergedSubtitles
+    .map((subtitle) => `${subtitle.id}\n${subtitle.time}\n${subtitle.text}`)
+    .join("\n\n");
 }

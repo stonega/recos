@@ -109,7 +109,7 @@ const Result = ({ input }: ResultProps) => {
       );
       setStep("result");
       const finalResult = option.srt
-        ? mergeMultipleSrtStrings(...results)
+        ? mergeMultipleSrtStrings(5, ...results)
         : results.join(" ");
       setResult(finalResult);
     } catch (error) {
