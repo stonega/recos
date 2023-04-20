@@ -1,9 +1,10 @@
-import { ArrowLeftCircle } from "lucide-react";
+import { ArrowLeftCircle, Divide } from "lucide-react";
 import Tooltip from "../shared/tooltip";
 import { useClipboard } from "use-clipboard-copy";
 import { saveAs } from "file-saver";
-import { useState } from "react";
-import { formatTranscription } from "utils";
+import { useEffect, useState } from "react";
+import { changeSrtInterval, formatTranscription } from "utils";
+import * as Switch from "@radix-ui/react-switch";
 import TextareaAutosize from "react-textarea-autosize";
 
 interface EditorProps {
@@ -35,14 +36,13 @@ const ResultEditor = ({ text, title, srt, onBack }: EditorProps) => {
   // });
   // const [json, setJson] = useState<JSONContent>({ content: [] });
   const [content, setContent] = useState(text);
-  const [compact, setCompact] = useState(1)
-  
+  const [compact, setCompact] = useState(false);
+
   const clipboard = useClipboard({
     copiedTimeout: 2000, // timeout duration in milliseconds
   });
   const handleExport = () => {
-    const text = content;
-    const blob = new Blob([text], {
+    const blob = new Blob([content], {
       type: "text/plain;charset=utf-8",
     });
     saveAs(blob, `${title}.${srt ? "srt" : "txt"}`);
@@ -56,6 +56,15 @@ const ResultEditor = ({ text, title, srt, onBack }: EditorProps) => {
     const result = await formatTranscription(text, apiKey);
     setContent(result);
   }
+
+  useEffect(() => {
+    if(srt && compact) {
+      const newContent = changeSrtInterval(text, 30)
+      setContent(newContent)
+    } else {
+      setContent(text)
+    }
+  }, [compact, srt, text])
 
   return (
     <>
@@ -104,8 +113,31 @@ const ResultEditor = ({ text, title, srt, onBack }: EditorProps) => {
             ✨ Let ChatGPT format the transcription
           </span>
         </div> */}
-      <div className="whitespace-pre-wrap">
-        <TextareaAutosize
+      <div className="whitespace-pre-wrap relative">
+        <span>
+          { content }
+          </span>
+          {srt && (
+            <div className="absolute right-4 top-2 flex flex-row">
+              <label htmlFor="srt" className="text-lg mr-2">
+               Compact 
+              </label>
+              <Switch.Root
+                className="relative h-6 w-[42px] cursor-default rounded-full bg-black outline-none focus:shadow-[0_0_0_2px] focus:shadow-black data-[state=checked]:bg-green-700"
+                id="srt"
+                checked={compact}
+                onCheckedChange={(value) => {
+                  setCompact(value);
+                  if(value) {
+                    
+                  }
+                }}
+              >
+                <Switch.Thumb className="shadow-blackA7 block h-[18px] w-[18px] translate-x-0.5 rounded-full bg-white  transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px]" />
+              </Switch.Root>
+            </div>
+          )}
+        {/* <TextareaAutosize
           name="prompt"
           className="textarea text-lg"
           placeholder="Something about your audio, like language or keywords"
@@ -114,7 +146,7 @@ const ResultEditor = ({ text, title, srt, onBack }: EditorProps) => {
             setContent(event.target.value);
           }}
           autoFocus
-        />
+        /> */}
       </div>
       {/* <EditorContent editor={editor} /> */}
     </>
