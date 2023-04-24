@@ -56,7 +56,7 @@ const Result = ({ input }: ResultProps) => {
 
   useEffect(() => {
     if (input.input) setStep("input");
-    // getAudioDuration();
+    getAudioDuration();
   }, [getAudioDuration, input.input]);
 
   const handleBack = () => {
