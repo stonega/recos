@@ -49,12 +49,14 @@ const Result = ({ input }: ResultProps) => {
       setDuration(input.duration);
       return;
     }
-    getDuration(input.input).then((result) => setDuration(result));
-  }, [input.duration, input.input]);
+
+    if (!duration)
+      getDuration(input.input).then((result) => setDuration(result));
+  }, [duration, input.duration, input.input]);
 
   useEffect(() => {
     if (input.input) setStep("input");
-    getAudioDuration();
+    // getAudioDuration();
   }, [getAudioDuration, input.input]);
 
   const handleBack = () => {
@@ -91,6 +93,27 @@ const Result = ({ input }: ResultProps) => {
         if (error instanceof Error) toast.error(error.message);
         return;
       }
+    } else if (
+      input.input instanceof File &&
+      input.input.size >= 20 * 1024 * 1024
+    ) {
+      setStep("downloading");
+      try {
+        const formData = new FormData();
+        formData.append("file", input.input);
+        const response = await ofetch(
+          "https://recos-audio-slice-production.up.railway.app/upload",
+          { method: "POST", body: formData, responseType: "blob" },
+        );
+        const audios = await unzipAudios(response, async (progress) =>
+          setProgress(progress),
+        );
+        audioFiles = audios;
+      } catch (error) {
+        setStep("input");
+        if (error instanceof Error) toast.error(error.message);
+        return;
+      }
     }
     setStep("loading");
     try {
@@ -108,6 +131,7 @@ const Result = ({ input }: ResultProps) => {
         }),
       );
       setStep("result");
+      console.log(results);
       const finalResult = option.srt
         ? mergeMultipleSrtStrings(...results)
         : results.join(" ");
@@ -117,7 +141,14 @@ const Result = ({ input }: ResultProps) => {
       setStep("input");
       if (error instanceof Error) toast.error(error.message);
     }
-  }, [input.input, setShowApiModal, option.srt, option.translate, option.prompt, filename]);
+  }, [
+    input.input,
+    setShowApiModal,
+    option.srt,
+    option.translate,
+    option.prompt,
+    filename,
+  ]);
   return (
     <>
       <div className="border-1 mt-6 min-h-[10rem] w-full rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
@@ -193,8 +224,8 @@ const Result = ({ input }: ResultProps) => {
         </Button>
       )}
       {step === "loading" && (
-        <div className="mt-10 flex h-60 flex-col items-center justify-center gap-2 darK:text-white">
-          <span className="text-2xl dot-loader">Generating</span>
+        <div className="darK:text-white mt-10 flex h-60 flex-col items-center justify-center gap-2">
+          <span className="dot-loader text-2xl">Generating</span>
           <span className="mb-12">
             Please don&apos;t close the tab, and wait a few minutes.{" "}
           </span>
@@ -203,7 +234,7 @@ const Result = ({ input }: ResultProps) => {
       )}
       {step === "downloading" && (
         <div className="mt-10 flex h-60 flex-col items-center justify-center gap-2 dark:text-white">
-          <span className="text-2xl dot-loader">Preparing</span>
+          <span className="dot-loader text-2xl">Preparing</span>
           <span className="mb-10">
             Please don&apos;t close the tab, and wait a few minutes.{" "}
           </span>
