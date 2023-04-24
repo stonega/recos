@@ -1,14 +1,12 @@
 type SrtItem = {
-  id: number,
-  time: string,
-  text: string
-}
+  id: number;
+  time: string;
+  text: string;
+};
 
 type SrtTimestamp = string;
 
-function parseSrt(
-  srtString: string,
-): SrtItem[] {
+function parseSrt(srtString: string): SrtItem[] {
   const srtLines = srtString.trim().split("\n\n");
   return srtLines.map((line) => {
     const parts = line.trim().split("\n");
@@ -21,8 +19,8 @@ function parseSrt(
 }
 
 function convertTimeToMilliseconds(timeStr: SrtTimestamp): number {
-  const [hours, minutes, seconds] = timeStr.split(':');
-  const [s, ms] = seconds.split(',');
+  const [hours, minutes, seconds] = timeStr.split(":");
+  const [s, ms] = seconds.split(",");
 
   return (
     parseInt(hours) * 60 * 60 * 1000 +
@@ -42,14 +40,12 @@ function getDuration(startTime: SrtTimestamp, endTime: SrtTimestamp): number {
 export function mergeSrtStrings(srt1: string, srt2: string): string {
   const srt1Parsed = parseSrt(srt1);
   const srt2Parsed = parseSrt(srt2);
+  
+  let lastTimeSrt1 = srt1Parsed[srt1Parsed.length - 1];
+  lastTimeSrt1.time = lastTimeSrt1.time.slice(0, -6) + '00,000'
 
-  const lastTimeSrt1 = srt1Parsed[srt1Parsed.length - 1].time.split(" --> ")[1];
-  const timeParts = lastTimeSrt1.split(":");
-  const endTimeSrt1 =
-    (+timeParts[0] * 3600 +
-      +timeParts[1] * 60 +
-      parseFloat(timeParts[2].replace(",", "."))) *
-    1000;
+  const timeParts = lastTimeSrt1.time.split(" --> ")[1].split(":");
+  const endTimeSrt1 = (+timeParts[0] * 3600 + +timeParts[1] * 60)* 1000;
 
   const srt2Adjusted = srt2Parsed.map((subtitle) => {
     const [start, end] = subtitle.time.split(" --> ").map((time) => {
@@ -95,14 +91,14 @@ function mergeMultiSrtItems(...items: SrtItem[]) {
     id: items[0].id,
     time: startTime + " --> " + endTime,
     text: items.map((item) => item.text).join(" "),
-  }
+  };
 }
 
 /**
  * Merge srt files
  * @param compact seconds
- * @param srts 
- * @returns 
+ * @param srts
+ * @returns
  */
 export function mergeMultipleSrtStrings(...srts: string[]): string {
   const [firstSrt, ...remainingSrts] = srts;
@@ -112,24 +108,26 @@ export function mergeMultipleSrtStrings(...srts: string[]): string {
     mergedSrtString = mergeSrtStrings(mergedSrtString, srt);
   });
 
-  return mergedSrtString
+  return mergedSrtString;
 }
 
-
 export function changeSrtInterval(srt: string, seconds = 30) {
-  const mergedSrt = parseSrt(srt)
+  const mergedSrt = parseSrt(srt);
 
-  let tempItems: SrtItem[] = []
+  let tempItems: SrtItem[] = [];
   let mergedSubtitles: SrtItem[] = [];
   mergedSrt.forEach((item, index) => {
-    tempItems.push(item)
-    const duration = getDuration(tempItems[0].time, tempItems[tempItems.length - 1].time)
-    console.log(duration)
-    if(duration >= seconds * 1000 || (index + 1) === mergedSrt.length) {
-      mergedSubtitles.push(mergeMultiSrtItems(...tempItems))
-      tempItems = []
+    tempItems.push(item);
+    const duration = getDuration(
+      tempItems[0].time,
+      tempItems[tempItems.length - 1].time,
+    );
+    console.log(duration);
+    if (duration >= seconds * 1000 || index + 1 === mergedSrt.length) {
+      mergedSubtitles.push(mergeMultiSrtItems(...tempItems));
+      tempItems = [];
     }
-  })
+  });
 
   mergedSubtitles.forEach((subtitle, index) => {
     subtitle.id = index + 1;

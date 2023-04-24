@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Button from "../shared/button";
 import {
   formatDuration,
-  getDuration,
   getFee,
   getTime,
   mergeMultipleSrtStrings,
@@ -49,10 +48,10 @@ const Result = ({ input }: ResultProps) => {
       setDuration(input.duration);
       return;
     }
-
-    if (!duration)
-      getDuration(input.input).then((result) => setDuration(result));
-  }, [duration, input.duration, input.input]);
+    const audio = new Audio()
+    audio.src = URL.createObjectURL(input.input);
+    audio.onloadedmetadata = () => {setDuration(audio.duration)}
+  }, [input.duration, input.input]);
 
   useEffect(() => {
     if (input.input) setStep("input");
