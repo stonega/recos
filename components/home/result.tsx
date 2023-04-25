@@ -15,6 +15,7 @@ import { ofetch } from "ofetch";
 import InfoCard from "../shared/info-card";
 import * as Switch from "@radix-ui/react-switch";
 import ResultEditor from "./result-editor";
+import Confetti from "../shared/confetti";
 
 interface ResultProps {
   input: AudioInput;
@@ -242,12 +243,15 @@ const Result = ({ input }: ResultProps) => {
         </div>
       )}
       {step === "result" && (
+        <>
+        <Confetti></Confetti>
         <ResultEditor
           text={result}
           title={filename}
           onBack={handleBack}
           srt={true}
         />
+        </>
       )}
     </>
   );
