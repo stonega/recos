@@ -39,7 +39,7 @@ const ThemeModeButton = () => {
         {mode === "light" ? (
           <svg
             id="theme-toggle-dark-icon"
-            className="h-5 w-8"
+            className="h-6 w-6"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +49,7 @@ const ThemeModeButton = () => {
         ) : (
           <svg
             id="theme-toggle-light-icon"
-            className="h-8 w-8"
+            className="h-6 w-6"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
