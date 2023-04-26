@@ -5,6 +5,7 @@ import { Provider as RWBProvider } from "react-wrap-balancer";
 import cx from "classnames";
 import { Inter } from "@next/font/google";
 import { Toaster } from "sonner";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -18,10 +19,12 @@ export default function MyApp({
   return (
     <>
       <RWBProvider>
-        <Toaster richColors position="top-center" />
-        <div className={cx(inter.variable)}>
-          <Component {...pageProps} />
-        </div>
+        <SessionProvider>
+          <Toaster richColors position="top-center" />
+          <div className={cx(inter.variable)}>
+            <Component {...pageProps} />
+          </div>
+        </SessionProvider>
       </RWBProvider>
       <Analytics />
     </>

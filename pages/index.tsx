@@ -1,7 +1,7 @@
 import Layout from "@/components/layout";
 import { AudioInput, Meta } from "types";
 import { SearchAudio } from "@/components/home/search-audio";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Category,
   CategorySelector,
@@ -9,8 +9,9 @@ import {
 import { SearchPodcast } from "@/components/home/search-podcast";
 import Result from "@/components/home/result";
 import WhatIsRecos from "@/components/home/what-is-recos";
+import { getProviders } from "next-auth/react";
 
-export default function Home() {
+export default function Home({providers}: {providers: any}) {
   const meta: Meta = {
     description: "Recos.",
     logo: "https://web3helpers.xyz/favicon.png",
@@ -21,7 +22,7 @@ export default function Home() {
   const [category, setCategory] = useState<Category>("podcast");
 
   return (
-    <Layout meta={meta}>
+    <Layout meta={meta} providers={providers}>
       <div className="mb-0 md:mb-20"></div>
       <CategorySelector onSelect={setCategory}></CategorySelector>
       {category === "podcast" ? (
@@ -34,4 +35,14 @@ export default function Home() {
       <WhatIsRecos />
     </Layout>
   );
+}
+
+export async function getServerSideProps() {
+  const providers = await getProviders()
+  
+  return {
+    props: {
+      providers,
+    },
+  }
 }

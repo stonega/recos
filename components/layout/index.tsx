@@ -7,9 +7,10 @@ import Footer from "./footer";
 export interface LayoutProps {
   meta: Meta;
   children?: React.ReactNode;
+  providers: any
 }
 
-const Layout = ({ children, meta }: LayoutProps) => {
+const Layout = ({ children, meta, providers }: LayoutProps) => {
   const favicon = "https://web3helpers.xyz/favicon.png";
   const title = "Recommends";
   const description = "Recommends.";
@@ -57,7 +58,7 @@ const Layout = ({ children, meta }: LayoutProps) => {
         }}
       />
       <div className="relative flex min-h-screen w-full flex-col items-center bg-gradient-to-br from-green-200 via-green-100 to-green-100 dark:from-[#101010] dark:via-[#202020] dark:to-[#101010]">
-        <NavBar></NavBar>
+        <NavBar providers={providers}></NavBar>
         <div className="min-h-[80vh] w-full max-w-6xl px-4 py-10">
           {children}
         </div>
