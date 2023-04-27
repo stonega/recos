@@ -55,6 +55,7 @@ export default function UserDropdown() {
           <Image
             alt={email}
             src={image || `https://avatars.dicebear.com/api/micah/${email}.svg`}
+            unoptimized
             width={35}
             height={35}
             

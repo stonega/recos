@@ -27,7 +27,7 @@ const NavBar = ({ providers }: NavBarProps) => {
       <div className="flex flex-row items-center">
         {!data ? (
           <a
-            className="dark:color-white cursor-pointer hover:opacity-80"
+            className="dark:text-white cursor-pointer hover:opacity-80"
             onClick={() => setShowLoginModal(true)}
           >
             LOG IN
