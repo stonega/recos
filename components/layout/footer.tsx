@@ -23,7 +23,7 @@ const Footer = () => {
           target="_blank"
           rel="noreferrer"
         >
-          <Coffee className="mr-2 inline h-6 w-6 fill-[] fill-orange-300 dark:stroke-white" />
+          <Coffee className="mr-2 inline h-6 w-6 fill-orange-300 dark:stroke-white" />
         </a>
       </div>
       <span className="mb-2 text-center text-gray-500">
