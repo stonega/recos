@@ -50,7 +50,7 @@ export default function UserDropdown() {
       >
         <button
           onClick={() => setOpenPopover(!openPopover)}
-          className="flex flex-row h-10 items-center justify-center overflow-hidden transition-all duration-75 focus:border-none focus:outline-none active:scale-95"
+          className="flex flex-row h-10 items-center justify-center overflow-hidden transition-all duration-75 border-none focus:outline-none active:scale-95"
         >
           <Image
             alt={email}

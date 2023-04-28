@@ -49,8 +49,7 @@ const ThemeModeButton = () => {
         ) : (
           <svg
             id="theme-toggle-light-icon"
-            className="h-6 w-6"
-            fill="currentColor"
+            className="h-6 w-6 fill-green-400"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
           >
