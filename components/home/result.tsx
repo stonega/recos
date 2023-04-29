@@ -131,7 +131,6 @@ const Result = ({ input }: ResultProps) => {
         }),
       );
       setStep("result");
-      console.log(results);
       const finalResult = option.srt
         ? mergeMultipleSrtStrings(...results)
         : results.join(" ");

@@ -49,7 +49,6 @@ Fourth subtitle`;
 
   test("merge srt", () => {
     const result = mergeSrtStrings(srt1, srt2)
-    console.log(result);
     expect(result).toBe(expectedResult);
   });
 

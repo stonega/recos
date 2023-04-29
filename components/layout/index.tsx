@@ -11,9 +11,9 @@ export interface LayoutProps {
 }
 
 const Layout = ({ children, meta, providers }: LayoutProps) => {
-  const favicon = "https://web3helpers.xyz/favicon.png";
-  const title = "Recommends";
-  const description = "Recommends.";
+  const favicon = "https:/recos.vercel.app/logo.png";
+  const title = "Recos";
+  const description = "Podcast to text.";
   return (
     <>
       <Head>

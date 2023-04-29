@@ -122,7 +122,6 @@ export function changeSrtInterval(srt: string, seconds = 30) {
       tempItems[0].time,
       tempItems[tempItems.length - 1].time,
     );
-    console.log(duration);
     if (duration >= seconds * 1000 || index + 1 === mergedSrt.length) {
       mergedSubtitles.push(mergeMultiSrtItems(...tempItems));
       tempItems = [];

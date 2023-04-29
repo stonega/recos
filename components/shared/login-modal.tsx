@@ -22,7 +22,6 @@ const LoginModal = ({
 }) => {
 
   const loginWithOauth = async (provider: string ) => {
-    console.log(providers);
     const id = providers[provider].id;
     signIn(id)
     setShowLoginModal(false);
