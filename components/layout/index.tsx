@@ -11,14 +11,14 @@ export interface LayoutProps {
 }
 
 const Layout = ({ children, meta, providers }: LayoutProps) => {
-  const favicon = "https:/recos.vercel.app/logo.png";
+  const favicon = "https://recos.vercel.app/logo.png";
   const title = "Recos";
   const description = "Podcast to text.";
   return (
     <>
       <Head>
         <title>{meta?.title ?? title}</title>
-        <link rel="icon" type="image/x-icon" href="/favicon.png" />
+        <link rel="icon" type="image/x-icon" href="/logo.png" />
         <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="theme-color" content="#00501e" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
