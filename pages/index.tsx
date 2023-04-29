@@ -13,8 +13,7 @@ import { getProviders } from "next-auth/react";
 
 export default function Home({providers}: {providers: any}) {
   const meta: Meta = {
-    description: "Recos.",
-    logo: "https://web3helpers.xyz/favicon.png",
+    description: "Podcast to text.",
     ogUrl: "http://recos.stonegate.me",
     title: "Recos.",
   };
