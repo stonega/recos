@@ -15,6 +15,7 @@ const ThemeModeButton = () => {
       document.documentElement.classList.remove("dark");
       currentMode = "light";
     }
+    setMode(currentMode)
   }, []);
   const toggleTheme = () => {
     if (mode === "dark") {

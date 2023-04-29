@@ -7,8 +7,7 @@ import {
   useMemo,
 } from "react";
 import { signIn } from "next-auth/react"
-import { toast } from "sonner";
-import GoogleIcon from "../shared/icons/GoogleIcon";
+import GoogleIcon from "./icons/google-icon";
 import { GithubIcon } from "lucide-react";
 
 const LoginModal = ({
@@ -35,7 +34,7 @@ const LoginModal = ({
         onClick={() => loginWithOauth('google')}
         className="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2"
       >
-        <GoogleIcon></GoogleIcon>
+        <GoogleIcon />
         Sign in with Google
       </button>
       <button
@@ -59,7 +58,7 @@ export function useLoginModal(providers: any) {
     return (
       <LoginModal showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal} providers={providers} />
     );
-  }, [showLoginModal, setShowLoginModal]);
+  }, [showLoginModal, providers]);
 
   return useMemo(
     () => ({ setShowLoginModal, LoginModal: LoginModalCallback }),
