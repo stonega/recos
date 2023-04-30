@@ -102,7 +102,7 @@ const Result = ({ input }: ResultProps) => {
         const formData = new FormData();
         formData.append("file", input.input);
         const response = await ofetch(
-          "https://recos-audio-slice-production.up.railway.app/upload",
+          "http://localhost:8000/upload",
           { method: "POST", body: formData, responseType: "blob" },
         );
         const audios = await unzipAudios(response, async (progress) =>

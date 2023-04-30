@@ -35,11 +35,13 @@ export const authOptions: NextAuthOptions = {
         }
         return token
     },
-    async session({ session, user }) {
+    async session({ session, user, token }) {
       // @ts-ignore
       session.user.id = user.id;
       // @ts-ignore
       session.user.username = user.username;
+      // @ts-ignore
+      session.access_token = token.accessToken;
       return session;
     },
   },
