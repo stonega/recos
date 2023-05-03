@@ -1,17 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { LayoutDashboard, LogOut } from "lucide-react";
 import Popover from "@/components/shared/popover";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
+import { ofetch } from "ofetch";
 
 export default function UserDropdown() {
   const { data: session } = useSession();
   const { email, image, name } = session?.user || {};
   const [openPopover, setOpenPopover] = useState(false);
-
-  console.log((session as any).access_token)
+  const [credit, setCredit]= useState(0)
+  useEffect(() => {
+    const getToken = async () => {
+      const { credit } = await ofetch('/api/credit');
+      setCredit(credit)
+    };
+    getToken();
+  });
 
   if (!email) return null;
 
@@ -52,18 +59,20 @@ export default function UserDropdown() {
       >
         <button
           onClick={() => setOpenPopover(!openPopover)}
-          className="flex flex-row h-10 items-center justify-center overflow-hidden transition-all duration-75 border-none focus:outline-none active:scale-95"
+          className="flex h-12 flex-row items-center justify-center overflow-hidden border-none transition-all duration-75 focus:outline-none active:scale-95"
         >
+          <div className="flex flex-col items-start space-y-1">
+            <span className="text-xl dark:text-white leading-none">{name}</span>
+            <span className="text-sm dark:text-white leading-none"> { credit + ' credits'}</span>
+          </div>
           <Image
             alt={email}
             src={image || `https://avatars.dicebear.com/api/micah/${email}.svg`}
             unoptimized
             width={35}
             height={35}
-            
-            className="rounded-full mr-2"
+            className="ml-2 rounded-full"
           />
-          <span className="dark:text-white text-xl">{name}</span>
         </button>
       </Popover>
     </motion.div>

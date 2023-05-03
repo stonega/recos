@@ -16,14 +16,15 @@ import InfoCard from "../shared/info-card";
 import * as Switch from "@radix-ui/react-switch";
 import ResultEditor from "./result-editor";
 import Confetti from "../shared/confetti";
-
+import { useSession } from "next-auth/react";
+import Cookies from 'js-cookie';
 interface ResultProps {
   input: AudioInput;
 }
 
 type Step = "input" | "downloading" | "loading" | "result";
-
 const DEFAULT_PROMPT = "Add punctuation marks and format the text.";
+const BASE_URL = "https://recos-audio-slice-production.up.railway.app";
 const DEFAULT_OPTION: TranscriptOption = {
   prompt: "",
   translate: false,
@@ -37,6 +38,7 @@ const Result = ({ input }: ResultProps) => {
   const [duration, setDuration] = useState<number>(input.duration);
   const { setShowApiModal, ApiModal } = useApiModal();
   const [result, setResult] = useState("");
+  const { data: session } = useSession();
   const filename = useMemo(() => {
     if (typeof input.input === "string") {
       return input.title;
@@ -49,9 +51,11 @@ const Result = ({ input }: ResultProps) => {
       setDuration(input.duration);
       return;
     }
-    const audio = new Audio()
+    const audio = new Audio();
     audio.src = URL.createObjectURL(input.input);
-    audio.onloadedmetadata = () => {setDuration(audio.duration)}
+    audio.onloadedmetadata = () => {
+      setDuration(audio.duration);
+    };
   }, [input.duration, input.input]);
 
   useEffect(() => {
@@ -72,75 +76,147 @@ const Result = ({ input }: ResultProps) => {
 
   const submit = useCallback(async () => {
     const apiKey = localStorage.getItem("open-api-key");
-    if (!apiKey) {
+    if (!apiKey && !session) {
       setShowApiModal(true);
       return;
     }
     let audioFiles = [input.input];
-    if (typeof input.input === "string") {
-      setStep("downloading");
-      try {
-        const response = await ofetch(
-          "https://recos-audio-slice-production.up.railway.app/download",
-          { query: { url: input.input }, responseType: "blob" },
-        );
-        const audios = await unzipAudios(response, async (progress) =>
-          setProgress(progress),
-        );
-        audioFiles = audios;
-      } catch (error) {
-        setStep("input");
-        if (error instanceof Error) toast.error(error.message);
-        return;
-      }
-    } else if (
-      input.input instanceof File &&
-      input.input.size >= 20 * 1024 * 1024
-    ) {
-      setStep("downloading");
-      try {
-        const formData = new FormData();
-        formData.append("file", input.input);
-        const response = await ofetch(
-          "http://localhost:8000/upload",
-          { method: "POST", body: formData, responseType: "blob" },
-        );
-        const audios = await unzipAudios(response, async (progress) =>
-          setProgress(progress),
-        );
-        audioFiles = audios;
-      } catch (error) {
-        setStep("input");
-        if (error instanceof Error) toast.error(error.message);
-        return;
-      }
-    }
-    setStep("loading");
-    try {
-      const results = await Promise.all(
-        audioFiles.map((file) => {
-          return transcript(
-            file as File,
-            {
-              translate: option.translate,
-              prompt: DEFAULT_PROMPT + option.prompt,
-              srt: option.srt,
+    if (session) {
+      if (typeof input.input === "string") {
+        setStep("loading");
+        try {
+          const response = await ofetch(`${BASE_URL}/transcript`, {
+            query: { url: input.input, srt: option.srt },
+            headers: {
+              authentication: `Bearer ${Cookies.get(
+                "next-auth.session-token",
+              )}`,
             },
-            apiKey,
+          });
+          setResult(response);
+          document.title = "Task Completed, " + filename;
+        } catch (error) {
+          setStep("input");
+          if (error instanceof Error) toast.error(error.message);
+        }
+      } else {
+        setStep("loading");
+        try {
+          const formData = new FormData();
+          formData.append("file", input.input);
+          formData.append("src", option.srt.toString())
+          const response = await ofetch(`${BASE_URL}/transcript`, {
+            method: "POST",
+            body: formData,
+            headers: {
+              authentication: `Bearer ${Cookies.get(
+                "next-auth.session-token",
+              )}`,
+            },
+          });
+          const audios = await unzipAudios(response, async (progress) =>
+            setProgress(progress),
           );
-        }),
-      );
-      setStep("result");
-      const finalResult = option.srt
-        ? mergeMultipleSrtStrings(...results)
-        : results.join(" ");
-      setResult(finalResult);
-      document.title = "Task Completed, " + filename;
-    } catch (error) {
-      setStep("input");
-      if (error instanceof Error) toast.error(error.message);
+          audioFiles = audios;
+        } catch (error) {
+          setStep("input");
+          if (error instanceof Error) toast.error(error.message);
+          return;
+        }
+        setStep("loading");
+        try {
+          const results = await Promise.all(
+            audioFiles.map((file) => {
+              return transcript(
+                file as File,
+                {
+                  translate: option.translate,
+                  prompt: DEFAULT_PROMPT + option.prompt,
+                  srt: option.srt,
+                },
+                apiKey!,
+              );
+            }),
+          );
+          setStep("result");
+          const finalResult = option.srt
+            ? mergeMultipleSrtStrings(...results)
+            : results.join(" ");
+          setResult(finalResult);
+          document.title = "Task Completed, " + filename;
+        } catch (error) {
+          setStep("input");
+          if (error instanceof Error) toast.error(error.message);
+        }
+      }
+    } else {
+      if (typeof input.input === "string") {
+        setStep("downloading");
+        try {
+          const response = await ofetch(`${BASE_URL}/download`, {
+            query: { url: input.input },
+            responseType: "blob",
+          });
+          const audios = await unzipAudios(response, async (progress) =>
+            setProgress(progress),
+          );
+          audioFiles = audios;
+        } catch (error) {
+          setStep("input");
+          if (error instanceof Error) toast.error(error.message);
+          return;
+        }
+      } else if (
+        input.input instanceof File &&
+        input.input.size >= 20 * 1024 * 1024
+      ) {
+        setStep("downloading");
+        try {
+          const formData = new FormData();
+          formData.append("file", input.input);
+          const response = await ofetch(`${BASE_URL}/upload`, {
+            method: "POST",
+            body: formData,
+            responseType: "blob",
+          });
+          const audios = await unzipAudios(response, async (progress) =>
+            setProgress(progress),
+          );
+          audioFiles = audios;
+        } catch (error) {
+          setStep("input");
+          if (error instanceof Error) toast.error(error.message);
+          return;
+        }
+      }
+      setStep("loading");
+      try {
+        const results = await Promise.all(
+          audioFiles.map((file) => {
+            return transcript(
+              file as File,
+              {
+                translate: option.translate,
+                prompt: DEFAULT_PROMPT + option.prompt,
+                srt: option.srt,
+              },
+              apiKey!,
+            );
+          }),
+        );
+        setStep("result");
+        const finalResult = option.srt
+          ? mergeMultipleSrtStrings(...results)
+          : results.join(" ");
+        setResult(finalResult);
+        document.title = "Task Completed, " + filename;
+      } catch (error) {
+        setStep("input");
+        if (error instanceof Error) toast.error(error.message);
+      }
     }
   }, [
+    session,
     input.input,
     setShowApiModal,
     option.srt,
@@ -243,13 +319,13 @@ const Result = ({ input }: ResultProps) => {
       )}
       {step === "result" && (
         <>
-        <Confetti></Confetti>
-        <ResultEditor
-          text={result}
-          title={filename}
-          onBack={handleBack}
-          srt={true}
-        />
+          <Confetti></Confetti>
+          <ResultEditor
+            text={result}
+            title={filename}
+            onBack={handleBack}
+            srt={true}
+          />
         </>
       )}
     </>

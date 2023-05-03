@@ -28,21 +28,13 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   secret: process.env.SECRET,
+  session: { strategy: 'jwt'},
   callbacks: {
-    async jwt({ token, account }) {
-        // Persist the OAuth access_token to the token right after signin
-        if (account) { token.accessToken = account.access_token
-        }
-        return token
-    },
     async session({ session, user, token }) {
-      // @ts-ignore
-      session.user.id = user.id;
-      // @ts-ignore
-      session.user.username = user.username;
-      // @ts-ignore
-      session.access_token = token.accessToken;
       return session;
+    },
+    async jwt({ token }) {
+        return token
     },
   },
 };
