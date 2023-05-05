@@ -25,9 +25,8 @@ export default async function handler(
         data: {
           type: "checkouts",
           attributes: {
-            custom_price: 50000,
             product_options: {
-              enabled_variants: [69863],
+              enabled_variants: [variants.data.at(0)?.id],
             },
             checkout_options: {
               button_color: "#2DD272",
@@ -44,13 +43,13 @@ export default async function handler(
             store: {
               data: {
                 type: "stores",
-                id: "25043",
+                id: stores.data.at(0)?.id,
               },
             },
             variant: {
               data: {
                 type: "variants",
-                id: "69863",
+                id: variants.data.at(0)?.id,
               },
             },
           },
