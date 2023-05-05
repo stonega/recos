@@ -21,7 +21,7 @@ export default function UserDropdown() {
   });
   const getCredits = useCallback(async () => {
     const checkoutData = await ofetch('/api/checkout')
-    const checkoutUrl = checkoutData.data[0].attributes.url
+    const checkoutUrl = checkoutData.link
     if(checkoutUrl)  window.open(checkoutUrl, '_blank');
   }, [])
 
