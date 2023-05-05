@@ -8,6 +8,7 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&display=swap"
           rel="stylesheet"
         />
+        <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
       </Head>
       <body>
         <Main />

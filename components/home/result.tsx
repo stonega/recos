@@ -20,18 +20,19 @@ import { useSession } from "next-auth/react";
 import Cookies from 'js-cookie';
 interface ResultProps {
   input: AudioInput;
+  token: string
 }
 
 type Step = "input" | "downloading" | "loading" | "result";
 const DEFAULT_PROMPT = "Add punctuation marks and format the text.";
-const BASE_URL = "https://recos-audio-slice-production.up.railway.app";
+const BASE_URL = "http://localhost:8000";
 const DEFAULT_OPTION: TranscriptOption = {
   prompt: "",
   translate: false,
   srt: false,
 };
 
-const Result = ({ input }: ResultProps) => {
+const Result = ({ input, token }: ResultProps) => {
   const [step, setStep] = useState<Step>("input");
   const [progress, setProgress] = useState(0);
   const [option, setOption] = useState<TranscriptOption>(DEFAULT_OPTION);
@@ -88,16 +89,20 @@ const Result = ({ input }: ResultProps) => {
           const response = await ofetch(`${BASE_URL}/transcript`, {
             query: { url: input.input, srt: option.srt },
             headers: {
-              authentication: `Bearer ${Cookies.get(
-                "next-auth.session-token",
-              )}`,
+              Authorization: `Bearer ${token}`,
             },
           });
-          setResult(response);
+          const finalResult = option.srt
+          ? mergeMultipleSrtStrings(...response)
+          : response.join(" ");
+          setStep("result");
+          setResult(finalResult);
           document.title = "Task Completed, " + filename;
+          return
         } catch (error) {
           setStep("input");
           if (error instanceof Error) toast.error(error.message);
+          return
         }
       } else {
         setStep("loading");
@@ -109,44 +114,19 @@ const Result = ({ input }: ResultProps) => {
             method: "POST",
             body: formData,
             headers: {
-              authentication: `Bearer ${Cookies.get(
-                "next-auth.session-token",
-              )}`,
+              Authorization: `Bearer ${token}`,
             },
           });
-          const audios = await unzipAudios(response, async (progress) =>
-            setProgress(progress),
-          );
-          audioFiles = audios;
+          const finalResult = option.srt
+          ? mergeMultipleSrtStrings(...response)
+          : response.join(" ");
+          setStep("result");
+          setResult(finalResult);
+          return
         } catch (error) {
           setStep("input");
           if (error instanceof Error) toast.error(error.message);
           return;
-        }
-        setStep("loading");
-        try {
-          const results = await Promise.all(
-            audioFiles.map((file) => {
-              return transcript(
-                file as File,
-                {
-                  translate: option.translate,
-                  prompt: DEFAULT_PROMPT + option.prompt,
-                  srt: option.srt,
-                },
-                apiKey!,
-              );
-            }),
-          );
-          setStep("result");
-          const finalResult = option.srt
-            ? mergeMultipleSrtStrings(...results)
-            : results.join(" ");
-          setResult(finalResult);
-          document.title = "Task Completed, " + filename;
-        } catch (error) {
-          setStep("input");
-          if (error instanceof Error) toast.error(error.message);
         }
       }
     } else {

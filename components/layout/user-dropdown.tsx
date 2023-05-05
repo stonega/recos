@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { LayoutDashboard, LogOut } from "lucide-react";
 import Popover from "@/components/shared/popover";
@@ -19,6 +19,11 @@ export default function UserDropdown() {
     };
     getToken();
   });
+  const getCredits = useCallback(async () => {
+    const checkoutData = await ofetch('/api/checkout')
+    const checkoutUrl = checkoutData.data[0].attributes.url
+    if(checkoutUrl)  window.open(checkoutUrl, '_blank');
+  }, [])
 
   if (!email) return null;
 
@@ -37,13 +42,13 @@ export default function UserDropdown() {
               <LayoutDashboard className="h-4 w-4" />
               <p className="text-sm">Dashboard</p>
             </Link> */}
-            {/* <button
-              className="relative flex w-full cursor-not-allowed items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
-              disabled
+            <button
+              className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
+              onClick={() => getCredits()}
             >
               <LayoutDashboard className="h-4 w-4" />
-              <p className="text-sm">Dashboard</p>
-            </button> */}
+              <p className="text-sm">Get Credits</p>
+            </button>
             <button
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
               onClick={() => signOut({ redirect: false })}
