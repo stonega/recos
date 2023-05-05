@@ -37,7 +37,7 @@ export default async function handler(
                 user_id: userId,
               },
             },
-            expires_at: now.toLocaleString(),
+            expires_at: now.toISOString(),
             preview: true,
           },
           relationships: {
