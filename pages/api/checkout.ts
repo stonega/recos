@@ -71,7 +71,7 @@ export default async function handler(
       const newCheckout = await response.json()
       console.log(newCheckout);
       
-      res.status(200).json({ link: newCheckout.attributes.url});
+      res.status(200).json({ link: newCheckout.data.attributes.url});
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: err });
