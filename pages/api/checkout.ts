@@ -68,8 +68,7 @@ export default async function handler(
           body: data,
         },
       );
-      console.log({ newCheckout });
-      res.status(200).json(newCheckout);
+      res.status(200).json({ link: newCheckout.data.attributes.url});
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: err });
