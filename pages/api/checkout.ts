@@ -69,7 +69,7 @@ export default async function handler(
         },
       );
       const newCheckout = await response.json()
-      res.status(200).json({ link: newCheckout.data.attributes.url});
+      res.status(200).json({ link: newCheckout.attributes.url});
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: err });
