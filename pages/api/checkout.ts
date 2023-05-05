@@ -62,7 +62,8 @@ export default async function handler(
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/vnd.api+json",
+            Accept: "application/vnd.api+json",
             Authorization: `Bearer ${process.env.LEMON_API_KEY}`,
           },
           body: data,
