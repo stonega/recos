@@ -21,7 +21,6 @@ export default async function handler(
         client.listAllStores({}),
         client.listAllVariants({}),
       ]);
-      console.log(stores, variants);
       const data = {
         data: {
           type: "checkouts",
@@ -57,7 +56,7 @@ export default async function handler(
           },
         },
       };
-      const newCheckout = await ofetch(
+      const response = await fetch(
         "https://api.lemonsqueezy.com/v1/checkouts",
         {
           method: "POST",
@@ -66,9 +65,10 @@ export default async function handler(
             Accept: "application/vnd.api+json",
             Authorization: `Bearer ${process.env.LEMON_API_KEY}`,
           },
-          body: data,
+          body: JSON.stringify(data),
         },
       );
+      const newCheckout = await response.json()
       res.status(200).json({ link: newCheckout.data.attributes.url});
     } catch (err) {
       console.error(err);
