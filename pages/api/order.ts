@@ -20,7 +20,7 @@ export default async function handler(
     console.log(req.headers);
     
     const signature = Buffer.from(
-      (req.headers["HTTP_X_SIGNATURE"] as string) || "",
+      (req.headers["x-signature"] as string) || "",
       "utf8",
     );
     if (!crypto.timingSafeEqual(digest, signature)) {
