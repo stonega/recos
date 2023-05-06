@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
-import { buffer } from "micro";
+import { buffer, json } from "micro";
 
 export const config = {
   api: {
@@ -24,8 +24,8 @@ export default async function handler(
     if (!crypto.timingSafeEqual(digest, signature)) {
       res.status(500).json({ error: "Invalid signature" });
     }
-    const body = JSON.parse(rawBody.toString())
-    const userId = body["meta"]["custom_data"]["user_id"];
+    const body = await json(req)
+    const userId = (body as any)["meta"]["custom_data"]["user_id"];
     const credit = 10;
     const user = await prisma?.user.findUnique({
       where: {
