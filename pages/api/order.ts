@@ -5,7 +5,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method === "GET") {
+  if (req.method === "POST") {
     const secret = process.env.LEMON_SECRET;
     const hmac = crypto.createHmac("sha256", secret!);
     const digest = Buffer.from(hmac.update(req.body).digest("hex"), "utf8");
