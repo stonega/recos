@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
 import { LemonsqueezyClient } from "lemonsqueezy.ts";
-import { ofetch } from "ofetch";
 
 export default async function handler(
   req: NextApiRequest,

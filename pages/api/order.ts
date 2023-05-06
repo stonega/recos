@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
 import { buffer, json } from "micro";
+import prisma from "../../lib/prisma";
 
 export const config = {
   api: {
@@ -17,8 +18,6 @@ export default async function handler(
     const hmac = crypto.createHmac("sha256", secret!);
     const rawBody = await buffer(req);
     const digest = Buffer.from(hmac.update(rawBody).digest("hex"), "utf8");
-    console.log(req.headers);
-    
     const signature = Buffer.from(
       (req.headers["x-signature"] as string) || "",
       "utf8",
