@@ -28,7 +28,7 @@ export default async function handler(
     const body = await json(req)
     const userId = (body as any)["meta"]["custom_data"]["user_id"];
     const credit = 10;
-    const user = await prisma?.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: userId,
       },
@@ -36,7 +36,7 @@ export default async function handler(
     if (!user) {
       res.status(404).json({ error: "User not found" });
     }
-    prisma?.user.update({
+    await prisma.user.update({
       where: {
         id: userId,
       },
