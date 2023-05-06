@@ -1,18 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
-import bodyParser from 'body-parser'
+import { buffer } from "micro";
 
-export function runMiddleware(req: NextApiRequest, res: NextApiResponse, fn: Function) {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result: Object) => {
-      if (result instanceof Error) {
-        return reject(result)
-      }
-
-      return resolve(result)
-    })
-  })
-}
 export const config = {
   api: {
     bodyParser: false,
@@ -24,11 +13,10 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method === "POST") {
-    console.log(req.body);
-    await runMiddleware(req, res, bodyParser.raw({ type: 'application/json' }))
     const secret = process.env.LEMON_SECRET;
     const hmac = crypto.createHmac("sha256", secret!);
-    const digest = Buffer.from(hmac.update(req.body).digest("hex"), "utf8");
+    const rawBody = await buffer(req);
+    const digest = Buffer.from(hmac.update(rawBody).digest("hex"), "utf8");
     const signature = Buffer.from(
       (req.headers["X-Signature"] as string) || "",
       "utf8",
@@ -36,8 +24,8 @@ export default async function handler(
     if (!crypto.timingSafeEqual(digest, signature)) {
       res.status(500).json({ error: "Invalid signature" });
     }
-    await runMiddleware(req, res, bodyParser.json())
-    const userId = req.body["meta"]["custom_data"]["user_id"];
+    const body = JSON.parse(rawBody.toString())
+    const userId = body["meta"]["custom_data"]["user_id"];
     const credit = 10;
     const user = await prisma?.user.findUnique({
       where: {
