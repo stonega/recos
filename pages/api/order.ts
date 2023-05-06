@@ -17,6 +17,8 @@ export default async function handler(
     const hmac = crypto.createHmac("sha256", secret!);
     const rawBody = await buffer(req);
     const digest = Buffer.from(hmac.update(rawBody).digest("hex"), "utf8");
+    console.log(req.headers["X-Signature"]);
+    
     const signature = Buffer.from(
       (req.headers["X-Signature"] as string) || "",
       "utf8",
