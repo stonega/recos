@@ -17,10 +17,10 @@ export default async function handler(
     const hmac = crypto.createHmac("sha256", secret!);
     const rawBody = await buffer(req);
     const digest = Buffer.from(hmac.update(rawBody).digest("hex"), "utf8");
-    console.log(req.headers["X-Signature"]);
+    console.log(req.headers);
     
     const signature = Buffer.from(
-      (req.headers["X-Signature"] as string) || "",
+      (req.headers["HTTP_X_SIGNATURE"] as string) || "",
       "utf8",
     );
     if (!crypto.timingSafeEqual(digest, signature)) {
