@@ -42,7 +42,7 @@ export default async function handler(
             store: {
               data: {
                 type: "stores",
-                id: stores.data.at(0)?.id,
+                id: stores.data.at(1)?.id,
               },
             },
             variant: {

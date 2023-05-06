@@ -27,7 +27,7 @@ export default async function handler(
     }
     const body = await json(req)
     const userId = (body as any)["meta"]["custom_data"]["user_id"];
-    const credit = 10;
+    const credit = 1000;
     const user = await prisma.user.findUnique({
       where: {
         id: userId,

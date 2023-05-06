@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
-import { LayoutDashboard, LogOut } from "lucide-react";
+import { Beer, LogOut } from "lucide-react";
 import Popover from "@/components/shared/popover";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -46,7 +46,7 @@ export default function UserDropdown() {
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
               onClick={() => getCredits()}
             >
-              <LayoutDashboard className="h-4 w-4" />
+              <Beer className="h-4 w-4" />
               <p className="text-sm">Get Credits</p>
             </button>
             <button
