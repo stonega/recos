@@ -27,10 +27,23 @@ export default async function handler(
     }
     const body = await json(req);
     const userId = (body as any)["meta"]["custom_data"]["user_id"];
-    const variant = (body as any)["data"]["attribute"]["first_order_item"][
+    const variant = (body as any)["data"]["attributes"]["first_order_item"][
       "product_id"
     ];
-    const credit = variant === 70234 ? 300 : 1000;
+    let credit = 0
+    switch (variant) {
+      case 70234:
+        credit = 300 
+        break;
+      case 70322:
+        credit = 1000
+        break
+      case 70397:
+        credit = 1
+        break
+      default:
+        break;
+    }
     const user = await prisma.user.findUnique({
       where: {
         id: userId,
