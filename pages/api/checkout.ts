@@ -20,6 +20,8 @@ export default async function handler(
         client.listAllStores({}),
         client.listAllVariants({}),
       ]);
+      console.log(stores, variants);
+      
       const data = {
         data: {
           type: "checkouts",
