@@ -28,7 +28,7 @@ export default async function handler(
               enabled_variants: [variants.data.at(0)?.id],
             },
             checkout_options: {
-              button_color: "#2DD272",
+              button_color: "#22c55e",
             },
             checkout_data: {
               custom: {
@@ -36,7 +36,6 @@ export default async function handler(
               },
             },
             expires_at: now.toISOString(),
-            preview: true,
           },
           relationships: {
             store: {
@@ -67,8 +66,6 @@ export default async function handler(
         },
       );
       const newCheckout = await response.json()
-      console.log(newCheckout);
-      
       res.status(200).json({ link: newCheckout.data.attributes.url});
     } catch (err) {
       console.error(err);
