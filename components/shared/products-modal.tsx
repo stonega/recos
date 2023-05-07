@@ -18,8 +18,6 @@ const ProductsModal = ({
   setShowProductsModal: Dispatch<SetStateAction<boolean>>;
   products: any;
 }) => {
-  console.log(products);
-  
   const getCredits = async (productId: string) => {
     const checkoutData = await ofetch("/api/checkout", {
       query: { productId },
