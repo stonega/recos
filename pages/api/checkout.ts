@@ -47,7 +47,7 @@ export default async function handler(
             variant: {
               data: {
                 type: "variants",
-                id: variants.data.at(0)?.id,
+                id: variants.data.at(1)?.id,
               },
             },
           },
