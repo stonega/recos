@@ -29,7 +29,7 @@ export const SearchAudio = ({ onResult }: SearchAudioProps) => {
             p-0
             file:mr-5
             file:border-0
-            file:bg-green-200 file:px-2 file:py-4
+            file:bg-green-200 file:py-4
             file:px-6
             file:text-gray-700 hover:file:cursor-pointer
             hover:file:bg-green-300 hover:file:text-gray-700
