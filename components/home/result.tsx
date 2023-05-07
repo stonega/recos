@@ -75,7 +75,7 @@ const Result = ({ input, token }: ResultProps) => {
     return URL.createObjectURL(input.input);
   }, [input.input]);
 
-  const submit = useCallback(async () => {
+  const submit = async () => {
     const apiKey = localStorage.getItem("open-api-key");
     if (!apiKey && !session) {
       setShowApiModal(true);
@@ -83,6 +83,16 @@ const Result = ({ input, token }: ResultProps) => {
     }
     let audioFiles = [input.input];
     if (session) {
+      const credits = getCredit(duration)
+      const own = await ofetch('/api/credit')
+      console.log(own, credits);
+      
+      if(own.credit < credits) {
+        toast.error(`You need ${credits} credits to transcribe this audio. You have ${own.credit} credits.`, {
+          duration: 10000,
+        })
+        return
+      }
       if (typeof input.input === "string") {
         setStep("loading");
         try {
@@ -195,15 +205,7 @@ const Result = ({ input, token }: ResultProps) => {
         if (error instanceof Error) toast.error(error.message);
       }
     }
-  }, [
-    session,
-    input.input,
-    setShowApiModal,
-    option.srt,
-    option.translate,
-    option.prompt,
-    filename,
-  ]);
+  };
   return (
     <>
       <div className="border-1 mt-6 min-h-[10rem] w-full rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
@@ -304,7 +306,7 @@ const Result = ({ input, token }: ResultProps) => {
             text={result}
             title={filename}
             onBack={handleBack}
-            srt={true}
+            srt={option.srt}
           />
         </>
       )}
