@@ -1,7 +1,7 @@
 const GoogleIcon = () => {
   return (
     <svg
-      className="w-4 h-4 mr-2 -ml-1"
+      className="mr-2 -ml-1 h-4 w-4"
       aria-hidden="true"
       focusable="false"
       data-prefix="fab"

@@ -28,13 +28,13 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   secret: process.env.SECRET,
-  session: { strategy: 'jwt'},
+  session: { strategy: "jwt" },
   callbacks: {
     async session({ session, user, token }) {
       return session;
     },
     async jwt({ token }) {
-        return token
+      return token;
     },
   },
 };

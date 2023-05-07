@@ -1,4 +1,8 @@
-import { changeSrtInterval, mergeMultipleSrtStrings, mergeSrtStrings } from "utils/srt";
+import {
+  changeSrtInterval,
+  mergeMultipleSrtStrings,
+  mergeSrtStrings,
+} from "utils/srt";
 import { describe, test, expect } from "vitest";
 
 describe("srt test", () => {
@@ -48,7 +52,7 @@ Third subtitle
 Fourth subtitle`;
 
   test("merge srt", () => {
-    const result = mergeSrtStrings(srt1, srt2)
+    const result = mergeSrtStrings(srt1, srt2);
     expect(result).toBe(expectedResult);
   });
 
@@ -61,7 +65,7 @@ First subtitle Second subtitle Third subtitle
 
 2
 00:01:01,000 --> 00:01:02,000
-Fourth subtitle Fifth subtitle Sixth subtitle`
+Fourth subtitle Fifth subtitle Sixth subtitle`;
     expect(result).toBe(expectedResult);
   });
 });

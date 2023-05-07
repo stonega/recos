@@ -3,7 +3,11 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["recommends.stonegate.me", "avatars.dicebear.com", "avatars.githubusercontent.com "],
+    domains: [
+      "recommends.stonegate.me",
+      "avatars.dicebear.com",
+      "avatars.githubusercontent.com ",
+    ],
   },
   async redirects() {
     return [

@@ -7,23 +7,25 @@ import { motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
 import { ofetch } from "ofetch";
 
-export default function UserDropdown() {
+interface UserDropdownProps {
+  onGetCredits(): void;
+}
+export default function UserDropdown({ onGetCredits }: UserDropdownProps) {
   const { data: session } = useSession();
   const { email, image, name } = session?.user || {};
   const [openPopover, setOpenPopover] = useState(false);
-  const [credit, setCredit]= useState(0)
+  const [credit, setCredit] = useState(0);
   useEffect(() => {
     const getToken = async () => {
-      const { credit } = await ofetch('/api/credit');
-      setCredit(credit)
+      const { credit } = await ofetch("/api/credit");
+      setCredit(credit);
     };
     getToken();
   });
   const getCredits = useCallback(async () => {
-    const checkoutData = await ofetch('/api/checkout')
-    const checkoutUrl = checkoutData.link
-    if(checkoutUrl)  window.open(checkoutUrl, '_blank');
-  }, [])
+    setOpenPopover(false);
+    onGetCredits();
+  }, [onGetCredits]);
 
   if (!email) return null;
 
@@ -67,8 +69,11 @@ export default function UserDropdown() {
           className="flex h-12 flex-row items-center justify-center overflow-hidden border-none transition-all duration-75 focus:outline-none active:scale-95"
         >
           <div className="flex flex-col items-start space-y-1">
-            <span className="text-xl dark:text-white leading-none">{name}</span>
-            <span className="text-sm dark:text-white leading-none"> { credit + ' credits'}</span>
+            <span className="text-xl leading-none dark:text-white">{name}</span>
+            <span className="text-sm leading-none dark:text-white">
+              {" "}
+              {credit + " credits"}
+            </span>
           </div>
           <Image
             alt={email}

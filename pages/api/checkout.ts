@@ -12,16 +12,24 @@ export default async function handler(
     if (!token) {
       res.status(401).json({ error: "Unauthorized" });
     }
+    const productId = req.query.productId as string | undefined;
+    if (!productId) {
+      res.status(404).json({ error: "Product not found" });
+    }
     try {
       const now = new Date();
       now.setHours(now.getHours() + 1);
-      const client = new LemonsqueezyClient(process.env.LEMON_API_KEY!);
-      const [stores, variants] = await Promise.all([
-        client.listAllStores({}),
-        client.listAllVariants({}),
-      ]);
-      console.log(stores, variants);
-      
+      const variantsResponse = await fetch(
+        `https://api.lemonsqueezy.com/v1/variants?filter[product_id]=${productId}`,
+        {
+          headers: {
+            "Content-Type": "application/vnd.api+json",
+            Accept: "application/vnd.api+json",
+            Authorization: `Bearer ${process.env.LEMON_API_KEY}`,
+          },
+        },
+      );
+      const variants = await variantsResponse.json();
       const data = {
         data: {
           type: "checkouts",
@@ -43,13 +51,13 @@ export default async function handler(
             store: {
               data: {
                 type: "stores",
-                id: stores.data.at(1)?.id,
+                id: "25044",
               },
             },
             variant: {
               data: {
                 type: "variants",
-                id: variants.data.at(1)?.id,
+                id: variants.data.at(0)?.id,
               },
             },
           },
@@ -67,8 +75,10 @@ export default async function handler(
           body: JSON.stringify(data),
         },
       );
-      const newCheckout = await response.json()
-      res.status(200).json({ link: newCheckout.data.attributes.url});
+      const newCheckout = await response.json();
+      console.log(newCheckout);
+
+      res.status(200).json({ link: newCheckout.data.attributes.url });
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: err });

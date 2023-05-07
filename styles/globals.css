@@ -197,7 +197,7 @@
 }
 
 .dot-loader:after {
-  content: ' .';
+  content: " .";
   animation: dots 2s steps(5, end) infinite;
 }
 .dark .dot-loader:after {
@@ -247,4 +247,3 @@
     text-shadow: 0.25em 0 0 black, 0.5em 0 0 black;
   }
 }
-

@@ -7,6 +7,11 @@ export function getFee(duration: number) {
   return fee.toFixed(3);
 }
 
+export function getCredit(duration: number) {
+  const fee = Math.round(duration / 60);
+  return fee.toFixed(0);
+}
+
 export function getTime(duration: number) {
   const time = Math.min(120, duration / 10);
   return formatDuration(time);

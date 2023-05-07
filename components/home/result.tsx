@@ -3,6 +3,7 @@ import Button from "../shared/button";
 import {
   formatDuration,
   getFee,
+  getCredit,
   getTime,
   mergeMultipleSrtStrings,
   transcript,
@@ -17,15 +18,14 @@ import * as Switch from "@radix-ui/react-switch";
 import ResultEditor from "./result-editor";
 import Confetti from "../shared/confetti";
 import { useSession } from "next-auth/react";
-import Cookies from 'js-cookie';
 interface ResultProps {
   input: AudioInput;
-  token: string
+  token: string;
 }
 
 type Step = "input" | "downloading" | "loading" | "result";
 const DEFAULT_PROMPT = "Add punctuation marks and format the text.";
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "https://recos-audio-slice-production.up.railway.app";
 const DEFAULT_OPTION: TranscriptOption = {
   prompt: "",
   translate: false,
@@ -93,23 +93,23 @@ const Result = ({ input, token }: ResultProps) => {
             },
           });
           const finalResult = option.srt
-          ? mergeMultipleSrtStrings(...response)
-          : response.join(" ");
+            ? mergeMultipleSrtStrings(...response)
+            : response.join(" ");
           setStep("result");
           setResult(finalResult);
           document.title = "Task Completed, " + filename;
-          return
+          return;
         } catch (error) {
           setStep("input");
           if (error instanceof Error) toast.error(error.message);
-          return
+          return;
         }
       } else {
         setStep("loading");
         try {
           const formData = new FormData();
           formData.append("file", input.input);
-          formData.append("src", option.srt.toString())
+          formData.append("src", option.srt.toString());
           const response = await ofetch(`${BASE_URL}/transcript`, {
             method: "POST",
             body: formData,
@@ -118,11 +118,11 @@ const Result = ({ input, token }: ResultProps) => {
             },
           });
           const finalResult = option.srt
-          ? mergeMultipleSrtStrings(...response)
-          : response.join(" ");
+            ? mergeMultipleSrtStrings(...response)
+            : response.join(" ");
           setStep("result");
           setResult(finalResult);
-          return
+          return;
         } catch (error) {
           setStep("input");
           if (error instanceof Error) toast.error(error.message);
@@ -227,8 +227,8 @@ const Result = ({ input, token }: ResultProps) => {
                 ></InfoCard>
                 <InfoCard
                   title="💰"
-                  value={getFee(duration)}
-                  prefix="≈ $"
+                  value={session ? getCredit(duration) : getFee(duration)}
+                  prefix={session ? "Credits" : "≈$"}
                 ></InfoCard>
                 <InfoCard
                   title="⌛"

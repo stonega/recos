@@ -6,8 +6,8 @@ import prisma from "../../lib/prisma";
 export const config = {
   api: {
     bodyParser: false,
-  }
-}
+  },
+};
 
 export default async function handler(
   req: NextApiRequest,
@@ -25,9 +25,12 @@ export default async function handler(
     if (!crypto.timingSafeEqual(digest, signature)) {
       res.status(500).json({ error: "Invalid signature" });
     }
-    const body = await json(req)
+    const body = await json(req);
     const userId = (body as any)["meta"]["custom_data"]["user_id"];
-    const credit = 1000;
+    const variant = (body as any)["data"]["attribute"]["first_order_item"][
+      "product_id"
+    ];
+    const credit = variant === 70234 ? 300 : 1000;
     const user = await prisma.user.findUnique({
       where: {
         id: userId,

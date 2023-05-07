@@ -40,12 +40,12 @@ function getDuration(startTime: SrtTimestamp, endTime: SrtTimestamp): number {
 export function mergeSrtStrings(srt1: string, srt2: string): string {
   const srt1Parsed = parseSrt(srt1);
   const srt2Parsed = parseSrt(srt2);
-  
+
   let lastTimeSrt1 = srt1Parsed[srt1Parsed.length - 1];
-  lastTimeSrt1.time = lastTimeSrt1.time.slice(0, -6) + '00,000'
+  lastTimeSrt1.time = lastTimeSrt1.time.slice(0, -6) + "00,000";
 
   const timeParts = lastTimeSrt1.time.split(" --> ")[1].split(":");
-  const endTimeSrt1 = (+timeParts[0] * 3600 + +timeParts[1] * 60)* 1000;
+  const endTimeSrt1 = (+timeParts[0] * 3600 + +timeParts[1] * 60) * 1000;
 
   const srt2Adjusted = srt2Parsed.map((subtitle) => {
     const [start, end] = subtitle.time.split(" --> ").map((time) => {

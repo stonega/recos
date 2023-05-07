@@ -1,4 +1,6 @@
-declare module 'js-untar-lhc'
+declare module "js-untar-lhc";
 declare global {
-    interface Window { LemonSqueezy: any; }
+  interface Window {
+    LemonSqueezy: any;
+  }
 }

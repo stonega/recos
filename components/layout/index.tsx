@@ -7,10 +7,11 @@ import Footer from "./footer";
 export interface LayoutProps {
   meta: Meta;
   children?: React.ReactNode;
-  providers: any
+  providers: any;
+  products: any[];
 }
 
-const Layout = ({ children, meta, providers }: LayoutProps) => {
+const Layout = ({ children, meta, providers, products }: LayoutProps) => {
   const favicon = "https://recos.vercel.app/logo.png";
   const title = "Recos";
   const description = "Podcast to text.";
@@ -58,7 +59,7 @@ const Layout = ({ children, meta, providers }: LayoutProps) => {
         }}
       />
       <div className="relative flex min-h-screen w-full flex-col items-center bg-gradient-to-br from-green-200 via-green-100 to-green-100 dark:from-[#101010] dark:via-[#202020] dark:to-[#101010]">
-        <NavBar providers={providers}></NavBar>
+        <NavBar providers={providers} products={products}></NavBar>
         <div className="min-h-[80vh] w-full max-w-6xl px-4 py-10">
           {children}
         </div>

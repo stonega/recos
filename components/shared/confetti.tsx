@@ -14,7 +14,7 @@ const Confetti = () => {
     return () => clearTimeout(timer);
   });
   if (show) return <ReactConfetti width={width ?? 0} height={height ?? 0} />;
-  return <></>
+  return <></>;
 };
 
 export default Confetti;

@@ -58,13 +58,13 @@ const ResultEditor = ({ text, title, srt, onBack }: EditorProps) => {
   }
 
   useEffect(() => {
-    if(srt && compact) {
-      const newContent = changeSrtInterval(text, 30)
-      setContent(newContent)
+    if (srt && compact) {
+      const newContent = changeSrtInterval(text, 30);
+      setContent(newContent);
     } else {
-      setContent(text)
+      setContent(text);
     }
-  }, [compact, srt, text])
+  }, [compact, srt, text]);
 
   return (
     <>
@@ -113,30 +113,27 @@ const ResultEditor = ({ text, title, srt, onBack }: EditorProps) => {
             ✨ Let ChatGPT format the transcription
           </span>
         </div> */}
-      <div className="whitespace-pre-wrap relative">
-        <span>
-          { content }
-          </span>
-          {srt && (
-            <div className="absolute right-4 top-2 flex flex-row">
-              <label htmlFor="srt" className="text-lg mr-2">
-               Compact 
-              </label>
-              <Switch.Root
-                className="relative h-6 w-[42px] cursor-default rounded-full bg-black outline-none focus:shadow-[0_0_0_2px] focus:shadow-black data-[state=checked]:bg-green-700"
-                id="srt"
-                checked={compact}
-                onCheckedChange={(value) => {
-                  setCompact(value);
-                  if(value) {
-                    
-                  }
-                }}
-              >
-                <Switch.Thumb className="shadow-blackA7 block h-[18px] w-[18px] translate-x-0.5 rounded-full bg-white  transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px]" />
-              </Switch.Root>
-            </div>
-          )}
+      <div className="relative whitespace-pre-wrap">
+        <span>{content}</span>
+        {srt && (
+          <div className="absolute right-4 top-2 flex flex-row">
+            <label htmlFor="srt" className="mr-2 text-lg">
+              Compact
+            </label>
+            <Switch.Root
+              className="relative h-6 w-[42px] cursor-default rounded-full bg-black outline-none focus:shadow-[0_0_0_2px] focus:shadow-black data-[state=checked]:bg-green-700"
+              id="srt"
+              checked={compact}
+              onCheckedChange={(value) => {
+                setCompact(value);
+                if (value) {
+                }
+              }}
+            >
+              <Switch.Thumb className="shadow-blackA7 block h-[18px] w-[18px] translate-x-0.5 rounded-full bg-white  transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px]" />
+            </Switch.Root>
+          </div>
+        )}
         {/* <TextareaAutosize
           name="prompt"
           className="textarea text-lg"
