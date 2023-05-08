@@ -119,7 +119,7 @@ const Result = ({ input, token }: ResultProps) => {
         try {
           const formData = new FormData();
           formData.append("file", input.input);
-          formData.append("src", option.srt.toString());
+          formData.append("srt", option.srt.toString());
           const response = await ofetch(`${BASE_URL}/transcript`, {
             method: "POST",
             body: formData,
