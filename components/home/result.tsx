@@ -85,8 +85,6 @@ const Result = ({ input, token }: ResultProps) => {
     if (session) {
       const credits = getCredit(duration)
       const own = await ofetch('/api/credit')
-      console.log(own, credits);
-      
       if(own.credit < credits) {
         toast.error(`You need ${credits} credits to transcribe this audio. You have ${own.credit} credits.`, {
           duration: 10000,
