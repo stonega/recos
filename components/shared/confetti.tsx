@@ -21,7 +21,7 @@ const Confetti = () => {
       clearTimeout(opacityTimer);
       if (interval) clearInterval(interval);
     };
-  });
+  }, []);
   if (show)
     return (
       <ReactConfetti
