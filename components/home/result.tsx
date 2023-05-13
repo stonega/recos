@@ -95,7 +95,7 @@ const Result = ({ input, token }: ResultProps) => {
         setStep("loading");
         try {
           const response = await ofetch(`${BASE_URL}/transcript`, {
-            query: { url: input.input, srt: option.srt },
+            query: { url: input.input, srt: option.srt, prompt: option.prompt },
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -118,6 +118,7 @@ const Result = ({ input, token }: ResultProps) => {
           const formData = new FormData();
           formData.append("file", input.input);
           formData.append("srt", option.srt.toString());
+          formData.append("prompt", option.prompt);
           const response = await ofetch(`${BASE_URL}/transcript`, {
             method: "POST",
             body: formData,
@@ -185,7 +186,7 @@ const Result = ({ input, token }: ResultProps) => {
               file as File,
               {
                 translate: option.translate,
-                prompt: DEFAULT_PROMPT + option.prompt,
+                prompt: option.prompt,
                 srt: option.srt,
               },
               apiKey!,
