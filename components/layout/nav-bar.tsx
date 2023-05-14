@@ -24,6 +24,7 @@ const NavBar = ({ providers, products }: NavBarProps) => {
             Recos.
           </span>
         </Link>
+        <span className="text-sm  py-1 px-2 rounded-full bg-green-300">Beta</span>
         <ThemeModeButton></ThemeModeButton>
       </div>
       <div className="flex flex-row items-center">

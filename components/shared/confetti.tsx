@@ -11,11 +11,11 @@ const Confetti = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShow(false);
-    }, 3000);
+    }, 5000);
     let interval: number | NodeJS.Timer;
     const opacityTimer = setTimeout(() => {
       interval = setInterval(() => setOpacity((prev) => prev - 0.2), 100);
-    }, 2500);
+    }, 4500);
     return () => {
       clearTimeout(timer);
       clearTimeout(opacityTimer);
