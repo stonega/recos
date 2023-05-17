@@ -15,7 +15,7 @@ export const authOptions: NextAuthOptions = {
         return {
           id: profile.sub,
           name: profile.name,
-          username: profile.name.replace(/\s/g, "").toLowerCase(),
+          // username: profile.name.replace(/\s/g, "").toLowerCase(),
           email: profile.email,
           image: profile.picture,
         };
