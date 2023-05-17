@@ -210,7 +210,7 @@ const Result = ({ input, token }: ResultProps) => {
       <div className="border-1 mt-6 min-h-[10rem] w-full rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
         <div className="flex flex-col items-center justify-start gap-2 p-2">
           <ApiModal />
-          <div className="pt-4 pb-2 text-2xl font-bold dark:text-white">
+          <div className="pt-4 pb-2 text-2xl font-bold break-all dark:text-white">
             {input.title}
           </div>
           <div className="w-full rounded-md bg-green-200 px-4 py-6 dark:bg-green-400">
