@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
+import Link from 'next/link';
 import { signOut, useSession } from "next-auth/react";
-import { Beer, LogOut } from "lucide-react";
+import { Beer, LogOut, BarChart4 } from "lucide-react";
 import Popover from "@/components/shared/popover";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -51,6 +52,12 @@ export default function UserDropdown({ onGetCredits }: UserDropdownProps) {
               <Beer className="h-4 w-4" />
               <p className="text-sm">Get Credits</p>
             </button>
+            <Link href="/credit" 
+              className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
+            >
+              <BarChart4 className="h-4 w-4" />
+              <p className="text-sm">Credits Usage</p>
+            </Link>
             <button
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
               onClick={() => signOut({ redirect: false })}
