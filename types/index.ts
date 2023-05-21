@@ -44,4 +44,13 @@ export type TranscriptOption = {
   prompt: string;
   translate: boolean;
   srt: boolean;
-};
+}
+
+export type CreditHistory = {
+  audio_length: number,
+  create_at: string,
+  id: string
+  name: string
+  title: string
+  credit: number
+}

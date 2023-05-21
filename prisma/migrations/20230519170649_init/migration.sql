@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Credit" ALTER COLUMN "create_at" SET DEFAULT CURRENT_TIMESTAMP;
