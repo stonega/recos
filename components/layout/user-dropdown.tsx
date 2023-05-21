@@ -71,9 +71,9 @@ export default function UserDropdown({ onGetCredits }: UserDropdownProps) {
         openPopover={openPopover}
         setOpenPopover={setOpenPopover}
       >
-        <button
+        <div
           onClick={() => setOpenPopover(!openPopover)}
-          className="flex h-12 flex-row items-center justify-center overflow-hidden border-none transition-all duration-75 focus:outline-none active:scale-95"
+          className="flex h-12 flex-row items-center justify-center overflow-hidden border-none transition-all duration-75 cursor-pointer focus:border-none focus:outline-none active:scale-95"
         >
           <div className="flex flex-col items-start space-y-1">
             <span className="text-xl leading-none dark:text-white">{name}</span>
@@ -90,7 +90,7 @@ export default function UserDropdown({ onGetCredits }: UserDropdownProps) {
             height={35}
             className="ml-2 rounded-full"
           />
-        </button>
+        </div>
       </Popover>
     </motion.div>
   );
