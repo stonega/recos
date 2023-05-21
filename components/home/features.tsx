@@ -24,10 +24,10 @@ const WhatIsRecos = () => {
       <div className="mt-8 grid grid-cols-3 gap-8">
       {data.features.map((item) => (
         <div key={item.title} className="card">
-          <div className="mt-2 mb-4 text-xl font-bold dark:text-white">
+          <div className="mt-2 mb-4 text-xl font-bold">
             {item.title}
           </div>
-          <div className="text-lg dark:text-white">{item.description}</div>
+          <div className="text-lg">{item.description}</div>
         </div>
       ))}
 
