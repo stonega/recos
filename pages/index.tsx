@@ -9,6 +9,7 @@ import {
 import { SearchPodcast } from "@/components/home/search-podcast";
 import Result from "@/components/home/result";
 import WhatIsRecos from "@/components/home/what-is-recos";
+import Features from "@/components/home/features";
 
 export { getServerSideProps } from "lib/server-side-props";
 
@@ -40,6 +41,7 @@ export default function Home({
       )}
       {result && <Result input={result} token={token} />}
       {/* {!result && <div className="bear-loader w-full" />} */}
+      <Features></Features>
       <WhatIsRecos />
     </Layout>
   );
