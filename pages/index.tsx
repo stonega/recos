@@ -41,8 +41,8 @@ export default function Home({
       )}
       {result && <Result input={result} token={token} />}
       {/* {!result && <div className="bear-loader w-full" />} */}
-      <Features></Features>
-      <WhatIsRecos />
+      {!result && <Features></Features>}
+      {!result && <WhatIsRecos />}
     </Layout>
   );
 }

@@ -1,4 +1,5 @@
 import { Coffee, Github, Twitter } from "lucide-react";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -29,6 +30,7 @@ const Footer = () => {
       <span className="mb-2 text-center text-gray-500">
         Made with ❤️ by Stone © 2023 Recos.
       </span>
+      <Link href="/privacy" className="text-gray-500 underline decoration-solid mb-4">Privacy</Link>
     </div>
   );
 };
