@@ -17,7 +17,7 @@ const data = {
     },
     {
       question: "How does the credit count?",
-      answer: "You can generate 1 minute of audio transcription with 1 credit. For example, if you have 100 credits, you can generate 100 minutes of audio transcription. The minutes is round value, for example, 1 minute 1 second will be counted as 2 minutes.",
+      answer: "You can generate 1 minute of audio transcription with 1 credit. For example, if you have 100 credits, you can generate 100 minutes of audio transcription. The duration is rounded to the nearest minute, for example, 1 minute 1 second will be counted as 1   minutes.",
     }
   ],
 };
