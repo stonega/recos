@@ -95,7 +95,7 @@ const Result = ({ input, token }: ResultProps) => {
         setStep("loading");
         try {
           const response = await ofetch(`${BASE_URL}/transcript`, {
-            query: { url: input.input, srt: option.srt, prompt: option.prompt },
+            query: { url: input.input, srt: option.srt, prompt: option.prompt, title: input.title },
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -283,7 +283,7 @@ const Result = ({ input, token }: ResultProps) => {
         <div className="darK:text-white mt-10 flex h-60 flex-col items-center justify-center gap-2">
           <span className="dot-loader text-2xl">Generating</span>
           <span className="mb-12">
-            Please don&apos;t close the tab, and wait a few minutes.{" "}
+            Please <span className="font-bold">DON&apos;T</span> close the tab, and wait a few minutes.{" "}
           </span>
           <span className="printer-loader mb-24"></span>
         </div>
@@ -292,7 +292,7 @@ const Result = ({ input, token }: ResultProps) => {
         <div className="mt-10 flex h-60 flex-col items-center justify-center gap-2 dark:text-white">
           <span className="dot-loader text-2xl">Preparing</span>
           <span className="mb-10">
-            Please don&apos;t close the tab, and wait a few minutes.{" "}
+            Please <span className="font-bold">DON&apos;T</span> close the tab, and wait a few minutes.{" "}
           </span>
           <span className="player-loader"></span>
           <div className="my-10"></div>
