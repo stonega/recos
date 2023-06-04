@@ -66,7 +66,7 @@ const Result = ({ input, token }: ResultProps) => {
       if (url === "/") throw "error";
       const path = localStorage.getItem("path");
       console.log(`App is changing to ${url} ${step} ${path}`);
-      if (step === "result" && path !== url) {
+      if (step !== "input" && path !== url) {
         localStorage.setItem("path", url);
         setShowConfirmModal(true);
         throw "error";
@@ -252,7 +252,13 @@ const Result = ({ input, token }: ResultProps) => {
       <div className="border-1 mt-6 min-h-[10rem] w-full rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
         <div className="flex flex-col items-center justify-start gap-2 p-2">
           <ApiModal />
-          <ConfirmModal />
+          <ConfirmModal>
+            <div>
+              {step === "result"
+              ? "Before leaving the page, please ensure that you have saved the result."
+              : "The task is currently in progress. You might lose your credits if you exit."}
+            </div>
+          </ConfirmModal>
           <div className="break-all pt-4 pb-2 text-2xl font-bold dark:text-white">
             {input.title}
           </div>

@@ -5,6 +5,7 @@ import {
   SetStateAction,
   useCallback,
   useMemo,
+  ReactNode,
 } from "react";
 import Button from "./button";
 
@@ -12,10 +13,12 @@ const ConfirmModal = ({
   showConfirmModal,
   setShowConfirmModal,
   onConfirm,
+  children
 }: {
   showConfirmModal: boolean;
   setShowConfirmModal: Dispatch<SetStateAction<boolean>>;
   onConfirm(): void;
+  children: ReactNode
 }) => {
   return (
     <Modal
@@ -25,7 +28,7 @@ const ConfirmModal = ({
     >
       <div className="w-full overflow-hidden bg-white md:max-w-md md:rounded-2xl md:border md:border-gray-100 md:shadow-xl">
         <div className="px-4 pt-8 text-center text-xl font-bold">
-          Before leaving the page, please ensure that you have saved the result.
+          {children}
         </div>
         <div className="mt-8 flex flex-row items-center">
           <Button
@@ -55,13 +58,13 @@ const ConfirmModal = ({
 export function useConfirmModal(onConfirm: () => void) {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  const ConfirmModalCallback = useCallback(() => {
+  const ConfirmModalCallback = useCallback(({children}: {children: ReactNode}) => {
     return (
       <ConfirmModal
         showConfirmModal={showConfirmModal}
         setShowConfirmModal={setShowConfirmModal}
         onConfirm={onConfirm}
-      />
+      >{ children }</ConfirmModal>
     );
   }, [showConfirmModal, onConfirm]);
 
