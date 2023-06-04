@@ -1,7 +1,7 @@
 import Layout from "@/components/layout";
 import { AudioInput, Meta } from "types";
 import { SearchAudio } from "@/components/home/search-audio";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Category,
   CategorySelector,

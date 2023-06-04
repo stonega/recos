@@ -63,7 +63,7 @@ const Button = forwardRef(function Button(
   return (
     <button
       {...props}
-      className={classNames(className, basicClassName, sizeClassName)}
+      className={classNames(basicClassName, sizeClassName, className)}
     >
       <span>{children}</span>
       {loading && <LoadingCircle />}

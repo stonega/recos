@@ -1,5 +1,5 @@
-import { atom } from 'jotai'
+import { atom } from "jotai";
 
-export const creditAtom = atom(0)
+export const creditAtom = atom(0);
 
-export const productsAtom = atom([])
+export const productsAtom = atom([]);

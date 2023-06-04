@@ -18,6 +18,8 @@ import * as Switch from "@radix-ui/react-switch";
 import ResultEditor from "./result-editor";
 import Confetti from "../shared/confetti";
 import { useSession } from "next-auth/react";
+import { useConfirmModal } from "../shared/confirm-modal";
+import { useRouter } from "next/router";
 interface ResultProps {
   input: AudioInput;
   token: string;
@@ -38,6 +40,18 @@ const Result = ({ input, token }: ResultProps) => {
   const [option, setOption] = useState<TranscriptOption>(DEFAULT_OPTION);
   const [duration, setDuration] = useState<number>(input.duration);
   const { setShowApiModal, ApiModal } = useApiModal();
+  const router = useRouter();
+  const onConfirm = useCallback(() => {
+    const path = localStorage.getItem("path");
+    console.log("router path", path);
+    if (path && path !== "/") {
+      router.push(path!);
+    } else {
+      setStep(() => "input");
+      setResult(() => "");
+    }
+  }, []);
+  const { setShowConfirmModal, ConfirmModal } = useConfirmModal(onConfirm);
   const [result, setResult] = useState("");
   const { data: session } = useSession();
   const filename = useMemo(() => {
@@ -46,6 +60,27 @@ const Result = ({ input, token }: ResultProps) => {
     }
     return input.title.split(".").slice(0, -1).join(".");
   }, [input]);
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      if (url === "/") throw "error";
+      const path = localStorage.getItem("path");
+      console.log(`App is changing to ${url} ${step} ${path}`);
+      if (step !== "input" && path !== url) {
+        localStorage.setItem("path", url);
+        setShowConfirmModal(true);
+        throw "error";
+      } else {
+        return;
+      }
+    };
+    const removeListener = () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+      localStorage.removeItem("path");
+    };
+    router.events.on("routeChangeStart", handleRouteChange);
+    return removeListener;
+  }, [router.events, setShowConfirmModal, step]);
 
   const getAudioDuration = useCallback(() => {
     if (typeof input.input === "string") {
@@ -65,8 +100,7 @@ const Result = ({ input, token }: ResultProps) => {
   }, [getAudioDuration, input.input]);
 
   const handleBack = () => {
-    setStep("input");
-    setResult("");
+    setShowConfirmModal(true);
   };
   const audioSource = useMemo(() => {
     if (typeof input.input === "string") {
@@ -83,19 +117,27 @@ const Result = ({ input, token }: ResultProps) => {
     }
     let audioFiles = [input.input];
     if (session) {
-      const credits = getCredit(duration)
-      const own = await ofetch('/api/credit')
-      if(own.credit < credits) {
-        toast.error(`You need ${credits} credits to transcribe this audio. You have ${own.credit} credits.`, {
-          duration: 10000,
-        })
-        return
+      const credits = getCredit(duration);
+      const own = await ofetch("/api/credit");
+      if (own.credit < credits) {
+        toast.error(
+          `You need ${credits} credits to transcribe this audio. You have ${own.credit} credits.`,
+          {
+            duration: 10000,
+          },
+        );
+        return;
       }
       if (typeof input.input === "string") {
         setStep("loading");
         try {
           const response = await ofetch(`${BASE_URL}/transcript`, {
-            query: { url: input.input, srt: option.srt, prompt: option.prompt },
+            query: {
+              url: input.input,
+              srt: option.srt,
+              prompt: option.prompt,
+              title: input.title,
+            },
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -210,7 +252,14 @@ const Result = ({ input, token }: ResultProps) => {
       <div className="border-1 mt-6 min-h-[10rem] w-full rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
         <div className="flex flex-col items-center justify-start gap-2 p-2">
           <ApiModal />
-          <div className="pt-4 pb-2 text-2xl font-bold break-all dark:text-white">
+          <ConfirmModal>
+            <div>
+              {step === "result"
+              ? "Before leaving the page, please ensure that you have saved the result."
+              : "The task is currently in progress. You might lose your credits if you exit."}
+            </div>
+          </ConfirmModal>
+          <div className="break-all pt-4 pb-2 text-2xl font-bold dark:text-white">
             {input.title}
           </div>
           <div className="w-full rounded-md bg-green-200 px-4 py-6 dark:bg-green-400">
@@ -281,18 +330,22 @@ const Result = ({ input, token }: ResultProps) => {
       )}
       {step === "loading" && (
         <div className="darK:text-white mt-10 flex h-60 flex-col items-center justify-center gap-2">
-          <span className="dot-loader text-2xl">Generating</span>
-          <span className="mb-12">
-            Please don&apos;t close the tab, and wait a few minutes.{" "}
+          <span className="dot-loader text-2xl dark:text-white">
+            Generating
+          </span>
+          <span className="mb-12 dark:text-white">
+            Please <span className="font-bold">DON&apos;T</span> close the tab,
+            and wait a few minutes.{" "}
           </span>
           <span className="printer-loader mb-24"></span>
         </div>
       )}
       {step === "downloading" && (
         <div className="mt-10 flex h-60 flex-col items-center justify-center gap-2 dark:text-white">
-          <span className="dot-loader text-2xl">Preparing</span>
-          <span className="mb-10">
-            Please don&apos;t close the tab, and wait a few minutes.{" "}
+          <span className="dot-loader text-2xl dark:text-white">Preparing</span>
+          <span className="mb-10 dark:text-white">
+            Please <span className="font-bold">DON&apos;T</span> close the tab,
+            and wait a few minutes.{" "}
           </span>
           <span className="player-loader"></span>
           <div className="my-10"></div>

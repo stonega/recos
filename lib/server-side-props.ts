@@ -11,7 +11,7 @@ export async function getServerSideProps(context: any) {
           "Content-Type": "application/vnd.api+json",
           Accept: "application/vnd.api+json",
           Authorization: `Bearer ${process.env.LEMON_API_KEY}`,
-          'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=59',
+          "Cache-Control": "public, s-maxage=10, stale-while-revalidate=59",
         },
       },
     );

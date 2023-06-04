@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import Link from 'next/link';
+import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { Beer, LogOut, BarChart4 } from "lucide-react";
 import Popover from "@/components/shared/popover";
@@ -52,7 +52,8 @@ export default function UserDropdown({ onGetCredits }: UserDropdownProps) {
               <Beer className="h-4 w-4" />
               <p className="text-sm">Get Credits</p>
             </button>
-            <Link href="/credit" 
+            <Link
+              href="/credit"
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
             >
               <BarChart4 className="h-4 w-4" />
@@ -73,7 +74,7 @@ export default function UserDropdown({ onGetCredits }: UserDropdownProps) {
       >
         <div
           onClick={() => setOpenPopover(!openPopover)}
-          className="flex h-12 flex-row items-center justify-center overflow-hidden border-none transition-all duration-75 cursor-pointer focus:border-none focus:outline-none active:scale-95"
+          className="flex h-12 cursor-pointer flex-row items-center justify-center overflow-hidden border-none transition-all duration-75 focus:border-none focus:outline-none active:scale-95"
         >
           <div className="flex flex-col items-start space-y-1">
             <span className="text-xl leading-none dark:text-white">{name}</span>

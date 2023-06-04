@@ -20,17 +20,16 @@ const data = {
 const WhatIsRecos = () => {
   return (
     <div className="mt-20">
-      <div className="dark:text-white my-8 text-4xl font-bold">Why choose Recos.</div>
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-      {data.features.map((item) => (
-        <div key={item.title} className="card">
-          <div className="mt-2 mb-4 text-xl font-bold">
-            {item.title}
+      <div className="my-8 text-4xl font-bold dark:text-white">
+        Why choose Recos.
+      </div>
+      <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
+        {data.features.map((item) => (
+          <div key={item.title} className="card">
+            <div className="mt-2 mb-4 text-xl font-bold">{item.title}</div>
+            <div className="text-lg">{item.description}</div>
           </div>
-          <div className="text-lg">{item.description}</div>
-        </div>
-      ))}
-
+        ))}
       </div>
     </div>
   );
