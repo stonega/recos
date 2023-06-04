@@ -30,17 +30,17 @@ export default async function handler(
     const variant = (body as any)["data"]["attributes"]["first_order_item"][
       "product_id"
     ];
-    let credit = 0
+    let credit = 0;
     switch (variant) {
       case 70234:
-        credit = 300 
+        credit = 300;
         break;
       case 70322:
-        credit = 1000
-        break
+        credit = 1000;
+        break;
       case 70397:
-        credit = 1
-        break
+        credit = 1;
+        break;
       default:
         break;
     }

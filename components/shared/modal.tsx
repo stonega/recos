@@ -14,10 +14,12 @@ export default function Modal({
   children,
   showModal,
   setShowModal,
+  clickToClose = true,
 }: {
   children: React.ReactNode;
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
+  clickToClose?: boolean;
 }) {
   const desktopModalRef = useRef(null);
 
@@ -53,7 +55,7 @@ export default function Modal({
                   animate={{ scale: 1 }}
                   exit={{ scale: 0.95 }}
                   onMouseDown={(e) => {
-                    if (desktopModalRef.current === e.target) {
+                    if (desktopModalRef.current === e.target && clickToClose) {
                       setShowModal(false);
                     }
                   }}
@@ -67,7 +69,9 @@ export default function Modal({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  if (clickToClose) setShowModal(false);
+                }}
               />
             </>
           )}

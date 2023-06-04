@@ -83,7 +83,6 @@ export default function Credit({
       {isLoading && records.length === 0 ? (
         <div className="darK:text-white mt-20 flex h-60 flex-col items-center justify-center gap-2">
           <div className="history-loader mx-auto mt-10 w-full" />
-          <span className="dot-loader text-xl opacity-70">Loading</span>
         </div>
       ) : (
         <>
@@ -98,12 +97,16 @@ export default function Credit({
               })}
           </div>
           {!hasMore ? (
-            <div className="dark:text-white my-4 w-full text-center text-lg opacity-70">No more records</div>
+            <div className="my-4 w-full text-center text-lg opacity-70 dark:text-white">
+              No more records
+            </div>
           ) : isLoading ? (
-            <div className="dark:text-white dot-loader my-4 w-full text-center text-lg opacity-70">Loading</div>
+            <div className="dot-loader my-4 w-full text-center text-lg opacity-70 dark:text-white">
+              Loading
+            </div>
           ) : (
             <div
-              className="dark:text-white my-4 w-full cursor-pointer text-center text-lg opacity-70"
+              className="my-4 w-full cursor-pointer text-center text-lg opacity-70 dark:text-white"
               onClick={() => setPage((page) => page + 1)}
             >
               Load more

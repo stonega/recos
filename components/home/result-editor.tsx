@@ -5,7 +5,6 @@ import { saveAs } from "file-saver";
 import { useEffect, useState } from "react";
 import { changeSrtInterval, formatTranscription } from "utils";
 import * as Switch from "@radix-ui/react-switch";
-import TextareaAutosize from "react-textarea-autosize";
 
 interface EditorProps {
   title: string;
@@ -69,7 +68,7 @@ const ResultEditor = ({ text, title, srt, onBack }: EditorProps) => {
   return (
     <>
       <div className="mt-16 mb-8 flex flex-row justify-between dark:text-white">
-        <button className="flex flex-row items-center text-xl">
+        <button className="flex flex-row items-center text-xl" onClick={onBack}>
           <ArrowLeftCircle className="inline" />
           <span className="ml-2" onClick={onBack}>
             Transcription
@@ -114,7 +113,7 @@ const ResultEditor = ({ text, title, srt, onBack }: EditorProps) => {
           </span>
         </div> */}
       <div className="relative whitespace-pre-wrap">
-        <span>{content}</span>
+        <span className="dark:text-white">{content}</span>
         {srt && (
           <div className="absolute right-4 top-2 flex flex-row">
             <label htmlFor="srt" className="mr-2 text-lg">

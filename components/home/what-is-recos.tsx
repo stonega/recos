@@ -17,8 +17,9 @@ const data = {
     },
     {
       question: "How does the credit count?",
-      answer: "You can generate 1 minute of audio transcription with 1 credit. For example, if you have 100 credits, you can generate 100 minutes of audio transcription. The duration is rounded to the nearest minute, for example, 1 minute 1 second will be counted as 1   minutes.",
-    }
+      answer:
+        "You can generate 1 minute of audio transcription with 1 credit. For example, if you have 100 credits, you can generate 100 minutes of audio transcription. The duration is rounded to the nearest minute, for example, 1 minute 1 second will be counted as 1   minutes.",
+    },
   ],
 };
 const WhatIsRecos = () => {
@@ -30,8 +31,20 @@ const WhatIsRecos = () => {
           <div className="my-4 text-xl font-bold dark:text-white">
             {item.question}
           </div>
-          <div className="text-lg dark:text-white">{item.answer} {index == 2 && <a className="underline decoration-solid hover:text-green-[400]
-" href="https://raw.githubusercontent.com/openai/whisper/main/language-breakdown.svg" target="_blank" rel="noreferrer">Read more.</a>} </div>
+          <div className="text-lg dark:text-white">
+            {item.answer}{" "}
+            {index == 2 && (
+              <a
+                className="hover:text-green-[400] underline decoration-solid
+"
+                href="https://raw.githubusercontent.com/openai/whisper/main/language-breakdown.svg"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Read more.
+              </a>
+            )}{" "}
+          </div>
         </div>
       ))}
       <div className="border-b-2 border-green-500 py-4"></div>
