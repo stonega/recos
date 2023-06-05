@@ -28,15 +28,14 @@ const WhatIsRecos = () => {
       <div className="border-t-2 border-green-500 py-2"></div>
       {data.qas.map((item, index) => (
         <div key={item.question}>
-          <div className="my-4 text-xl font-bold dark:text-white">
+          <div className="my-4 text-xl font-bold text-green-400 dark:text-green-600">
             {item.question}
           </div>
           <div className="text-lg dark:text-white">
             {item.answer}{" "}
             {index == 2 && (
               <a
-                className="hover:text-green-[400] underline decoration-solid
-"
+                className="hover:text-green-400 underline decoration-solid text-green-500"
                 href="https://raw.githubusercontent.com/openai/whisper/main/language-breakdown.svg"
                 target="_blank"
                 rel="noreferrer"

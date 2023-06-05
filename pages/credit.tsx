@@ -3,22 +3,15 @@ import { CreditHistory, Meta } from "types";
 import useSWR from "swr";
 import { ArrowLeftCircle } from "lucide-react";
 import Link from "next/link";
-import HistoryCard from "@/components/credit/HistoryCard";
+import HistoryCard from "@/components/credit/history-card";
 import { useEffect, useState } from "react";
 
 export { getServerSideProps } from "lib/server-side-props";
 
 function useCredits(page: number, pageSize: number, token: string) {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-
   const request = async (): Promise<CreditHistory[]> => {
     const response = await fetch(
       `/api/credit_history?page=${page}&page_size=${pageSize}`,
-      {
-        headers,
-      },
     );
     const result = await response.json();
     return result.data;
@@ -54,10 +47,12 @@ export default function Credit({
   const [records, setRecords] = useState<CreditHistory[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
-  const { data, isLoading, error } = useCredits(page, 20, token);
+  const { data, isLoading, error } = useCredits(page, 10, token);
 
   useEffect(() => {
-    if (data && data.length > 0) {
+    console.log(data);
+    if (!data) return
+    if (data.length > 0) {
       setRecords((records) => {
         data.forEach((item) => {
           if (!records.find((record) => item.id === record.id)) {
@@ -107,7 +102,7 @@ export default function Credit({
           ) : (
             <div
               className="my-4 w-full cursor-pointer text-center text-lg opacity-70 dark:text-white"
-              onClick={() => setPage((page) => page + 1)}
+              onClick={() => {if(hasMore) setPage((page) => page + 1)}}
             >
               Load more
             </div>
