@@ -102,7 +102,7 @@ export default function Credit({
           ) : (
             <div
               className="my-4 w-full cursor-pointer text-center text-lg opacity-70 dark:text-white"
-              onClick={() => setPage((page) => page + 1)}
+              onClick={() => {if(hasMore) setPage((page) => page + 1)}}
             >
               Load more
             </div>
