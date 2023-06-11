@@ -26,8 +26,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/api/episode.js",
-    "pages/api/episode.js"
+    "pages/api/_episode.js",
+    "pages/api/_episode.js"
   ],
   "exclude": ["node_modules"]
 }
