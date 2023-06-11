@@ -35,17 +35,16 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
   const { data, error, isLoading } = useEpisodes(debouncedSearch);
 
   const submit = useCallback(
-    async (id: string) => {
+    async (episode: Episode) => {
       try {
         setIsSubmitting(true);
-        const episode = await ofetch(`/api/episode?id=${id}`);
         setSearch("");
+
         onResult({
           title: episode.title,
-          input: episode.audio,
-          duration: episode.audio_length_sec,
-          prompt: episode.podcast.name + episode.name + episode.description,
-          transcript: episode.transcript,
+          input: episode.audioUrl,
+          duration: episode.length,
+          prompt: episode.podcast.title + episode.title + episode.description,
         });
       } catch (error) {
         if (error instanceof Error) toast.error(error.message);
@@ -72,26 +71,26 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
           layoutId="underline"
           className="absolute top-16 z-10 w-full rounded-md border-2 border-green-500 bg-white/40 px-2 py-2 backdrop-blur-md dark:bg-black/50 "
         >
-          {data.results.map((item: Episode) => {
+          {data.episodes.data.map((item: Episode) => {
             return (
               <div
-                onClick={() => submit(item.id)}
+                onClick={() => submit(item)}
                 key={item.id}
                 className="flex cursor-pointer flex-row space-x-2 hover:bg-green-200/50"
               >
                 <Image
-                  src={item.podcast.image}
-                  alt={item.title_original}
+                  src={item.podcast.imageUrl}
+                  alt={item.title}
                   width="60"
                   height="60"
-                  className="rounded-fill m-2 aspect-square object-cover"
+                  className="rounded-lg m-2 aspect-square object-cover"
                   unoptimized
                 />
                 <div className="dark:text-white">
                   <div className="opacity-60">
-                    {item.podcast.title_original}
+                    {item.podcast.title}
                   </div>
-                  <div>{item.title_original}</div>
+                  <div>{item.title}</div>
                 </div>
               </div>
             );

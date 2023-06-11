@@ -17,14 +17,15 @@ export interface AudioInput {
 
 export interface Episode {
   id: string;
-  audio: string;
-  image: string;
-  title_original: string;
+  audioUrl: string;
+  imageUrl: string;
+  title: string;
+  description: string;
+  length: number;
   podcast: {
-    id: string;
-    image: string;
-    title_original: string;
-  };
+    title: string;
+    imageUrl: string
+  }
 }
 
 export interface Article {
