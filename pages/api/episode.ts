@@ -28,11 +28,12 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method === "GET") {
-    const { search } = req.query;
+    const { search, page } = req.query;
     if (search) {
-      const query = `query($searchTerm: String!) {
+      const query = `query($searchTerm: String!, $page: Int) {
         episodes (
             searchTerm: $searchTerm,
+            page: $page
         ) { 
           paginatorInfo {
               currentPage,
@@ -54,18 +55,19 @@ export default async function handler(
         }
     }`;
 
-      const searchPodcast = (searchTerm: string) => {
+      const searchPodcast = (searchTerm: string, page = '1') => {
         return apolloAuthClient.query({
           query: gql(query),
           variables: {
             searchTerm,
+            page: Number(page)
           },
         });
       };
 
       try {
-        const response = await searchPodcast(search as string);
-        console.log(response);
+        const response = await searchPodcast(search as string, page as string);
+        console.log(response.data);
         res.status(200).json(response.data);
       } catch (e) {
         console.log(e);
