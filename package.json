@@ -58,6 +58,7 @@
     "next": "13.1.1",
     "next-auth": "^4.18.8",
     "next-seo": "^5.15.0",
+    "nodemailer": "^6.9.3",
     "ofetch": "^1.0.1",
     "openai": "^3.2.0",
     "podcast-api": "^2.0.2",
