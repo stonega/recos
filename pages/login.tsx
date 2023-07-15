@@ -4,17 +4,28 @@ import { getProviders, signIn } from "next-auth/react";
 import GoogleIcon from "../components/shared/icons/google-icon";
 import Github from "../components/shared/icons/github";
 import { useState } from "react";
+import { getToken } from "next-auth/jwt";
+import { redirect } from "next/navigation";
 
-export async function getServerSidePropsc() {
+export async function getServerSideProps(context: any) {
   const providers = await getProviders();
+  const token = await getToken({ req: context.req, raw: true });
   return {
     props: {
       providers,
+      token,
     },
   };
 }
 
-export default function Login({ providers }: { providers: any }) {
+export default function Login({
+  providers,
+  token,
+}: {
+  providers: any;
+  token: any;
+}) {
+  if (token) redirect("/");
   const meta: Meta = {
     description: "Podcast to text.",
     ogUrl: "https://recos.studio",
@@ -41,9 +52,18 @@ export default function Login({ providers }: { providers: any }) {
       <div className="mx-auto mt-32 overflow-hidden bg-white px-8 md:max-w-md md:rounded-2xl md:border md:border-gray-100 md:shadow-sm">
         {emailSent ? (
           <>
-            <div className="pt-8 text-center text-2xl font-bold">Check your email</div>
-            <div className="pt-8 text-center text-xl">A sign in link has been sent to your email address.</div>
-            <div onClick={() => setEmailSent(false)} className="py-8 text-center cursor-pointer text-green-600">Back</div>
+            <div className="pt-8 text-center text-2xl font-bold">
+              Check your email
+            </div>
+            <div className="pt-8 text-center text-xl">
+              A sign in link has been sent to your email address.
+            </div>
+            <div
+              onClick={() => setEmailSent(false)}
+              className="cursor-pointer py-8 text-center text-green-600"
+            >
+              Back
+            </div>
           </>
         ) : (
           <>
