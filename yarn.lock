@@ -1403,6 +1403,13 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-18.11.18.tgz"
   integrity sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==
 
+"@types/nodemailer@^6.4.8":
+  version "6.4.8"
+  resolved "https://registry.npmmirror.com/@types/nodemailer/-/nodemailer-6.4.8.tgz#f06c661e9b201fc2acc3a00a0fded42ba7eaca9d"
+  integrity sha512-oVsJSCkqViCn8/pEu2hfjwVO+Gb3e+eTWjg3PcjeFKRItfKpKwHphQqbYmPQrlMk+op7pNNWPbsJIEthpFN/OQ==
+  dependencies:
+    "@types/node" "*"
+
 "@types/object.omit@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/object.omit/-/object.omit-3.0.0.tgz#0d31e1208eac8fe2ad5c9499a1016a8273bbfafc"
