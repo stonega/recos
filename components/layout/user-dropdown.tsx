@@ -77,7 +77,7 @@ export default function UserDropdown({ onGetCredits }: UserDropdownProps) {
           className="flex h-12 cursor-pointer flex-row items-center justify-center overflow-hidden border-none transition-all duration-75 focus:border-none focus:outline-none active:scale-95"
         >
           <div className="flex flex-col items-start space-y-1">
-            <span className="text-xl leading-none dark:text-white">{name}</span>
+            <span className="text-xl leading-none dark:text-white">{name ?? email}</span>
             <span className="text-sm leading-none dark:text-white">
               {" "}
               {credit + " credits"}
@@ -85,7 +85,7 @@ export default function UserDropdown({ onGetCredits }: UserDropdownProps) {
           </div>
           <Image
             alt={email}
-            src={image || `https://avatars.dicebear.com/api/micah/${email}.svg`}
+            src={image || `colspan="colspan="https://avatar.tobi.sh/${email}.png`}
             unoptimized
             width={35}
             height={35}
