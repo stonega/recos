@@ -5,27 +5,30 @@ import GoogleIcon from "../components/shared/icons/google-icon";
 import Github from "../components/shared/icons/github";
 import { useRef, useState } from "react";
 import { getToken } from "next-auth/jwt";
-import { redirect } from "next/navigation";
 
 export async function getServerSideProps(context: any) {
   const providers = await getProviders();
   const token = await getToken({ req: context.req, raw: true });
+  if(token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
   return {
     props: {
       providers,
-      token,
     },
   };
 }
 
 export default function Login({
   providers,
-  token,
 }: {
   providers: any;
-  token: any;
 }) {
-  if (token) redirect("/");
   const meta: Meta = {
     description: "Podcast to text.",
     ogUrl: "https://recos.studio",
