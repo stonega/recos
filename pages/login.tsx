@@ -24,7 +24,7 @@ export default function Login({ providers }: { providers: any }) {
   const loginWithOauth = async (provider: string) => {
     if (provider == "email") {
       try {
-        await signIn("email", { email });
+        await signIn("email", { email, redirect: false });
         setEmailSent(true);
       } catch (error) {}
     } else {
@@ -40,7 +40,11 @@ export default function Login({ providers }: { providers: any }) {
     <Layout meta={meta} providers={providers} products={[]}>
       <div className="mx-auto mt-32 overflow-hidden bg-white px-8 md:max-w-md md:rounded-2xl md:border md:border-gray-100 md:shadow-sm">
         {emailSent ? (
-          <div>Email send</div>
+          <>
+            <div className="pt-8 text-center text-2xl font-bold">Check your email</div>
+            <div className="pt-8 text-center text-xl">A sign in link has been sent to your email address.</div>
+            <div onClick={() => setEmailSent(false)} className="py-8 text-center cursor-pointer text-green-600">Back</div>
+          </>
         ) : (
           <>
             <div className="pt-8 text-center text-2xl font-bold">
