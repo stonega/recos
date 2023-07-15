@@ -75,22 +75,20 @@ function html({ url, host, email }: Record<"url" | "host" | "email", string>) {
   // Some simple styling options
   const backgroundColor = "#f9f9f9"
   const textColor = "#444444"
-  const mainBackgroundColor = "rgb(187 247 208)"
-  const buttonBackgroundColor = "rgb(22 163 74)"
-  const buttonBorderColor = "rgb(34 197 94)"
+  const mainBackgroundColor = "#dcfce7"
+  const buttonBackgroundColor = "#86efac"
+  const buttonBorderColor = "#86efac"
   const buttonTextColor = "#ffffff"
 
   return `
 <body style="background: ${backgroundColor};">
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 100px">
+  <table width="100%" border="0" cellspacing="20" cellpadding="0" style="border-radius: 10px; background: ${mainBackgroundColor}; max-width: 600px; margin: auto; border-radius: 10px;">
     <tr>
-      <td align="left" style="background: ${mainBackgroundColor}; border-radius: 10px 10px 0 0; padding: 10px 0px 20px 0px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
+      <td align="left" style="margin: 10px; font-size: 24px; background: ${mainBackgroundColor}; color: ${textColor};">
         <strong>Recos.</strong>
       </td>
-      <td align=="right"><img src="https://recos.vercel.app/logo.png" width="20"></td>
+      <td align=="right"><img src="https://recos.vercel.app/logo.png" width="20" style="float: right; margin: 10px"></td>
     </tr>
-  </table>
-  <table width="100%" border="0" cellspacing="20" cellpadding="0" style="border-radius: 0px 0px 10 10; background: ${mainBackgroundColor}; max-width: 600px; margin: auto; border-radius: 10px;">
     <tr>
       <td align="center" style="padding: 10px 0px 0px 0px; font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
         Sign in as <strong>${escapedEmail}</strong>
