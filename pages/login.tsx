@@ -61,13 +61,13 @@ export default function Login({ providers }: { providers: any }) {
 
   return (
     <Layout meta={meta} providers={providers} products={[]}>
-      <div className="mx-auto mt-32 overflow-hidden bg-white px-8 md:max-w-md md:rounded-2xl md:border md:border-gray-100 md:shadow-sm">
+      <div className="mx-auto mt-32 overflow-hidden bg-white px-8 dark:bg-[#2a2a2a] max-w-md rounded-2xl md:shadow-sm">
         {emailSent ? (
           <>
-            <div className="pt-8 text-center text-2xl font-bold">
+            <div className="pt-8 text-center text-2xl font-bold dark:text-white">
               Check your email
             </div>
-            <div className="pt-8 text-center text-xl">
+            <div className="pt-8 text-center text-xl dark:text-white">
               A sign in link has been sent to your email address.
             </div>
             <div
@@ -79,11 +79,11 @@ export default function Login({ providers }: { providers: any }) {
           </>
         ) : (
           <>
-            <div className="pt-8 text-center text-2xl font-bold">
+            <div className="pt-8 text-center text-2xl font-bold dark:text-white">
               Login to Recos.
             </div>
             <div className="my-4 flex flex-col items-center">
-              <div className="mb-2 w-full text-left font-semibold">Email</div>
+              <div className="mb-2 w-full text-left font-semibold dark:text-white">Email</div>
               <form
                 ref={formRef}
                 onSubmit={loginWithEmail}
@@ -116,7 +116,7 @@ export default function Login({ providers }: { providers: any }) {
                 </button>
               </form>
             </div>
-            <div className="relative h-[1.5px] w-full bg-green-400 after:absolute after:left-[50%] after:bottom-[-10px] after:w-8 after:translate-x-[-50%] after:bg-white after:text-center after:text-black/60 after:content-['or']"></div>
+            <div className="relative h-[1.5px] w-full bg-green-400 after:absolute after:left-[50%] after:bottom-[-10px] after:w-8 after:translate-x-[-50%] after:bg-white dark:after:bg-[#2a2a2a] dark:after:text-white after:text-center after:text-black/60 after:content-['or']"></div>
             <div className="flex flex-col items-center space-y-3 py-8">
               <button
                 type="button"
