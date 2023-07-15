@@ -24,8 +24,8 @@ export interface Episode {
   length: number;
   podcast: {
     title: string;
-    imageUrl: string
-  }
+    imageUrl: string;
+  };
 }
 
 export interface Article {

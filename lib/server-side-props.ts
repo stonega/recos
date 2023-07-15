@@ -3,7 +3,7 @@ import { getProviders } from "next-auth/react";
 
 export async function getServerSideProps(context: any) {
   const providers = await getProviders();
-  const getProducts = async () => {
+  async function getProducts() {
     const response = await fetch(
       "https://api.lemonsqueezy.com/v1/products?filter[store_id]=25044",
       {
@@ -19,7 +19,7 @@ export async function getServerSideProps(context: any) {
     // @ts-ignore
     // console.log({ products: products.data });
     return { products: products.data };
-  };
+  }
   const [token, { products }] = await Promise.all([
     getToken({ req: context.req, raw: true }),
     getProducts(),

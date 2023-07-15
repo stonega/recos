@@ -55,12 +55,12 @@ export default async function handler(
         }
     }`;
 
-      const searchPodcast = (searchTerm: string, page = '1') => {
+      const searchPodcast = (searchTerm: string, page = "1") => {
         return apolloAuthClient.query({
           query: gql(query),
           variables: {
             searchTerm,
-            page: Number(page)
+            page: Number(page),
           },
         });
       };
