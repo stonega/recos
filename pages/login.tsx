@@ -5,17 +5,18 @@ import GoogleIcon from "../components/shared/icons/google-icon";
 import Github from "../components/shared/icons/github";
 import { useRef, useState } from "react";
 import { getToken } from "next-auth/jwt";
+import LoadingCircle from "@/components/shared/icons/loading-circle";
 
 export async function getServerSideProps(context: any) {
   const providers = await getProviders();
   const token = await getToken({ req: context.req, raw: true });
-  if(token) {
+  if (token) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       },
-    }
+    };
   }
   return {
     props: {
@@ -24,17 +25,13 @@ export async function getServerSideProps(context: any) {
   };
 }
 
-export default function Login({
-  providers,
-}: {
-  providers: any;
-}) {
+export default function Login({ providers }: { providers: any }) {
   const meta: Meta = {
     description: "Podcast to text.",
     ogUrl: "https://recos.studio",
     title: "Recos.",
   };
-  const formRef = useRef<HTMLFormElement>(null)
+  const formRef = useRef<HTMLFormElement>(null);
 
   const loginWithOauth = async (provider: string) => {
     if (provider == "email") {
@@ -43,20 +40,24 @@ export default function Login({
       signIn(id);
     }
   };
+  const [emailSent, setEmailSent] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const loginWithEmail = async (e: any) => {
-      e.preventDefault()
-      if(!formRef?.current?.checkValidity()) {
-        return
-      }
-      try {
-        await signIn("email", { email, redirect: false });
-        setEmailSent(true);
-      } catch (error) {}
-  }
-
-  const [email, setEmail] = useState("");
-  const [emailSent, setEmailSent] = useState(false);
+    e.preventDefault();
+    if (!formRef?.current?.checkValidity()) {
+      return;
+    }
+    try {
+      setIsSending(true);
+      const email = formRef.current.email.value;
+      await signIn("email", { email, redirect: false });
+      setEmailSent(true);
+      setIsSending(false);
+    } catch (error) {
+      setIsSending(false);
+    }
+  };
 
   return (
     <Layout meta={meta} providers={providers} products={[]}>
@@ -83,29 +84,36 @@ export default function Login({
             </div>
             <div className="my-4 flex flex-col items-center">
               <div className="mb-2 w-full text-left font-semibold">Email</div>
-              <form ref={formRef} onSubmit={loginWithEmail} className="block w-full">
-              <input
-                className="input block
+              <form
+                ref={formRef}
+                onSubmit={loginWithEmail}
+                className="block w-full"
+              >
+                <input
+                  className="input block
             p-2
             hover:file:bg-green-300 hover:file:text-gray-700
             dark:file:bg-green-400
             "
-                aria-describedby="email"
-                placeholder="Please enter email"
-                id="email"
-                value={email}
-                required
-                type="email"
-                onChange={(e) => {setEmail(e.target.value)}}
-              />
+                  aria-describedby="email"
+                  placeholder="Please enter email"
+                  id="email"
+                  required
+                  type="email"
+                />
 
-              <button
-                type="submit"
-                // onClick={() => loginWithOauth("email")}
-                className="dark:focus:ring-green-300/55 mt-4 mb-2 inline-flex w-full items-center justify-center rounded-lg bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-600/90 focus:outline-none focus:ring-4 focus:ring-green-600/50"
-              >
-                Sign in/ Sign up with Email
-              </button>
+                <button
+                  type="submit"
+                  // onClick={() => loginWithOauth("email")}
+                  className="dark:focus:ring-green-300/55 mt-4 mb-2 inline-flex w-full items-center justify-center rounded-lg bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-600/90 focus:outline-none focus:ring-4 focus:ring-green-600/50"
+                >
+                  Sign in / Sign up with Email
+                  {isSending && (
+                    <span className="ml-2">
+                      <LoadingCircle />
+                    </span>
+                  )}
+                </button>
               </form>
             </div>
             <div className="relative h-[1.5px] w-full bg-green-400 after:absolute after:left-[50%] after:bottom-[-10px] after:w-8 after:translate-x-[-50%] after:bg-white after:text-center after:text-black/60 after:content-['or']"></div>
