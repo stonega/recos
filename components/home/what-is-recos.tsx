@@ -35,7 +35,7 @@ const WhatIsRecos = () => {
             {item.answer}{" "}
             {index == 2 && (
               <a
-                className="hover:text-green-400 underline decoration-solid text-green-500"
+                className="text-green-500 underline decoration-solid hover:text-green-400"
                 href="https://raw.githubusercontent.com/openai/whisper/main/language-breakdown.svg"
                 target="_blank"
                 rel="noreferrer"

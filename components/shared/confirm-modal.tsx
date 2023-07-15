@@ -13,12 +13,12 @@ const ConfirmModal = ({
   showConfirmModal,
   setShowConfirmModal,
   onConfirm,
-  children
+  children,
 }: {
   showConfirmModal: boolean;
   setShowConfirmModal: Dispatch<SetStateAction<boolean>>;
   onConfirm(): void;
-  children: ReactNode
+  children: ReactNode;
 }) => {
   return (
     <Modal
@@ -58,15 +58,20 @@ const ConfirmModal = ({
 export function useConfirmModal(onConfirm: () => void) {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  const ConfirmModalCallback = useCallback(({children}: {children: ReactNode}) => {
-    return (
-      <ConfirmModal
-        showConfirmModal={showConfirmModal}
-        setShowConfirmModal={setShowConfirmModal}
-        onConfirm={onConfirm}
-      >{ children }</ConfirmModal>
-    );
-  }, [showConfirmModal, onConfirm]);
+  const ConfirmModalCallback = useCallback(
+    ({ children }: { children: ReactNode }) => {
+      return (
+        <ConfirmModal
+          showConfirmModal={showConfirmModal}
+          setShowConfirmModal={setShowConfirmModal}
+          onConfirm={onConfirm}
+        >
+          {children}
+        </ConfirmModal>
+      );
+    },
+    [showConfirmModal, onConfirm],
+  );
 
   return useMemo(
     () => ({ setShowConfirmModal, ConfirmModal: ConfirmModalCallback }),

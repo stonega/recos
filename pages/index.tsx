@@ -1,7 +1,7 @@
 import Layout from "@/components/layout";
 import { AudioInput, Meta } from "types";
 import { SearchAudio } from "@/components/home/search-audio";
-import Image from 'next/image'
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import {
   Category,
@@ -42,7 +42,15 @@ export default function Home({
       )}
       {result && <Result input={result} token={token} />}
       {/* {!result && <div className="bear-loader w-full" />} */}
-      {!result && <Image className="opacity-60 mt-8 rounded-2xl overflow-hidden object-cover w-fill" src="/player.jpg" alt="cover" width={800} height={300} />}
+      {!result && (
+        <Image
+          className="w-fill mt-8 overflow-hidden rounded-2xl object-cover opacity-60"
+          src="/player.jpg"
+          alt="cover"
+          width={800}
+          height={300}
+        />
+      )}
       {!result && <Features></Features>}
       {!result && <WhatIsRecos />}
     </Layout>

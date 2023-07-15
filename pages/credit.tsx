@@ -51,7 +51,7 @@ export default function Credit({
 
   useEffect(() => {
     console.log(data);
-    if (!data) return
+    if (!data) return;
     if (data.length > 0) {
       setRecords((records) => {
         data.forEach((item) => {
@@ -102,7 +102,9 @@ export default function Credit({
           ) : (
             <div
               className="my-4 w-full cursor-pointer text-center text-lg opacity-70 dark:text-white"
-              onClick={() => {if(hasMore) setPage((page) => page + 1)}}
+              onClick={() => {
+                if (hasMore) setPage((page) => page + 1);
+              }}
             >
               Load more
             </div>

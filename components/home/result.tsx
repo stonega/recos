@@ -255,8 +255,8 @@ const Result = ({ input, token }: ResultProps) => {
           <ConfirmModal>
             <div>
               {step === "result"
-              ? "Before leaving the page, please ensure that you have saved the result."
-              : "The task is currently in progress. You might lose your credits if you exit."}
+                ? "Before leaving the page, please ensure that you have saved the result."
+                : "The task is currently in progress. You might lose your credits if you exit."}
             </div>
           </ConfirmModal>
           <div className="break-all pt-4 pb-2 text-2xl font-bold dark:text-white">

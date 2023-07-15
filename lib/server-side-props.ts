@@ -13,7 +13,7 @@ export async function getServerSideProps(context: any) {
           Authorization: `Bearer ${process.env.LEMON_API_KEY}`,
           "Cache-Control": "public, s-maxage=10, stale-while-revalidate=59",
         },
-      }
+      },
     );
     const products = await response.json();
     // @ts-ignore
