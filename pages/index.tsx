@@ -8,6 +8,7 @@ import {
   CategorySelector,
 } from "@/components/home/category-selector";
 import { SearchPodcast } from "@/components/home/search-podcast";
+import { SearchYoutube } from "@/components/home/search-youtube";
 import Result from "@/components/home/result";
 import WhatIsRecos from "@/components/home/what-is-recos";
 import Features from "@/components/home/features";
@@ -35,7 +36,9 @@ export default function Home({
     <Layout meta={meta} providers={providers} products={products}>
       <div className="mb-0 md:mb-20"></div>
       <CategorySelector onSelect={setCategory}></CategorySelector>
-      {category === "podcast" ? (
+      {category === "youtube" ? 
+        (<SearchYoutube onResult={(result) => setResult(result)}></SearchYoutube>)
+       : category === "podcast" ? (
         <SearchPodcast onResult={(result) => setResult(result)}></SearchPodcast>
       ) : (
         <SearchAudio onResult={(result) => setResult(result)}></SearchAudio>

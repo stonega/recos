@@ -62,8 +62,8 @@ model Credit {
   id        String   @id @default(cuid())
   create_at DateTime @default(now())
   name      String?
-  audio_length Int
-  credit    Int
+  audio_length Int @default(0)
+  credit    Int @default(0)
   userId    String
   type      String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)

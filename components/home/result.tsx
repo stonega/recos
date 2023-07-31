@@ -6,10 +6,8 @@ import {
   getCredit,
   getTime,
   mergeMultipleSrtStrings,
-  transcript,
-  unzipAudios,
+  getYoutubeId,
 } from "utils";
-import { useApiModal } from "./api-modal";
 import { toast } from "sonner";
 import { AudioInput, TranscriptOption } from "types";
 import { ofetch } from "ofetch";
@@ -19,6 +17,7 @@ import ResultEditor from "./result-editor";
 import Confetti from "../shared/confetti";
 import { useSession } from "next-auth/react";
 import { useConfirmModal } from "../shared/confirm-modal";
+import axios from "axios";
 import { useRouter } from "next/router";
 interface ResultProps {
   input: AudioInput;
@@ -39,11 +38,9 @@ const Result = ({ input, token }: ResultProps) => {
   const [progress, setProgress] = useState(0);
   const [option, setOption] = useState<TranscriptOption>(DEFAULT_OPTION);
   const [duration, setDuration] = useState<number>(input.duration);
-  const { setShowApiModal, ApiModal } = useApiModal();
   const router = useRouter();
   const onConfirm = useCallback(() => {
     const path = localStorage.getItem("path");
-    console.log("router path", path);
     if (path && path !== "/") {
       router.push(path!);
     } else {
@@ -110,9 +107,8 @@ const Result = ({ input, token }: ResultProps) => {
   }, [input.input]);
 
   const submit = async () => {
-    const apiKey = localStorage.getItem("open-api-key");
-    if (!apiKey && !session) {
-      setShowApiModal(true);
+    if (!session) {
+      router.push("/login");
       return;
     }
     let audioFiles = [input.input];
@@ -131,20 +127,31 @@ const Result = ({ input, token }: ResultProps) => {
       if (typeof input.input === "string") {
         setStep("loading");
         try {
-          const response = await ofetch(`${BASE_URL}/transcript`, {
-            query: {
+          const response = await axios.get(`${BASE_URL}/transcript-task`, {
+            params: {
               url: input.input,
               srt: option.srt,
               prompt: option.prompt,
               title: input.title,
+              type: input.type,
             },
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
+          const taskId = response.data.task_id;
+          const result: string[] = await new Promise((resolve, reject) => {
+            const id = setInterval(async () => {
+              const result = await axios.get(`${BASE_URL}/tasks/${taskId}`);
+              if (result.data.task_status === "SUCCESS") {
+                resolve(result.data.task_result);
+                clearInterval(id);
+              }
+            }, 1000);
+          });
           const finalResult = option.srt
-            ? mergeMultipleSrtStrings(...response)
-            : response.join(" ");
+            ? mergeMultipleSrtStrings(...result)
+            : result.join(" ");
           setStep("result");
           setResult(finalResult);
           document.title = "Task Completed, " + filename;
@@ -161,16 +168,28 @@ const Result = ({ input, token }: ResultProps) => {
           formData.append("file", input.input);
           formData.append("srt", option.srt.toString());
           formData.append("prompt", option.prompt);
-          const response = await ofetch(`${BASE_URL}/transcript`, {
-            method: "POST",
-            body: formData,
-            headers: {
-              Authorization: `Bearer ${token}`,
+          const response = await axios.post(
+            `${BASE_URL}/transcript-task`,
+            formData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
+          );
+          const taskId = response.data.task_id;
+          const result: string[] = await new Promise((resolve, reject) => {
+            const id = setInterval(async () => {
+              const result = await axios.get(`${BASE_URL}/tasks/${taskId}`);
+              if (result.data.task_status === "SUCCESS") {
+                resolve(result.data.task_result);
+                clearInterval(id);
+              }
+            }, 1000);
           });
           const finalResult = option.srt
-            ? mergeMultipleSrtStrings(...response)
-            : response.join(" ");
+            ? mergeMultipleSrtStrings(...result)
+            : result.join(" ");
           setStep("result");
           setResult(finalResult);
           return;
@@ -180,78 +199,12 @@ const Result = ({ input, token }: ResultProps) => {
           return;
         }
       }
-    } else {
-      if (typeof input.input === "string") {
-        setStep("downloading");
-        try {
-          const response = await ofetch(`${BASE_URL}/download`, {
-            query: { url: input.input },
-            responseType: "blob",
-          });
-          const audios = await unzipAudios(response, async (progress) =>
-            setProgress(progress),
-          );
-          audioFiles = audios;
-        } catch (error) {
-          setStep("input");
-          if (error instanceof Error) toast.error(error.message);
-          return;
-        }
-      } else if (
-        input.input instanceof File &&
-        input.input.size >= 20 * 1024 * 1024
-      ) {
-        setStep("downloading");
-        try {
-          const formData = new FormData();
-          formData.append("file", input.input);
-          const response = await ofetch(`${BASE_URL}/upload`, {
-            method: "POST",
-            body: formData,
-            responseType: "blob",
-          });
-          const audios = await unzipAudios(response, async (progress) =>
-            setProgress(progress),
-          );
-          audioFiles = audios;
-        } catch (error) {
-          setStep("input");
-          if (error instanceof Error) toast.error(error.message);
-          return;
-        }
-      }
-      setStep("loading");
-      try {
-        const results = await Promise.all(
-          audioFiles.map((file) => {
-            return transcript(
-              file as File,
-              {
-                translate: option.translate,
-                prompt: option.prompt,
-                srt: option.srt,
-              },
-              apiKey!,
-            );
-          }),
-        );
-        setStep("result");
-        const finalResult = option.srt
-          ? mergeMultipleSrtStrings(...results)
-          : results.join(" ");
-        setResult(finalResult);
-        document.title = "Task Completed, " + filename;
-      } catch (error) {
-        setStep("input");
-        if (error instanceof Error) toast.error(error.message);
-      }
     }
   };
   return (
     <>
       <div className="border-1 mt-6 min-h-[10rem] w-full rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
         <div className="flex flex-col items-center justify-start gap-2 p-2">
-          <ApiModal />
           <ConfirmModal>
             <div>
               {step === "result"
@@ -262,9 +215,20 @@ const Result = ({ input, token }: ResultProps) => {
           <div className="break-all pt-4 pb-2 text-2xl font-bold dark:text-white">
             {input.title}
           </div>
-          <div className="w-full rounded-md bg-green-200 px-4 py-6 dark:bg-green-400">
-            <audio className="w-full" controls src={audioSource}></audio>
-          </div>
+          {input.type === "youtube" ? (
+            <iframe
+              className="aspect-video h-auto w-full rounded-md"
+              src={`https://www.youtube.com/embed/${getYoutubeId(
+                input.input as string,
+              )}`}
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            ></iframe>
+          ) : (
+            <div className="w-full rounded-md bg-green-200 px-4 py-6 dark:bg-green-400">
+              <audio className="w-full" controls src={audioSource}></audio>
+            </div>
+          )}
         </div>
         {step === "input" && (
           <>

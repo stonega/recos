@@ -54,3 +54,22 @@ export async function unzipAudios(
   );
   return audios;
 }
+
+export function parseYoutubeDuration(duration: string) {
+  const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+  if(match === null) {
+    throw new Error("Invalid duration");
+  }
+  const hours = parseInt(match[1]) || 0;
+  const minutes = parseInt(match[2]) || 0;
+  const seconds = parseInt(match[3]) || 0;
+  return hours * 3600 + minutes * 60 + seconds
+}
+
+export function getYoutubeId(url: string) {
+  const match = url.match(/v=(\w+)/);
+  if(match === null) {
+    throw new Error("Invalid url");
+  }
+  return match[1];
+}
