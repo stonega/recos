@@ -13,6 +13,7 @@ export interface AudioInput {
   duration: number; // in seconds
   prompt?: string;
   transcript?: string;
+  type?: 'audio' | 'youtube';
 }
 
 export interface Episode {

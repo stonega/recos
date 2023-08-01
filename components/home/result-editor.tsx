@@ -113,7 +113,7 @@ const ResultEditor = ({ text, title, srt, onBack }: EditorProps) => {
           </span>
         </div> */}
       <div className="relative whitespace-pre-wrap">
-        <span className="dark:text-white">{content}</span>
+        <span className="dark:text-white leading-10 text-xl font-serif">{content}</span>
         {srt && (
           <div className="absolute right-4 top-2 flex flex-row">
             <label htmlFor="srt" className="mr-2 text-lg">
