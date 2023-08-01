@@ -14,9 +14,9 @@ interface SearchPodcastProps {
 }
 
 function useEpisodes(search: string) {
-  const [page, setPage] = useState<number>(1);
+  const [page, setPage] = useState<number>(0);
   useEffect(() => {
-    setPage(1);
+    setPage(0);
   }, [search]);
 
   const [episodes, setEpisodes] = useState<Episode[]>([]);
@@ -27,7 +27,7 @@ function useEpisodes(search: string) {
   );
   useEffect(() => {
     if (data) {
-      if (page === 1) {
+      if (page === 0) {
         setEpisodes(data.episodes.data);
       } else {
         setEpisodes((episodes) => [...episodes, ...data.episodes.data]);
@@ -81,7 +81,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
         onChange={(e) => setSearch(e.target.value)}
       />
       <div className="absolute top-5 right-4">
-        {isLoading && page === 1 && <LoadingCircle />}
+        {isLoading && page === 0 && <LoadingCircle />}
       </div>
 
       {episodes && search && (
