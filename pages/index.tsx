@@ -45,15 +45,7 @@ export default function Home({
       )}
       {result && <Result input={result} token={token} />}
       {/* {!result && <div className="bear-loader w-full" />} */}
-      {!result && (
-        <Image
-          className="w-fill mt-8 overflow-hidden rounded-2xl object-cover opacity-60"
-          src="/player.jpg"
-          alt="cover"
-          width={800}
-          height={300}
-        />
-      )}
+
       {!result && <Features></Features>}
       {!result && <WhatIsRecos />}
     </Layout>

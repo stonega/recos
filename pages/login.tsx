@@ -6,6 +6,7 @@ import Github from "../components/shared/icons/github";
 import { useRef, useState } from "react";
 import { getToken } from "next-auth/jwt";
 import LoadingCircle from "@/components/shared/icons/loading-circle";
+import Link from "next/link";
 
 export async function getServerSideProps(context: any) {
   const providers = await getProviders();
@@ -107,7 +108,7 @@ export default function Login({ providers }: { providers: any }) {
                   // onClick={() => loginWithOauth("email")}
                   className="dark:focus:ring-green-300/55 mt-4 mb-2 inline-flex w-full items-center justify-center rounded-lg bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-600/90 focus:outline-none focus:ring-4 focus:ring-green-600/50"
                 >
-                  Sign in / Sign up with Email
+                  Send magic link
                   {isSending && (
                     <span className="ml-2">
                       <LoadingCircle />
@@ -138,6 +139,11 @@ export default function Login({ providers }: { providers: any }) {
           </>
         )}
       </div>
+      <div className="text-center mt-4">By proceeding, you agree to our <br /><Link href="/terms" 
+        className="mb-4 text-gray-500 underline decoration-solid"
+       >terms of use</Link> and <Link 
+        className="mb-4 text-gray-500 underline decoration-solid"
+       href="/privacy">privacy policy</Link></div>
     </Layout>
   );
 }

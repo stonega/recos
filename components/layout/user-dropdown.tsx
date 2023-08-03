@@ -8,10 +8,7 @@ import { motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
 import { ofetch } from "ofetch";
 
-interface UserDropdownProps {
-  onGetCredits(): void;
-}
-export default function UserDropdown({ onGetCredits }: UserDropdownProps) {
+export default function UserDropdown() {
   const { data: session } = useSession();
   const { email, image, name } = session?.user || {};
   const [openPopover, setOpenPopover] = useState(false);
@@ -23,10 +20,6 @@ export default function UserDropdown({ onGetCredits }: UserDropdownProps) {
     };
     getToken();
   });
-  const getCredits = useCallback(async () => {
-    setOpenPopover(false);
-    onGetCredits();
-  }, [onGetCredits]);
 
   if (!email) return null;
 
@@ -45,13 +38,13 @@ export default function UserDropdown({ onGetCredits }: UserDropdownProps) {
               <LayoutDashboard className="h-4 w-4" />
               <p className="text-sm">Dashboard</p>
             </Link> */}
-            <button
+            <Link
+              href="/price"
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
-              onClick={() => getCredits()}
             >
               <Beer className="h-4 w-4" />
               <p className="text-sm">Get Credits</p>
-            </button>
+            </Link>
             <Link
               href="/credit"
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
