@@ -24,6 +24,14 @@ export async function getServerSideProps(context: any) {
     getToken({ req: context.req, raw: true }),
     getProducts(),
   ]);
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {

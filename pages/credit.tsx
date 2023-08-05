@@ -5,8 +5,25 @@ import { ArrowLeftCircle } from "lucide-react";
 import Link from "next/link";
 import HistoryCard from "@/components/credit/history-card";
 import { useEffect, useState } from "react";
+import { getToken } from "next-auth/jwt";
 
-export { getServerSideProps } from "lib/server-side-props";
+export async function getServerSideProps(context: any) {
+  const token = await getToken({ req: context.req, raw: true })
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      token,
+    },
+  };
+}
 
 function useCredits(page: number, pageSize: number, token: string) {
   const request = async (): Promise<CreditHistory[]> => {
@@ -29,12 +46,8 @@ function useCredits(page: number, pageSize: number, token: string) {
 }
 
 export default function Credit({
-  providers,
   token,
-  products,
 }: {
-  providers: any;
-  products: any[];
   token: string;
 }) {
   const meta: Meta = {
@@ -47,7 +60,7 @@ export default function Credit({
   const [records, setRecords] = useState<CreditHistory[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
-  const { data, isLoading, error } = useCredits(page, 10, token);
+  const { data, isLoading, error } = useCredits(page, 20, token);
 
   useEffect(() => {
     console.log(data);
@@ -67,7 +80,7 @@ export default function Credit({
   }, [data]);
 
   return (
-    <Layout meta={meta} providers={providers} products={products}>
+    <Layout meta={meta}>
       <div className="mb-8 flex flex-row justify-between dark:text-white">
         <Link className="flex flex-row items-center text-xl" href="/">
           <ArrowLeftCircle className="inline" />

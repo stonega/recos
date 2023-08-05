@@ -1,17 +1,15 @@
 import Layout from "@/components/layout";
 import { Meta } from "types";
 
-export { getServerSideProps } from "lib/server-side-props";
-
-const TermsPage = ({ providers }: { providers: any }) => {
+const TermsPage = () => {
   const meta: Meta = {
     description: "Podcast to text.",
     ogUrl: "http://recos.stonegate.me",
     title: "Recos.",
   };
   return (
-    <Layout meta={meta} providers={providers} products={[]}>
-      <article className="prose font-mono mx-auto whitespace-pre-line py-3 text-black dark:text-white prose-headings:text-black dark:props:heading:text-white md:container">
+    <Layout meta={meta}>
+      <article className="dark:props:heading:text-white prose mx-auto whitespace-pre-line py-3 font-mono text-black prose-headings:text-black dark:text-white md:container">
         <h2>TERMS OF SERVICE</h2>
         <h5>Last updated:&nbsp;Aug 1, 2023</h5>
         <p>
@@ -70,8 +68,8 @@ const TermsPage = ({ providers }: { providers: any }) => {
             </li>
             <li>
               Registered Users and Accounts. In order to use the Services, you
-              must establish an account with us. Recos is under no obligation
-              to accept any individual or entity as an account holder, and may
+              must establish an account with us. Recos is under no obligation to
+              accept any individual or entity as an account holder, and may
               accept or reject any registration in our sole and complete
               discretion. Visitors who register an account with us will be
               referred to as “Users” in these Terms of Service.
@@ -154,8 +152,8 @@ const TermsPage = ({ providers }: { providers: any }) => {
           that you otherwise have the right to provide the User Content), that
           you have the rights necessary to grant the license to the User Content
           under the prior paragraph, and that the User Content and its use by
-          Recos and our content partners as permitted by this Agreement does
-          not and will not infringe, misappropriate, or otherwise violate the
+          Recos and our content partners as permitted by this Agreement does not
+          and will not infringe, misappropriate, or otherwise violate the
           intellectual property rights, moral rights, or rights of privacy or
           publicity of any person, or contain any libelous, defamatory, or
           obscene material or content that violates the Agreement. You agree to
@@ -172,12 +170,12 @@ const TermsPage = ({ providers }: { providers: any }) => {
           <li>
             Service Types. A User can access the free version of the Platform to
             begin using the Services. To have access to all the features of the
-            Platform, Recos offers a monthly subscription service to the
-            Premium version of the Platform (“Subscription”) for a fee set forth
-            on the Site (the “Subscription Fee”). Recos may add new fees and
-            charges, or amend fees and charges, at any time in its sole
-            discretion. Recos will seek to notify you by reasonable means of
-            any material increase in such fee.
+            Platform, Recos offers a monthly subscription service to the Premium
+            version of the Platform (“Subscription”) for a fee set forth on the
+            Site (the “Subscription Fee”). Recos may add new fees and charges,
+            or amend fees and charges, at any time in its sole discretion. Recos
+            will seek to notify you by reasonable means of any material increase
+            in such fee.
           </li>
           <li>
             Fees. Users shall pay all Subscription Fees. Payment is due
@@ -199,15 +197,15 @@ const TermsPage = ({ providers }: { providers: any }) => {
         </h3>
         <p>
           User may change or terminate User’s Subscription by emailing us at
-          legal@Recos.video If User terminates User’s Subscription, User may
-          use User’s Subscription until the end of the then-current billing
-          cycle, and the Subscription will not be renewed after that period
-          expires. Recos does not refund any pre-paid portion of the
-          Subscription fee. Recos may immediately terminate or suspend User’s
-          Subscription for any reason or no reason in accordance with these
-          Terms of Service. If we terminate or suspend User’s Subscription,
-          User’s license to use any software or content provided in connection
-          with the Subscription is also terminated or suspended (as applicable).
+          legal@Recos.video If User terminates User’s Subscription, User may use
+          User’s Subscription until the end of the then-current billing cycle,
+          and the Subscription will not be renewed after that period expires.
+          Recos does not refund any pre-paid portion of the Subscription fee.
+          Recos may immediately terminate or suspend User’s Subscription for any
+          reason or no reason in accordance with these Terms of Service. If we
+          terminate or suspend User’s Subscription, User’s license to use any
+          software or content provided in connection with the Subscription is
+          also terminated or suspended (as applicable).
         </p>
         <h2>5. INTELLECTUAL PROPERTY.</h2>
         <p>
@@ -374,11 +372,11 @@ const TermsPage = ({ providers }: { providers: any }) => {
         </p>
         <h2>8. DIGITAL MILLENNIUM COPYRIGHT ACT.</h2>
         <p>
-          Recos respects the intellectual property rights of others and
-          attempts to comply with all relevant laws. We will review all claims
-          of copyright infringement received and remove any Content or User
-          Content deemed to have been posted or distributed in violation of any
-          such laws.
+          Recos respects the intellectual property rights of others and attempts
+          to comply with all relevant laws. We will review all claims of
+          copyright infringement received and remove any Content or User Content
+          deemed to have been posted or distributed in violation of any such
+          laws.
         </p>
         <p>
           Our designated agent under the Digital Millennium Copyright Act (the
@@ -421,17 +419,17 @@ const TermsPage = ({ providers }: { providers: any }) => {
           THE SERVICES, AND ALL CONTENT AND OTHER INFORMATION ON OR ACCESSIBLE
           FROM OR THROUGH THE SERVICES ARE PROVIDED BY Recos ON AN “AS IS” AND
           “AS AVAILABLE” BASIS WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR
-          IMPLIED. Recos EXPRESSLY DISCLAIMS ALL WARRANTIES, EXPRESS OR
-          IMPLIED, REGARDING THE SERVICES AND THE CONTENT OFFERED THROUGH THE
-          SERVICES, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY,
-          FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, SECURITY OR
-          ACCURACY, AND ANY WARRANTIES ARISING FROM COURSE OF DEALING, COURSE OF
-          PERFORMANCE, OR USAGE OF TRADE. WITHOUT LIMITING THE GENERALITY OF THE
-          FOREGOING, Recos DOES NOT WARRANT THAT: (1) THE INFORMATION ON THE
-          SERVICES IS CORRECT, ACCURATE OR RELIABLE; (2) THE FUNCTIONS CONTAINED
-          ON THIS SERVICES WILL BE UNINTERRUPTED OR ERROR-FREE; OR (3) DEFECTS
-          WILL BE CORRECTED, OR THAT THE SERVICES OR THE SERVER THAT MAKE THEM
-          AVAILABLE IS FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.
+          IMPLIED. Recos EXPRESSLY DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED,
+          REGARDING THE SERVICES AND THE CONTENT OFFERED THROUGH THE SERVICES,
+          INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS
+          FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, SECURITY OR ACCURACY, AND
+          ANY WARRANTIES ARISING FROM COURSE OF DEALING, COURSE OF PERFORMANCE,
+          OR USAGE OF TRADE. WITHOUT LIMITING THE GENERALITY OF THE FOREGOING,
+          Recos DOES NOT WARRANT THAT: (1) THE INFORMATION ON THE SERVICES IS
+          CORRECT, ACCURATE OR RELIABLE; (2) THE FUNCTIONS CONTAINED ON THIS
+          SERVICES WILL BE UNINTERRUPTED OR ERROR-FREE; OR (3) DEFECTS WILL BE
+          CORRECTED, OR THAT THE SERVICES OR THE SERVER THAT MAKE THEM AVAILABLE
+          IS FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.
         </p>
         <p>
           IN CONNECTION WITH ANY WARRANTY, CONTRACT, OR COMMON LAW TORT CLAIMS:
@@ -490,16 +488,16 @@ const TermsPage = ({ providers }: { providers: any }) => {
           Dispute will be finally and exclusively resolved by binding
           arbitration governed by the Federal Arbitration Act (“FAA”). Any
           election to arbitrate, at any time, shall be final and binding on the
-          other party. IF EITHER YOU OR Recos CHOOSES ARBITRATION, NEITHER
-          PARTY SHALL HAVE THE RIGHT TO LITIGATE SUCH CLAIM IN COURT OR TO HAVE
-          A JURY TRIAL, EXCEPT EITHER PARTY MAY BRING ITS CLAIM IN ITS LOCAL
-          SMALL CLAIMS COURT, IF PERMITTED BY THAT SMALL CLAIMS COURT RULES AND
-          IF WITHIN SUCH COURT’S JURISDICTION. ARBITRATION IS DIFFERENT FROM
-          COURT, AND DISCOVERY AND APPEAL RIGHTS MAY ALSO BE LIMITED IN
-          ARBITRATION. All disputes will be resolved before a neutral arbitrator
-          selected jointly by you and Recos, whose decision will be final,
-          except for a limited right of appeal under the FAA. The arbitration
-          shall be commenced and conducted by JAMS pursuant to its then current
+          other party. IF EITHER YOU OR Recos CHOOSES ARBITRATION, NEITHER PARTY
+          SHALL HAVE THE RIGHT TO LITIGATE SUCH CLAIM IN COURT OR TO HAVE A JURY
+          TRIAL, EXCEPT EITHER PARTY MAY BRING ITS CLAIM IN ITS LOCAL SMALL
+          CLAIMS COURT, IF PERMITTED BY THAT SMALL CLAIMS COURT RULES AND IF
+          WITHIN SUCH COURT’S JURISDICTION. ARBITRATION IS DIFFERENT FROM COURT,
+          AND DISCOVERY AND APPEAL RIGHTS MAY ALSO BE LIMITED IN ARBITRATION.
+          All disputes will be resolved before a neutral arbitrator selected
+          jointly by you and Recos, whose decision will be final, except for a
+          limited right of appeal under the FAA. The arbitration shall be
+          commenced and conducted by JAMS pursuant to its then current
           Comprehensive Arbitration Rules and Procedures and in accordance with
           the Expedited Procedures in those rules, or, where appropriate,
           pursuant to JAMS’ Streamlined Arbitration Rules and Procedures. All

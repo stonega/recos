@@ -8,7 +8,7 @@ export interface NavBarProps {
   providers: any;
   products: any[];
 }
-const NavBar = ({ products }: NavBarProps) => {
+const NavBar = () => {
   const { data } = useSession();
   const pathname = usePathname();
 
@@ -24,6 +24,18 @@ const NavBar = ({ products }: NavBarProps) => {
           Beta
         </span>
         <ThemeModeButton></ThemeModeButton>
+        <Link
+          href="/dashboard"
+          className="mx-8 text-xl underline underline-offset-8 hover:text-green-600 hover:decoration-wavy dark:text-white"
+        >
+          Dashboard
+        </Link>
+        <Link
+          href="/price"
+          className="text-xl underline underline-offset-8 hover:text-green-600 hover:decoration-wavy dark:text-white"
+        >
+          Pricing
+        </Link>
       </div>
       {pathname?.includes("/login") ? null : (
         <div className="flex flex-row items-center">

@@ -16,7 +16,7 @@
     @apply mb-4 block text-2xl;
   }
   .card {
-    @apply rounded-md border-2 border-green-600 bg-green-200 p-4 dark:border-green-200 dark:bg-green-400;
+    @apply rounded-md border-2 border-green-700 bg-green-200 p-4 dark:bg-green-900;
   }
 }
 

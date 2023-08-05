@@ -20,14 +20,16 @@ const data = {
 const WhatIsRecos = () => {
   return (
     <div className="mt-20">
-      <div className="my-8 text-4xl font-bold text-green-400 dark:text-green-600">
+      <div className="my-8 text-4xl font-bold text-green-600 dark:text-green-600">
         Why choose Recos.
       </div>
       <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
         {data.features.map((item) => (
           <div key={item.title} className="card">
-            <div className="mt-2 mb-4 text-xl font-bold">{item.title}</div>
-            <div className="text-lg">{item.description}</div>
+            <div className="mt-2 mb-4 text-2xl font-bold dark:text-white">
+              {item.title}
+            </div>
+            <div className="text-xl dark:text-white">{item.description}</div>
           </div>
         ))}
       </div>

@@ -1,23 +1,43 @@
 import Layout from "@/components/layout";
 import Button from "@/components/shared/button";
 import { ofetch } from "ofetch";
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight } from "lucide-react";
 import { Meta } from "types";
-export { getServerSideProps } from "lib/server-side-props";
 
-export default function Home({
-  providers,
-  products,
-}: {
-  providers: any;
-  products: any[];
-}) {
+export async function getServerSideProps() {
+  async function getProducts() {
+    const response = await fetch(
+      "https://api.lemonsqueezy.com/v1/products?filter[store_id]=25044",
+      {
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+          Accept: "application/vnd.api+json",
+          Authorization: `Bearer ${process.env.LEMON_API_KEY}`,
+          "Cache-Control": "public, s-maxage=10, stale-while-revalidate=59",
+        },
+      },
+    );
+    const products = await response.json();
+    // @ts-ignore
+    // console.log({ products: products.data });
+    return products.data;
+  }
+  const products = await getProducts();
+
+  return {
+    props: {
+      products,
+    },
+  };
+}
+
+export default function PricePage({ products }: { products: any[] }) {
   const meta: Meta = {
     description: "Podcast to text.",
     ogUrl: "http://recos.stonegate.me",
-    title: "Price",
+    title: "Pricing",
   };
-  
+
   const getCredits = async (productId: string) => {
     const checkoutData = await ofetch("/api/checkout", {
       query: { productId },
@@ -26,43 +46,44 @@ export default function Home({
     if (checkoutUrl) window.open(checkoutUrl, "_blank");
   };
 
-
   return (
-    <Layout meta={meta} providers={providers} products={products}>
+    <Layout meta={meta}>
       <div className="flex flex-col items-center">
-        <h1 className="text-green-600 text-6xl font-bold mt-20">Transparent and affordable price</h1>
-        <h1 className="text-4xl mt-10 dark:text-white">One credit for one minute audio</h1>
-        <div className="flex flex-row items-center mt-24 justify-start space-x-10">
+        <h1 className="mt-20 text-center text-4xl font-bold text-green-600 md:text-5xl">
+          Transparent and affordable price
+        </h1>
+        <h1 className="mt-10 text-center text-3xl dark:text-white">
+          One credit for one minute audio
+        </h1>
+        <div className="mt-24 flex flex-col items-center justify-start space-y-10 md:flex-row md:space-x-10 md:space-y-0">
           {products &&
             products.map((product: any) => (
               <div
                 key={product.id}
-                className="flex h-[400px] w-[400px] flex-col items-center border-2 border-green-700 justify-between rounded-lg bg-green-200 dark:bg-green-900 p-8"
+                className="flex h-[400px] w-full flex-col items-center justify-between rounded-lg border-2 border-green-700 bg-green-200 p-8 dark:bg-green-900 md:w-[400px]"
               >
                 <div className="flex flex-col dark:text-white">
                   <span className="text-4xl font-bold">
                     {product.attributes.name}
                   </span>
-                  <span className="text-2xl mt-10">
+                  <span className="mt-10 text-2xl">
                     {product.attributes.description
                       .replace("<p>", "")
                       .replace("</p>", "")}
                   </span>
                 </div>
-                <div className="w-full flex flex-row justify-between items-center dark:text-white">
-                  <span className="text-4xl font-mono">
+                <div className="flex w-full flex-row items-center justify-between dark:text-white">
+                  <span className="font-mono text-4xl">
                     {product.attributes.price_formatted}
                   </span>
-                <Button
-                  type="button"
-                  onClick={() => getCredits(product.id)}
-                  className="h-16 w-full flex-row justify-center text-lg font-normal rounded-md"
-                >
-                  <span className="text-2xl">
-                    Checkout
-                  </span>
-                  <ArrowRight className="inline ml-4" />
-                </Button>
+                  <Button
+                    type="button"
+                    onClick={() => getCredits(product.id)}
+                    className="group h-16 w-full flex-row justify-center rounded-md text-lg font-normal"
+                  >
+                    <span className="text-2xl">Checkout</span>
+                    <ArrowRight className="ml-4 inline -translate-y-1 group-hover:animate-bounce" />
+                  </Button>
                 </div>
               </div>
             ))}
