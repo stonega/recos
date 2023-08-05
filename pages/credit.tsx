@@ -17,7 +17,6 @@ export async function getServerSideProps(context: any) {
       },
     };
   }
-
   return {
     props: {
       token,
@@ -63,7 +62,6 @@ export default function Credit({
   const { data, isLoading, error } = useCredits(page, 20, token);
 
   useEffect(() => {
-    console.log(data);
     if (!data) return;
     if (data.length > 0) {
       setRecords((records) => {
@@ -81,13 +79,7 @@ export default function Credit({
 
   return (
     <Layout meta={meta}>
-      <div className="mb-8 flex flex-row justify-between dark:text-white">
-        <Link className="flex flex-row items-center text-xl" href="/">
-          <ArrowLeftCircle className="inline" />
-          <span className="ml-2">Credits Usage</span>
-        </Link>
-        <div className="flex flex-row"></div>
-      </div>
+      <div className="text-4xl mb-16 dark:text-white">Credits Usage</div>
       {isLoading && records.length === 0 ? (
         <div className="darK:text-white mt-20 flex h-60 flex-col items-center justify-center gap-2">
           <div className="history-loader mx-auto mt-10 w-full" />
