@@ -52,7 +52,7 @@ export default function PricePage({ products }: { products: any[] }) {
         <h1 className="mt-16 text-center text-4xl font-bold text-green-600 md:text-5xl">
           Transparent and affordable price
         </h1>
-        <h1 className="mt-10 text-center text-3xl dark:text-white">
+        <h1 className="mt-6 text-center text-3xl dark:text-white">
           One credit for one minute audio, free for first 20 minutes
         </h1>
         <div className="mt-24 flex flex-col items-center justify-start space-y-10 md:flex-row md:space-x-10 md:space-y-0">
