@@ -3,6 +3,7 @@ import { NextSeo } from "next-seo";
 import { Meta } from "../../types";
 import NavBar from "./nav-bar";
 import Footer from "./footer";
+import dynamic from "next/dynamic";
 
 export interface LayoutProps {
   meta: Meta;
@@ -13,6 +14,9 @@ const Layout = ({ children, meta }: LayoutProps) => {
   const favicon = "https://recos.vercel.app/logo.png";
   const title = "Recos";
   const description = "Podcast to text.";
+  const CrispWithNoSSR = dynamic(
+    () => import('./crisp')
+  )
   return (
     <>
       <Head>
@@ -34,6 +38,7 @@ const Layout = ({ children, meta }: LayoutProps) => {
           href={meta?.logo ?? favicon}
         />
       </Head>
+      <CrispWithNoSSR />
       <NextSeo
         title={meta.title ?? title}
         description={meta?.description ?? description}

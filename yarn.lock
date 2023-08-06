@@ -2146,6 +2146,11 @@ crelt@^1.0.0:
   resolved "https://registry.yarnpkg.com/crelt/-/crelt-1.0.5.tgz#57c0d52af8c859e354bace1883eb2e1eb182bb94"
   integrity sha512-+BO9wPPi+DWTDcNYhr/W90myha8ptzftZT+LwcmUbbok0rcP/fequmFYCw8NMoH7pkAZQzU78b3kYrlua5a9eA==
 
+crisp-sdk-web@^1.0.20:
+  version "1.0.20"
+  resolved "https://registry.npmmirror.com/crisp-sdk-web/-/crisp-sdk-web-1.0.20.tgz#af99bc5e59cd7f50356efde0cbdc28e780fe6338"
+  integrity sha512-DJqwVTQvzs26OOol6aec8oQwXMVsk4n6w9UL+UkvwchypUusZI6pLwXMrAZQy+ntbx4/xQP+w6PQV9X0Ow818A==
+
 cross-fetch@^3.1.5:
   version "3.1.5"
   resolved "https://registry.npmjs.org/cross-fetch/-/cross-fetch-3.1.5.tgz"
