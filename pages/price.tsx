@@ -49,11 +49,11 @@ export default function PricePage({ products }: { products: any[] }) {
   return (
     <Layout meta={meta}>
       <div className="flex flex-col items-center">
-        <h1 className="mt-20 text-center text-4xl font-bold text-green-600 md:text-5xl">
+        <h1 className="mt-16 text-center text-4xl font-bold text-green-600 md:text-5xl">
           Transparent and affordable price
         </h1>
         <h1 className="mt-10 text-center text-3xl dark:text-white">
-          One credit for one minute audio
+          One credit for one minute audio, free for first 20 minutes
         </h1>
         <div className="mt-24 flex flex-col items-center justify-start space-y-10 md:flex-row md:space-x-10 md:space-y-0">
           {products &&
@@ -63,7 +63,7 @@ export default function PricePage({ products }: { products: any[] }) {
                 className="flex h-[400px] w-full flex-col items-center justify-between rounded-lg border-2 border-green-700 bg-green-200 p-8 dark:bg-green-900 md:w-[400px]"
               >
                 <div className="flex flex-col dark:text-white">
-                  <span className="text-4xl font-bold">
+                  <span className="text-3xl font-bold">
                     {product.attributes.name}
                   </span>
                   <span className="mt-10 text-2xl">

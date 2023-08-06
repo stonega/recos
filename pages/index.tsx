@@ -19,8 +19,8 @@ export default function Home() {
       <div className="mb-0 md:mb-20"></div>
       <div className="flex flex-col md:grid md:grid-cols-2">
         <div className="flex flex-col items-center md:items-start">
-          <div className="text-center md:text-left mb-20 text-4xl font-bold text-green-600">
-            Hi, Transcript any podcast you loved to text!
+          <div className="text-center md:text-left mb-20 text-4xl leading-[3rem] font-bold text-green-600">
+            Hi, Transcript any podcast you love to text and discover more!
           </div>
           <Button
             className="mb-20 md:mb-40 rounded-xl border-green-400 py-4 text-2xl font-normal"
