@@ -1,8 +1,6 @@
 import Layout from "@/components/layout";
 import { CreditHistory, Meta } from "types";
 import useSWR from "swr";
-import { ArrowLeftCircle } from "lucide-react";
-import Link from "next/link";
 import HistoryCard from "@/components/credit/history-card";
 import { useEffect, useState } from "react";
 import { getToken } from "next-auth/jwt";

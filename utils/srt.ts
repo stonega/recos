@@ -1,4 +1,4 @@
-type SrtItem = {
+export type SrtItem = {
   id: number;
   time: string;
   text: string;

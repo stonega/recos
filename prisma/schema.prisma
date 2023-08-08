@@ -59,14 +59,26 @@ model VerificationToken {
 }
 
 model Credit {
-  id        String   @id @default(cuid())
-  create_at DateTime @default(now())
-  name      String?
-  audio_length Int @default(0)
-  credit    Int @default(0)
-  userId    String
-  type      String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  create_at    DateTime @default(now())
+  name         String?
+  audio_length Int      @default(0)
+  credit       Int      @default(0)
+  userId       String
+  type         String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+model Subtitle {
+  id              String   @id @default(cuid())
+  create_at       DateTime @default(now())
+  task_id         String
+  subtitle_id     Int
+  text            String
+  start_timestamp String
+  end_timestamp   String
+
+  @@index([id, task_id])
 }
