@@ -30,7 +30,7 @@ const BASE_URL = "https://recos-audio-slice-production.up.railway.app";
 const DEFAULT_OPTION: TranscriptOption = {
   prompt: "",
   translate: false,
-  srt: false,
+  srt: true,
 };
 
 const Result = ({ input, token }: ResultProps) => {
@@ -251,7 +251,7 @@ const Result = ({ input, token }: ResultProps) => {
                 ></InfoCard>
               </div>
               <div className="grid w-full grid-cols-3 gap-2 md:grid-cols-5">
-                <div className="col-span-2 flex flex-col space-y-2 rounded-md bg-green-200 p-4 dark:bg-green-400 md:col-span-4">
+                <div className="flex flex-col space-y-2 rounded-md bg-green-200 p-4 dark:bg-green-400 md:col-span-5">
                   <label htmlFor="prompt" className="text-lg">
                     Prompt
                   </label>
@@ -266,7 +266,7 @@ const Result = ({ input, token }: ResultProps) => {
                     }
                   />
                 </div>
-                <div className="col-span-1 flex flex-col items-center justify-between space-y-2 rounded-md bg-green-200 p-2 pt-4 dark:bg-green-400">
+                {/* <div className="col-span-1 flex flex-col items-center justify-between space-y-2 rounded-md bg-green-200 p-2 pt-4 dark:bg-green-400">
                   <label htmlFor="srt" className="text-lg">
                     Timestamp
                   </label>
@@ -281,7 +281,7 @@ const Result = ({ input, token }: ResultProps) => {
                     <Switch.Thumb className="shadow-blackA7 block h-[21px] w-[21px] translate-x-0.5 rounded-full bg-white  transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px]" />
                   </Switch.Root>
                   <span className="text-xs">Return srt format</span>
-                </div>
+                </div> */}
               </div>
             </div>
           </>

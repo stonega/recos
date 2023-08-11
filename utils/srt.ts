@@ -2,6 +2,8 @@ export type SrtItem = {
   id: number;
   time: string;
   text: string;
+  start_timestamp?: string;
+  end_timestamp?: string
 };
 
 type SrtTimestamp = string;
@@ -28,6 +30,15 @@ function convertTimeToMilliseconds(timeStr: SrtTimestamp): number {
     parseInt(s) * 1000 +
     parseInt(ms)
   );
+}
+
+export function parseTimestamp(timeStr: SrtTimestamp): string {
+  const [hours, minutes, seconds] = timeStr.split(":");
+  const [s] = seconds.split(",");
+  if(Number(hours) === 0) {
+    return `${minutes.padStart(2, '0')}:${s.padStart(2, "0")}`
+  } 
+  return hours.padStart(2, '0') + ":" + minutes.padStart(2, '0') + ":" + s.padStart(2, "0");
 }
 
 function getDuration(startTime: SrtTimestamp, endTime: SrtTimestamp): number {

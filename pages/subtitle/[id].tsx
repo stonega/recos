@@ -1,21 +1,44 @@
 import { SrtItem } from "utils";
-export async function getServerSideProps(context: any) {
-    const { id } = context.params;
-    const response = await fetch(`/api/subtitle/${id}`);
+import useSWR from "swr";
+import { useRouter } from "next/router";
+import Layout from "@/components/layout";
+import { CreditHistory, Meta } from "types";
+import SrtItemCard from "@/components/subtitle/srt-item-card";
+
+const SubtitlePage = () => {
+  const router = useRouter();
+  const id = router.query.id as string;
+  const request = async (url: string) => {
+    const response = await fetch(url);
     const result = await response.json();
-    return {
-        props: {
-            result: result.data
-        },
-    };
-}
-const SubtitlePage = ({ result}: {result: SrtItem[]}) => {
-    return <div>
-        Subtitle Page
-        {
-          result.map(subtitle => {return <div key={subtitle.id}>{subtitle.text}</div>})
-        }
-        </div>;
-}
+    return result.data;
+  };
+
+  const { data } = useSWR<SrtItem[]>(
+    () => `/api/subtitle/${encodeURIComponent(id)}`,
+    request,
+  );
+  const { data: record} = useSWR<CreditHistory>(() => `/api/record/${encodeURIComponent(id)}`, request)
+
+  const meta: Meta = {
+    description: "Podcast to text.",
+    ogUrl: "http://recos.stonegate.me",
+    title: "Recos.",
+  };
+  
+  return (
+    <Layout meta={meta}>
+      {record && (
+        <>
+        <div className="text-2xl mt-10 dark:text-white">{record.name}</div>
+        </>
+      )}
+      {data &&
+        data.map((subtitle) => {
+          return <SrtItemCard key={subtitle.id} srtItem={subtitle} />;
+        })}
+    </Layout>
+  );
+};
 
 export default SubtitlePage;

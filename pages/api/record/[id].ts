@@ -1,4 +1,3 @@
-
 import { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
 import prisma from "../../../lib/prisma";
@@ -15,6 +14,6 @@ export default async function handler(
     res.status(404).end("User not found");
   }
   const { id: taskId} = req.query as { id: string };
-  const subtitles = await prisma?.subtitle.findMany({ where: { task_id: taskId }, orderBy: { subtitle_id: 'asc' } });
-  res.status(200).json({ data: subtitles });
+  const record = await prisma?.credit.findFirst({ where: { id: taskId }});
+  res.status(200).json({ data: record });
 }
