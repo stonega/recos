@@ -51,6 +51,7 @@ export type TranscriptOption = {
 export type CreditHistory = {
   audio_length: number;
   create_at: string;
+  audio_url: string;
   id: string;
   name: string;
   title: string;

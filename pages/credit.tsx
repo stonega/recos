@@ -77,7 +77,7 @@ export default function Credit({
 
   return (
     <Layout meta={meta}>
-      <div className="text-4xl font-medium mt-10 mb-12 dark:text-white">Credits Usage</div>
+      <div className="text-4xl font-medium mt-10 mb-12 dark:text-white">History</div>
       {isLoading && records.length === 0 ? (
         <div className="darK:text-white mt-20 flex h-60 flex-col items-center justify-center gap-2">
           <div className="history-loader mx-auto mt-10 w-full" />

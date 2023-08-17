@@ -72,10 +72,10 @@ function ParallaxText({ children, baseVelocity = 100 }: ParallaxProps) {
 
 const Inscriptions = () => {
   const capsuleClassName =
-    "h-12 rounded-full bg-green-200 dark:bg-green-400 text-2xl tracking-wide	px-4 flex flex-row justify-center items-center whitespace-nowrap leading-none overflow-hidden";
+    "h-12 rounded-full bg-green-200 dark:bg-green-400 text-md md:text-2xl tracking-wide	px-4 flex flex-row justify-center items-center whitespace-nowrap leading-none overflow-hidden";
   return (
     <>
-      <div className="flex flex-col space-y-10 rounded-2xl bg-green-600 py-10 dark:bg-green-900">
+      <div className="-mx-4 md:mx-0 flex flex-col space-y-10 rounded-none md:rounded-2xl bg-green-600 py-10 dark:bg-green-900">
         <ParallaxText baseVelocity={3}>
           <div className={cl(capsuleClassName)}>行万里路 读万卷书</div>
           <div className={cl(capsuleClassName)}>要敢于去相信</div>

@@ -26,13 +26,13 @@ const NavBar = () => {
         <ThemeModeButton></ThemeModeButton>
         <Link
           href="/dashboard"
-          className="mx-8 text-xl underline underline-offset-8 hover:text-green-600 hover:decoration-wavy dark:text-white"
+          className="hidden md:block mx-8 text-xl underline underline-offset-8 hover:text-green-600 hover:decoration-wavy dark:text-white"
         >
           Dashboard
         </Link>
         <Link
           href="/price"
-          className="text-xl underline underline-offset-8 hover:text-green-600 hover:decoration-wavy dark:text-white"
+          className="hidden md:block text-xl underline underline-offset-8 hover:text-green-600 hover:decoration-wavy dark:text-white"
         >
           Pricing
         </Link>

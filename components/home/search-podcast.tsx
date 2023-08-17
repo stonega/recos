@@ -29,7 +29,7 @@ function useEpisodes(search: string) {
       setPage(0);
     }
     setEpisodes([]);
-  }, [search]);
+  }, [mutate, search]);
 
   useEffect(() => {
     if (data) {

@@ -63,9 +63,11 @@ model Credit {
   create_at    DateTime @default(now())
   name         String?
   audio_length Int      @default(0)
+  prompt       String   @default("")
   credit       Int      @default(0)
   userId       String
   type         String
+  audio_url    String   @default("")
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])

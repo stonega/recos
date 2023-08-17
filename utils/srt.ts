@@ -4,6 +4,7 @@ export type SrtItem = {
   text: string;
   start_timestamp?: string;
   end_timestamp?: string
+  subtitle_id?: number;
 };
 
 type SrtTimestamp = string;
@@ -29,6 +30,17 @@ function convertTimeToMilliseconds(timeStr: SrtTimestamp): number {
     parseInt(minutes) * 60 * 1000 +
     parseInt(s) * 1000 +
     parseInt(ms)
+  );
+}
+
+export function convertTimeToSeconds(timeStr: SrtTimestamp): number {
+  const [hours, minutes, seconds] = timeStr.split(":");
+  const [s, ms] = seconds.split(",");
+
+  return (
+    parseInt(hours) * 60 * 60 +
+    parseInt(minutes) * 60 +
+    parseInt(s)
   );
 }
 

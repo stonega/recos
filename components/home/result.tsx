@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { AudioInput, TranscriptOption } from "types";
 import { ofetch } from "ofetch";
 import InfoCard from "../shared/info-card";
-import * as Switch from "@radix-ui/react-switch";
+import * as Progress from "@radix-ui/react-progress";
 import ResultEditor from "./result-editor";
 import Confetti from "../shared/confetti";
 import { useSession } from "next-auth/react";
@@ -24,7 +24,7 @@ interface ResultProps {
   token: string;
 }
 
-type Step = "input" | "downloading" | "loading" | "result";
+type Step = "input" | "downloading" | "uploading" | "loading" | "result";
 const DEFAULT_PROMPT = "Add punctuation marks and format the text.";
 const BASE_URL = "https://recos-audio-slice-production.up.railway.app";
 const DEFAULT_OPTION: TranscriptOption = {
@@ -63,7 +63,7 @@ const Result = ({ input, token }: ResultProps) => {
       if (url === "/") throw "error";
       const path = localStorage.getItem("path");
       console.log(`App is changing to ${url} ${step} ${path}`);
-      if (step !== "input" && path !== url) {
+      if (step === "input" && path !== url) {
         localStorage.setItem("path", url);
         setShowConfirmModal(true);
         throw "error";
@@ -152,8 +152,7 @@ const Result = ({ input, token }: ResultProps) => {
           const finalResult = option.srt
             ? mergeMultipleSrtStrings(...result)
             : result.join(" ");
-          setStep("result");
-          setResult(finalResult);
+          router.push("/subtitle/" + taskId);
           document.title = "Task Completed, " + filename;
           return;
         } catch (error) {
@@ -162,12 +161,12 @@ const Result = ({ input, token }: ResultProps) => {
           return;
         }
       } else {
-        setStep("loading");
         try {
           const formData = new FormData();
           formData.append("file", input.input);
           formData.append("srt", option.srt.toString());
           formData.append("prompt", option.prompt);
+          setStep("uploading");
           const response = await axios.post(
             `${BASE_URL}/transcript-task`,
             formData,
@@ -175,23 +174,24 @@ const Result = ({ input, token }: ResultProps) => {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
+              onUploadProgress: function (progressEvent) {
+                if (!progressEvent) return;
+                const percentCompleted = Math.round(
+                  (progressEvent.loaded * 100) / (progressEvent.total ?? 1),
+                );
+                setProgress(percentCompleted);
+              },
             },
           );
+          setStep("loading");
           const taskId = response.data.task_id;
-          const result: string[] = await new Promise((resolve, reject) => {
-            const id = setInterval(async () => {
-              const result = await axios.get(`${BASE_URL}/tasks/${taskId}`);
-              if (result.data.task_status === "SUCCESS") {
-                resolve(result.data.task_result);
-                clearInterval(id);
-              }
-            }, 1000);
-          });
-          const finalResult = option.srt
-            ? mergeMultipleSrtStrings(...result)
-            : result.join(" ");
-          setStep("result");
-          setResult(finalResult);
+          const id = setInterval(async () => {
+            const result = await axios.get(`${BASE_URL}/tasks/${taskId}`);
+            if (result.data.task_status === "SUCCESS") {
+              clearInterval(id);
+              router.push("/subtitle/" + encodeURIComponent(taskId) + '?fresh=true');
+            }
+          }, 1000);
           return;
         } catch (error) {
           setStep("input");
@@ -215,7 +215,7 @@ const Result = ({ input, token }: ResultProps) => {
           <div className="break-all pt-4 pb-2 text-2xl font-bold dark:text-white">
             {input.title}
           </div>
-          {input.type === "youtube" ? (
+          {/* {input.type === "youtube" ? (
             <iframe
               className="aspect-video h-auto w-full rounded-md"
               src={`https://www.youtube.com/embed/${getYoutubeId(
@@ -228,45 +228,43 @@ const Result = ({ input, token }: ResultProps) => {
             <div className="w-full rounded-md bg-green-200 px-4 py-6 dark:bg-green-400">
               <audio className="w-full" controls src={audioSource}></audio>
             </div>
-          )}
+          )} */}
         </div>
-        {step === "input" && (
-          <>
-            <div className="flex flex-col items-center justify-start gap-2 p-2">
-              <div className="grid w-full grid-cols-3 gap-2">
-                <InfoCard
-                  title="🎧"
-                  value={formatDuration(duration)}
-                  prefix=""
-                ></InfoCard>
-                <InfoCard
-                  title="💰"
-                  value={session ? getCredit(duration) : getFee(duration)}
-                  prefix={session ? "Credits" : "≈$"}
-                ></InfoCard>
-                <InfoCard
-                  title="⌛"
-                  value={getTime(duration)}
-                  prefix="≈"
-                ></InfoCard>
-              </div>
-              <div className="grid w-full grid-cols-3 gap-2 md:grid-cols-5">
-                <div className="flex flex-col space-y-2 rounded-md bg-green-200 p-4 dark:bg-green-400 md:col-span-5">
-                  <label htmlFor="prompt" className="text-lg">
-                    Prompt
-                  </label>
-                  <textarea
-                    name="prompt"
-                    cols={6}
-                    className="textarea"
-                    placeholder="Something about your audio, like language or keywords"
-                    value={option.prompt}
-                    onChange={(event) =>
-                      setOption({ ...option, prompt: event.target.value })
-                    }
-                  />
-                </div>
-                {/* <div className="col-span-1 flex flex-col items-center justify-between space-y-2 rounded-md bg-green-200 p-2 pt-4 dark:bg-green-400">
+        <div className="flex flex-col items-center justify-start gap-2 p-2">
+          <div className="grid w-full grid-cols-3 gap-2">
+            <InfoCard
+              title="🎧"
+              value={formatDuration(duration)}
+              prefix=""
+            ></InfoCard>
+            <InfoCard
+              title="💰"
+              value={session ? getCredit(duration) : getFee(duration)}
+              prefix={session ? "Credits" : "≈$"}
+            ></InfoCard>
+            <InfoCard
+              title="⌛"
+              value={getTime(duration)}
+              prefix="≈"
+            ></InfoCard>
+          </div>
+          <div className="grid w-full grid-cols-3 gap-2 md:grid-cols-5">
+            <div className="flex flex-col space-y-2 rounded-md bg-green-200 p-4 dark:bg-green-400 md:col-span-5">
+              <label htmlFor="prompt" className="text-lg">
+                Prompt
+              </label>
+              <textarea
+                name="prompt"
+                cols={6}
+                className="textarea"
+                placeholder="Something about your audio, like language or keywords"
+                value={option.prompt}
+                onChange={(event) =>
+                  setOption({ ...option, prompt: event.target.value })
+                }
+              />
+            </div>
+            {/* <div className="col-span-1 flex flex-col items-center justify-between space-y-2 rounded-md bg-green-200 p-2 pt-4 dark:bg-green-400">
                   <label htmlFor="srt" className="text-lg">
                     Timestamp
                   </label>
@@ -282,15 +280,32 @@ const Result = ({ input, token }: ResultProps) => {
                   </Switch.Root>
                   <span className="text-xs">Return srt format</span>
                 </div> */}
-              </div>
-            </div>
-          </>
-        )}
+          </div>
+        </div>
       </div>
       {step === "input" && (
         <Button className="mx-auto mt-10 mb-6 px-8" onClick={submit}>
           Generate Transcription
         </Button>
+      )}
+      {step === "uploading" && (
+        <div className="darK:text-white mt-10 flex h-60 flex-col items-center justify-start gap-2">
+          <span className="mb-6 dot-loader text-2xl dark:text-white">Uploading</span>
+          <Progress.Root
+            className="bg-black/70 dark:bg-white/50 relative h-[8px] w-[300px] overflow-hidden rounded-full"
+            style={{
+              // Fix overflow clipping in Safari
+              // https://gist.github.com/domske/b66047671c780a238b51c51ffde8d3a0
+              transform: "translateZ(0)",
+            }}
+            value={progress}
+          >
+            <Progress.Indicator
+              className="ease-[cubic-bezier(0.65, 0, 0.35, 1)] h-full w-full bg-green-600 transition-transform duration-[660ms]"
+              style={{ transform: `translateX(-${100 - progress}%)` }}
+            />
+          </Progress.Root>
+        </div>
       )}
       {step === "loading" && (
         <div className="darK:text-white mt-10 flex h-60 flex-col items-center justify-center gap-2">
@@ -314,17 +329,6 @@ const Result = ({ input, token }: ResultProps) => {
           <span className="player-loader"></span>
           <div className="my-10"></div>
         </div>
-      )}
-      {step === "result" && (
-        <>
-          <Confetti></Confetti>
-          <ResultEditor
-            text={result}
-            title={filename}
-            onBack={handleBack}
-            srt={option.srt}
-          />
-        </>
       )}
     </>
   );
