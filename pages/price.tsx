@@ -72,18 +72,17 @@ export default function PricePage({ products }: { products: any[] }) {
                       .replace("</p>", "")}
                   </span>
                 </div>
-                <div className="flex w-full flex-row items-center justify-between dark:text-white">
+                <div className="flex w-full flex-row justify-between items-center dark:text-white">
                   <span className="font-mono text-4xl">
                     {product.attributes.price_formatted}
                   </span>
-                  <Button
-                    type="button"
+                  <div
+                    className="group cursor-pointer flex-row rounded-md text-lg font-normal text-green-600"
                     onClick={() => getCredits(product.id)}
-                    className="group h-16 w-full flex-row justify-center rounded-md text-lg font-normal"
                   >
-                    <span className="text-2xl">Checkout</span>
+                    <span className="text-2xl font-bold">Checkout</span>
                     <ArrowRight className="ml-4 inline -translate-y-1 group-hover:animate-bounce" />
-                  </Button>
+                  </div>
                 </div>
               </div>
             ))}

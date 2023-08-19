@@ -61,7 +61,7 @@ const ApiModal = ({
                   </Button>
                 </div>
                 <ErrorMessage name="data">
-                  {(msg) => <div className="text-red-600">{msg}</div>}
+                  {(msg: string) => <div className="text-red-600">{msg}</div>}
                 </ErrorMessage>
               </label>
             </Form>

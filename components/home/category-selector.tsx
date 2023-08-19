@@ -35,7 +35,7 @@ export const CategorySelector = ({ onSelect }: CategorySelectorProps) => {
         value="audio"
         aria-label="Audio"
       >
-        Audio
+        File
       </ToggleGroup.Item>
       <ToggleGroup.Item
         className={classNames(

@@ -112,7 +112,7 @@ export function Slider(props: SliderProps) {
           props.onChangeStart?.()
         }}
         ref={trackRef}
-        className="relative w-full bg-stone-100 dark:bg-neutral-800 md:rounded-full"
+        className="relative w-full bg-green-200 dark:bg-neutral-800 md:rounded-full"
       >
         <div
           className={classnames(
@@ -150,20 +150,20 @@ export function Slider(props: SliderProps) {
             state.getThumbMaxValue(0) === 0 && 'opacity-0',
             isFocusVisible || state.isThumbDragging(0)
               ? 'bg-stone-100 text-stone-900 dark:bg-neutral-800 dark:text-neutral-100'
-              : 'text-stone-500 dark:text-neutral-500'
+              : 'text-stone-500 dark:text-neutral-800'
           )}
         >
           {formatTime(currentTime, totalTime)}
         </output>
         <span
-          className="text-sm leading-6 text-stone-300 dark:text-neutral-600"
+          className="text-sm leading-6 text-stone-300 dark:text-neutral-800"
           aria-hidden="true"
         >
           /
         </span>
         <span
           className={classnames(
-            'hidden rounded-md py-0.5 font-mono text-sm leading-6 text-stone-500 dark:text-neutral-500 md:block',
+            'hidden rounded-md py-0.5 font-mono text-sm leading-6 text-stone-500 dark:text-neutral-800 md:block',
             state.getThumbMaxValue(0) === 0 && 'opacity-0'
           )}
         >

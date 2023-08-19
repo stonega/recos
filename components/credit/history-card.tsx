@@ -16,7 +16,7 @@ const HistoryCard = ({ history }: HistoryCardProps) => {
         <div className="text-sm opacity-70 dark:text-white">
           {dateFromNow(history.create_at)}
         </div>
-        <Link href={`/subtitle/${encodeURIComponent(history.id)}`}>Play</Link>
+        <Link href={`/subtitle/${encodeURIComponent(history.id)}`}>Read</Link>
       </div>
       <div className="flex flex-col items-end">
         <div className="text-lg dark:text-white">Credit {history.credit}</div>

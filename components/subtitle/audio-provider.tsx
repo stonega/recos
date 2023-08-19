@@ -21,6 +21,7 @@ export interface AudioData {
 
 type Player = {
   playing: boolean
+  buffering: boolean
   muted: boolean
   duration: number
   currentTime: number
@@ -40,6 +41,8 @@ type Player = {
 type ActionType =
   | { type: 'SET_META'; payload: AudioData }
   | { type: 'PLAY' }
+  | { type: 'CANPLAY'}
+  | { type: 'BUFFER'}
   | { type: 'PAUSE' }
   | { type: 'TOGGLE_MUTE' }
   | { type: 'SET_CURRENT_TIME'; payload: number }
@@ -51,6 +54,10 @@ function audioReducer(state: Player, action: ActionType): Player {
   switch (action.type) {
     case 'SET_META':
       return { ...state, meta: action.payload }
+    case 'CANPLAY':
+      return { ...state, buffering: false}
+    case 'BUFFER':
+      return { ...state, buffering: true}
     case 'PLAY':
       return { ...state, playing: true }
     case 'PAUSE':
@@ -71,6 +78,7 @@ interface AudioProviderProps {
 export function AudioProvider({ children }: AudioProviderProps) {
   const [state, dispatch] = useReducer(audioReducer, {
     playing: false,
+    buffering: true,
     muted: false,
     duration: 0,
     currentTime: 0,
@@ -155,6 +163,9 @@ export function AudioProvider({ children }: AudioProviderProps) {
         ref={playerRef}
         onPlay={() => dispatch({ type: 'PLAY' })}
         onPause={() => dispatch({ type: 'PAUSE' })}
+        onCanPlay={() => dispatch({ type: 'CANPLAY'})}
+        onSeeked={() => dispatch({ type: 'CANPLAY'})}
+        onSeeking={() => dispatch({ type: 'BUFFER'})}
         onTimeUpdate={(event) => {
           dispatch({
             type: 'SET_CURRENT_TIME',

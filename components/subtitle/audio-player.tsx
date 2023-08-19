@@ -12,6 +12,8 @@ import {
   PauseCircle,
 } from "lucide-react";
 import { PlaybackRateButton } from "./buttons/playback-rate-button";
+import { LoadingCircle, LoadingSpinner } from "../shared/icons";
+import BufferIcon from "../shared/icons/buffer-icon";
 
 function parseTime(seconds: number) {
   const hours = Math.floor(seconds / 3600);
@@ -43,7 +45,7 @@ export function AudioPlayer({ audio }: { audio?: AudioData }) {
   };
 
   return (
-    <div className="flex items-center gap-6 rounded-md bg-green-300 px-4 py-4 sticky top-10 backdrop-blur-lg dark:bg-green-900 md:px-6">
+    <div className="sticky top-10 flex items-center gap-6 rounded-md bg-green-300 px-4 py-4 backdrop-blur-lg dark:bg-green-900 md:px-6">
       <div className="mb-[env(safe-area-inset-bottom)] flex flex-1 flex-col gap-3 overflow-hidden p-1">
         <span
           className="truncate text-center text-xl font-bold leading-6 md:text-left"
@@ -55,7 +57,9 @@ export function AudioPlayer({ audio }: { audio?: AudioData }) {
           <div className="flex flex-none items-center gap-4">
             <Rewind onClick={() => player.seekBy?.(-10)} />
             <div className="">
-              {player?.playing ? (
+              {player?.buffering ? (
+                <BufferIcon />
+              ) : player?.playing ? (
                 <PauseCircle
                   size={32}
                   className="cursor-pointer"
