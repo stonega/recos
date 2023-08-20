@@ -23,10 +23,10 @@ export default function Home() {
             Hi, Transcript any podcast you love to text and discover even more!
           </div>
           <Button
-            className="mb-20 md:mb-40 rounded-xl border-green-400 py-4 text-2xl font-normal"
+            className="mb-20 md:mb-40 rounded-xl border-green-400 py-4 text-2xl font-bold"
             onClick={() => router.push("/dashboard")}
           >
-            Transcribe Now
+            Have a try 
           </Button>
         </div>
         <Inscriptions />

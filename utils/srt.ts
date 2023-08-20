@@ -5,6 +5,7 @@ export type SrtItem = {
   start_timestamp?: string;
   end_timestamp?: string
   subtitle_id?: number;
+  position?: number
 };
 
 type SrtTimestamp = string;

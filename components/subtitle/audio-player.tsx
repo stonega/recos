@@ -10,6 +10,7 @@ import {
   Rewind,
   FastForward,
   PauseCircle,
+  AlignVerticalSpaceAroundIcon
 } from "lucide-react";
 import { PlaybackRateButton } from "./buttons/playback-rate-button";
 import { LoadingCircle, LoadingSpinner } from "../shared/icons";
@@ -99,6 +100,11 @@ export function AudioPlayer({ audio }: { audio?: AudioData }) {
           <div className="flex items-center gap-4">
             <div className="flex items-center">
               <PlaybackRateButton player={player} />
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center cursor-pointer">
+              <AlignVerticalSpaceAroundIcon size={14} onClick={() => player?.scrollToSrtItem?.()} />
             </div>
           </div>
         </div>
