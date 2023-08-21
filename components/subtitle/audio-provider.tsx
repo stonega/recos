@@ -190,7 +190,7 @@ export function AudioProvider({ children }: AudioProviderProps) {
         document.body.scrollTop || document.documentElement.scrollTop;
       const scrollPosition = position - windowHeight -20
       console.log(scrollTop, position, scrollPosition);
-      if (!autoScroll && Math.abs((position - windowHeight - 20) - scrollTop) < 5) {
+      if (!autoScroll && Math.abs((position - windowHeight - 20) - scrollTop) < 20) {
         setAutoScroll(true);
       } else {
         setAutoScroll(false);

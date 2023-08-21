@@ -38,18 +38,25 @@ const SubtitlePage = () => {
     copiedTimeout: 2000, // timeout duration in milliseconds
   });
 
-  const content = useMemo(() => {
+  const handleExportSrt = () => {
     if (!data) return "";
-    return data
-      .map((subtitle) => `${subtitle.subtitle_id}\n${subtitle.start_timestamp}-${subtitle.end_timestamp}\n${subtitle.text}`)
-      .join("\n\n");
-  }, [data]);
-
-  const handleExport = (srt: boolean) => {
+    const content = data
+      .map((subtitle) => `${subtitle.subtitle_id}\n${subtitle.start_timestamp} --> ${subtitle.end_timestamp}\n${subtitle.text}`)
+      .join("\n\n")
     const blob = new Blob([content], {
       type: "text/plain;charset=utf-8",
     });
-    saveAs(blob, `${record?.name}.${srt ? "srt" : "txt"}`);
+    saveAs(blob, `${record?.name}.srt`);
+  };
+  const handleExportText = () => {
+    if (!data) return "";
+    const content = data
+      .map((subtitle) => subtitle.text)
+      .join(" ")
+    const blob = new Blob([content], {
+      type: "text/plain;charset=utf-8",
+    });
+    saveAs(blob, `${record?.name}.txt`);
   };
 
   const meta: Meta = {
@@ -82,27 +89,18 @@ const SubtitlePage = () => {
               <div className="flex flex-row justify-between items-center">
                 <div className="text-4xl">{record.name}</div>
                 <div className="flex flex-row">
-                  <Tooltip content="Copy the text">
-                    <button
-                      className="button px-2"
-                      style={{ opacity: clipboard.copied ? "0.6" : "1" }}
-                      onClick={() => clipboard.copy(content)}
-                    >
-                      {clipboard.copied ? "Copied !" : "COPY"}
-                    </button>
-                  </Tooltip>
                   <Tooltip content="Export pure text">
                     <button
                       className="button px-2"
-                      onClick={() => handleExport(false)}
+                      onClick={() => handleExportText()}
                     >
                       TXT
                     </button>
                   </Tooltip>
-                  <Tooltip content="Export srt text">
+                  <Tooltip content="Export srt file">
                     <button
                       className="button px-2"
-                      onClick={() => handleExport(true)}
+                      onClick={() => handleExportSrt()}
                     >
                       SRT
                     </button>
