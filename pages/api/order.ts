@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
 import { buffer, json } from "micro";
-import prisma from "../../lib/prisma";
+import { prisma } from "../../lib/prisma";
 
 export const config = {
   api: {

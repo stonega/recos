@@ -1,4 +1,4 @@
-import { PrismaClient } from "../prisma/generated/pgsql_client";
+import { PrismaClient } from "@prisma/client";
 import { PrismaClient as PrismaMongoClient } from "../prisma/generated/mongo_client";
 
 declare global {
