@@ -108,7 +108,7 @@ export default function Login({ providers }: { providers: any }) {
                 <button
                   type="submit"
                   // onClick={() => loginWithOauth("email")}
-                  className="dark:focus:ring-green-300/55 mt-4 mb-2 inline-flex w-full items-center justify-center rounded-lg bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-600/90 focus:outline-none focus:ring-4 focus:ring-green-600/50"
+                  className="dark:focus:ring-green-300/55 mb-2 mt-4 inline-flex w-full items-center justify-center rounded-lg bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-600/90 focus:outline-none focus:ring-4 focus:ring-green-600/50"
                 >
                   Send magic link
                   {isSending && (
@@ -119,7 +119,7 @@ export default function Login({ providers }: { providers: any }) {
                 </button>
               </form>
             </div>
-            <div className="relative h-[1.5px] w-full bg-green-400 after:absolute after:left-[50%] after:bottom-[-10px] after:w-8 after:translate-x-[-50%] after:bg-white after:text-center after:text-black/60 after:content-['or'] dark:after:bg-[#2a2a2a] dark:after:text-white"></div>
+            <div className="relative h-[1.5px] w-full bg-green-400 after:absolute after:bottom-[-10px] after:left-[50%] after:w-8 after:translate-x-[-50%] after:bg-white after:text-center after:text-black/60 after:content-['or'] dark:after:bg-[#2a2a2a] dark:after:text-white"></div>
             <div className="flex flex-col items-center space-y-3 py-8">
               <button
                 type="button"

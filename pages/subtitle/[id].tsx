@@ -1,7 +1,7 @@
-import { SrtItem, convertTimeToSeconds, parseTimestamp } from "utils";
-import useSWR from "swr";
+import { SrtItem } from "utils";
 import { useRouter } from "next/router";
 import Layout from "@/components/layout";
+import useSWR from "swr";
 import { CreditHistory, Meta } from "types";
 import SrtItemCard from "@/components/subtitle/srt-item-card";
 import Confetti from "@/components/shared/confetti";
@@ -14,6 +14,7 @@ import {
 } from "@/components/subtitle/audio-provider";
 import Tooltip from "@/components/shared/tooltip";
 import { useClipboard } from "use-clipboard-copy";
+const BASE_URL = "https://recos-audio-slice-production.up.railway.app/";
 const FILE_SERVER =
   "https://recos-audio-slice-production.up.railway.app/files/";
 const SubtitlePage = () => {
@@ -41,8 +42,11 @@ const SubtitlePage = () => {
   const handleExportSrt = () => {
     if (!data) return "";
     const content = data
-      .map((subtitle) => `${subtitle.subtitle_id}\n${subtitle.start_timestamp} --> ${subtitle.end_timestamp}\n${subtitle.text}`)
-      .join("\n\n")
+      .map(
+        (subtitle) =>
+          `${subtitle.subtitle_id}\n${subtitle.startTimestamp} --> ${subtitle.endTimestamp}\n${subtitle.text}`,
+      )
+      .join("\n\n");
     const blob = new Blob([content], {
       type: "text/plain;charset=utf-8",
     });
@@ -50,9 +54,7 @@ const SubtitlePage = () => {
   };
   const handleExportText = () => {
     if (!data) return "";
-    const content = data
-      .map((subtitle) => subtitle.text)
-      .join(" ")
+    const content = data.map((subtitle) => subtitle.text).join(" ");
     const blob = new Blob([content], {
       type: "text/plain;charset=utf-8",
     });
@@ -77,7 +79,7 @@ const SubtitlePage = () => {
           }
         : undefined,
     [record],
-  );  
+  );
 
   return (
     <AudioProvider>
@@ -86,7 +88,7 @@ const SubtitlePage = () => {
         {record && (
           <>
             <div className="mb-10 mt-10 dark:text-white">
-              <div className="flex flex-row justify-between items-center">
+              <div className="flex flex-row items-center justify-between">
                 <div className="text-4xl">{record.name}</div>
                 <div className="flex flex-row">
                   <Tooltip content="Export pure text">

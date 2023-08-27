@@ -9,7 +9,7 @@ const TermsPage = () => {
   };
   return (
     <Layout meta={meta}>
-      <article className="dark:props:heading:text-white prose mx-auto whitespace-pre-line py-3 font-mono text-black prose-headings:text-black dark:text-white md:container">
+      <article className="dark:props:heading:text-white prose mx-auto whitespace-pre-line py-3 font-mono text-black md:container prose-headings:text-black dark:text-white">
         <h2>TERMS OF SERVICE</h2>
         <h5>Last updated:&nbsp;Aug 1, 2023</h5>
         <p>

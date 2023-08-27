@@ -14,9 +14,7 @@ const Layout = ({ children, meta }: LayoutProps) => {
   const favicon = "https://recos.vercel.app/logo.png";
   const title = "Recos";
   const description = "Podcast to text.";
-  const CrispWithNoSSR = dynamic(
-    () => import('./crisp')
-  )
+  const CrispWithNoSSR = dynamic(() => import("./crisp"));
   return (
     <>
       <Head>

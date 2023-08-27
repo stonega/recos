@@ -1,4 +1,4 @@
-export default function BufferIcon () {
+export default function BufferIcon() {
   return (
     <svg
       aria-hidden="true"

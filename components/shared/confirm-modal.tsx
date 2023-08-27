@@ -32,7 +32,7 @@ const ConfirmModal = ({
         </div>
         <div className="mt-8 flex flex-row items-center">
           <Button
-            className="w-30 mx-auto mt-6 mb-6 border-green-500 bg-green-100 px-8 font-normal"
+            className="w-30 mx-auto mb-6 mt-6 border-green-500 bg-green-100 px-8 font-normal"
             onClick={() => {
               localStorage.removeItem("path");
               setShowConfirmModal(false);
@@ -41,7 +41,7 @@ const ConfirmModal = ({
             Cancel
           </Button>
           <Button
-            className="w-30 mx-auto mt-6 mb-6 px-8"
+            className="w-30 mx-auto mb-6 mt-6 px-8"
             onClick={() => {
               setShowConfirmModal(false);
               onConfirm();

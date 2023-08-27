@@ -12,7 +12,7 @@ import { useState } from "react";
 import { getToken } from "next-auth/jwt";
 
 export async function getServerSideProps(context: any) {
-  const token = await getToken({ req: context.req, raw: true })
+  const token = await getToken({ req: context.req, raw: true });
   if (!token) {
     return {
       redirect: {
@@ -29,11 +29,7 @@ export async function getServerSideProps(context: any) {
   };
 }
 
-export default function Home({
-  token,
-}: {
-  token: any;
-}) {
+export default function Home({ token }: { token: any }) {
   const meta: Meta = {
     description: "Podcast to text.",
     ogUrl: "http://recos.stonegate.me",

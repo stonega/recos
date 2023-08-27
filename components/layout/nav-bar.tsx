@@ -20,19 +20,19 @@ const NavBar = () => {
             Recos.
           </span>
         </Link>
-        <span className="rounded-full  bg-green-300 py-1 px-2 text-sm">
+        <span className="rounded-full  bg-green-300 px-2 py-1 text-sm">
           Beta
         </span>
         <ThemeModeButton></ThemeModeButton>
         <Link
           href="/dashboard"
-          className="hidden md:block mx-8 text-xl underline underline-offset-8 hover:text-green-600 hover:decoration-wavy dark:text-white"
+          className="mx-8 hidden text-xl underline underline-offset-8 hover:text-green-600 hover:decoration-wavy dark:text-white md:block"
         >
           Dashboard
         </Link>
         <Link
           href="/price"
-          className="hidden md:block text-xl underline underline-offset-8 hover:text-green-600 hover:decoration-wavy dark:text-white"
+          className="hidden text-xl underline underline-offset-8 hover:text-green-600 hover:decoration-wavy dark:text-white md:block"
         >
           Pricing
         </Link>

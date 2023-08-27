@@ -179,6 +179,11 @@ export function AudioProvider({ children }: AudioProviderProps) {
         top: position - windowHeight - 20,
         behavior: "smooth",
       });
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     }
   }, [autoScroll, state.currentTime, state.srtItem?.position]);
 
@@ -188,9 +193,8 @@ export function AudioProvider({ children }: AudioProviderProps) {
       const windowHeight = window.innerHeight / 2;
       const scrollTop =
         document.body.scrollTop || document.documentElement.scrollTop;
-      const scrollPosition = position - windowHeight -20
-      console.log(scrollTop, position, scrollPosition);
-      if (!autoScroll && Math.abs((position - windowHeight - 20) - scrollTop) < 20) {
+      const scrollPosition = position - windowHeight - 20;
+      if (Math.abs(scrollPosition - scrollTop) < 50) {
         setAutoScroll(true);
       } else {
         setAutoScroll(false);

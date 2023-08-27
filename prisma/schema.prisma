@@ -1,11 +1,12 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/pgsql_client"
+}
+
 datasource db {
   provider     = "postgresql"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 model Account {
@@ -14,15 +15,14 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
@@ -44,10 +44,10 @@ model User {
   email          String?   @unique
   emailVerified  DateTime?
   image          String?
+  credit         Int       @default(20)
   accounts       Account[]
   sessions       Session[]
   credit_history Credit[]
-  credit         Int       @default(20)
 }
 
 model VerificationToken {
@@ -62,12 +62,12 @@ model Credit {
   id           String   @id @default(cuid())
   create_at    DateTime @default(now())
   name         String?
-  audio_length Int      @default(0)
-  prompt       String   @default("")
   credit       Int      @default(0)
   userId       String
   type         String
+  audio_length Int      @default(0)
   audio_url    String   @default("")
+  prompt       String   @default("")
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])

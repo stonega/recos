@@ -67,7 +67,7 @@ const ResultEditor = ({ text, title, srt, onBack }: EditorProps) => {
 
   return (
     <>
-      <div className="mt-16 mb-8 flex flex-row justify-between dark:text-white">
+      <div className="mb-8 mt-16 flex flex-row justify-between dark:text-white">
         <button className="flex flex-row items-center text-xl" onClick={onBack}>
           <ArrowLeftCircle className="inline" />
           <span className="ml-2" onClick={onBack}>

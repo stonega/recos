@@ -19,14 +19,14 @@ export default function Home() {
       <div className="mb-0 md:mb-20"></div>
       <div className="flex flex-col md:grid md:grid-cols-2">
         <div className="flex flex-col items-center md:items-start">
-          <div className="text-center md:text-left mb-20 text-4xl leading-[3rem] font-bold text-green-600">
+          <div className="mb-20 text-center text-4xl font-bold leading-[3rem] text-green-600 md:text-left">
             Hi, Transcript any podcast you love to text and discover even more!
           </div>
           <Button
-            className="mb-20 md:mb-40 rounded-xl border-green-400 py-4 text-2xl font-bold"
+            className="mb-20 rounded-xl border-green-400 py-4 text-2xl font-bold md:mb-40"
             onClick={() => router.push("/dashboard")}
           >
-            Have a try 
+            Have a try
           </Button>
         </div>
         <Inscriptions />

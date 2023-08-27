@@ -26,7 +26,7 @@ const WhatIsRecos = () => {
       <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
         {data.features.map((item) => (
           <div key={item.title} className="card">
-            <div className="mt-2 mb-4 text-2xl font-bold dark:text-white">
+            <div className="mb-4 mt-2 text-2xl font-bold dark:text-white">
               {item.title}
             </div>
             <div className="text-xl dark:text-white">{item.description}</div>

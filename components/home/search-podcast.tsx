@@ -87,7 +87,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <div className="absolute top-5 right-4">
+      <div className="absolute right-4 top-5">
         {isLoading && page === 0 && <LoadingCircle />}
       </div>
 
@@ -137,7 +137,7 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
                 className="flex touch-none select-none p-0.5 transition-colors duration-[160ms] ease-out data-[orientation=horizontal]:h-2.5 data-[orientation=vertical]:w-2.5 data-[orientation=horizontal]:flex-col"
                 orientation="vertical"
               >
-                <ScrollArea.Thumb className="relative flex-1 rounded-[10px] bg-black/40 before:absolute before:top-1/2 before:left-1/2 before:h-full before:min-h-[44px] before:w-full before:min-w-[44px] before:-translate-x-1/2 before:-translate-y-1/2 before:content-['']" />
+                <ScrollArea.Thumb className="relative flex-1 rounded-[10px] bg-black/40 before:absolute before:left-1/2 before:top-1/2 before:h-full before:min-h-[44px] before:w-full before:min-w-[44px] before:-translate-x-1/2 before:-translate-y-1/2 before:content-['']" />
               </ScrollArea.Scrollbar>
               <ScrollArea.Corner className="bg-black" />
             </ScrollArea.Root>

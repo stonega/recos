@@ -5,15 +5,13 @@ import { AudioData, useAudioPlayer } from "./audio-provider";
 import { Slider } from "./buttons/slider";
 
 import {
-  VolumeX,
   PlayCircle,
   Rewind,
   FastForward,
   PauseCircle,
-  AlignVerticalSpaceAroundIcon
+  AlignVerticalSpaceAroundIcon,
 } from "lucide-react";
 import { PlaybackRateButton } from "./buttons/playback-rate-button";
-import { LoadingCircle, LoadingSpinner } from "../shared/icons";
 import BufferIcon from "../shared/icons/buffer-icon";
 
 function parseTime(seconds: number) {
@@ -49,12 +47,17 @@ export function AudioPlayer({ audio }: { audio?: AudioData }) {
     <div className="sticky top-10 flex items-center gap-6 rounded-md bg-green-300 px-4 py-4 backdrop-blur-lg dark:bg-green-900 md:px-6">
       <div className="mb-[env(safe-area-inset-bottom)] flex flex-1 flex-col gap-3 overflow-hidden p-1">
         <span
-          className="truncate text-center text-xl font-bold leading-6 md:text-left"
+          className="mt-4 truncate text-center text-xl font-bold leading-6 md:mt-0 md:text-left"
           title={player?.meta?.title}
         >
           {player?.meta?.title}
         </span>
         <div className="flex justify-between gap-6">
+          <div className="flex items-center gap-4 md:hidden">
+            <div className="flex items-center">
+              <PlaybackRateButton player={player} />
+            </div>
+          </div>
           <div className="flex flex-none items-center gap-4">
             <Rewind onClick={() => player.seekBy?.(-10)} />
             <div className="">
@@ -97,14 +100,17 @@ export function AudioPlayer({ audio }: { audio?: AudioData }) {
               player.pause?.();
             }}
           />
-          <div className="flex items-center gap-4">
+          <div className="hidden items-center gap-4 md:flex">
             <div className="flex items-center">
               <PlaybackRateButton player={player} />
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="flex items-center cursor-pointer">
-              <AlignVerticalSpaceAroundIcon size={14} onClick={() => player?.scrollToSrtItem?.()} />
+            <div className="flex cursor-pointer items-center">
+              <AlignVerticalSpaceAroundIcon
+                size={14}
+                onClick={() => player?.scrollToSrtItem?.()}
+              />
             </div>
           </div>
         </div>

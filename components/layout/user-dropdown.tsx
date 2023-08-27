@@ -69,7 +69,7 @@ export default function UserDropdown() {
           onClick={() => setOpenPopover(!openPopover)}
           className="flex h-12 cursor-pointer flex-row items-center justify-center overflow-hidden border-none transition-all duration-75 focus:border-none focus:outline-none active:scale-95"
         >
-          <div className="flex-col items-start space-y-1 hidden md:flex">
+          <div className="hidden flex-col items-start space-y-1 md:flex">
             <span className="text-xl leading-none dark:text-white">
               {name || email}
             </span>

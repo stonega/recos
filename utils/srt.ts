@@ -2,10 +2,10 @@ export type SrtItem = {
   id: number;
   time: string;
   text: string;
-  start_timestamp?: string;
-  end_timestamp?: string
+  startTimestamp?: string;
+  endTimestamp?: string;
   subtitle_id?: number;
-  position?: number
+  position?: number;
 };
 
 type SrtTimestamp = string;
@@ -38,20 +38,22 @@ export function convertTimeToSeconds(timeStr: SrtTimestamp): number {
   const [hours, minutes, seconds] = timeStr.split(":");
   const [s, ms] = seconds.split(",");
 
-  return (
-    parseInt(hours) * 60 * 60 +
-    parseInt(minutes) * 60 +
-    parseInt(s)
-  );
+  return parseInt(hours) * 60 * 60 + parseInt(minutes) * 60 + parseInt(s);
 }
 
 export function parseTimestamp(timeStr: SrtTimestamp): string {
   const [hours, minutes, seconds] = timeStr.split(":");
   const [s] = seconds.split(",");
-  if(Number(hours) === 0) {
-    return `${minutes.padStart(2, '0')}:${s.padStart(2, "0")}`
-  } 
-  return hours.padStart(2, '0') + ":" + minutes.padStart(2, '0') + ":" + s.padStart(2, "0");
+  if (Number(hours) === 0) {
+    return `${minutes.padStart(2, "0")}:${s.padStart(2, "0")}`;
+  }
+  return (
+    hours.padStart(2, "0") +
+    ":" +
+    minutes.padStart(2, "0") +
+    ":" +
+    s.padStart(2, "0")
+  );
 }
 
 function getDuration(startTime: SrtTimestamp, endTime: SrtTimestamp): number {

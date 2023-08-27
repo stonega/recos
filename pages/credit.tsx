@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getToken } from "next-auth/jwt";
 
 export async function getServerSideProps(context: any) {
-  const token = await getToken({ req: context.req, raw: true })
+  const token = await getToken({ req: context.req, raw: true });
   if (!token) {
     return {
       redirect: {
@@ -42,11 +42,7 @@ function useCredits(page: number, pageSize: number, token: string) {
   };
 }
 
-export default function Credit({
-  token,
-}: {
-  token: string;
-}) {
+export default function Credit({ token }: { token: string }) {
   const meta: Meta = {
     description: "Podcast to text.",
     ogUrl: "http://recos.stonegate.me",
@@ -77,7 +73,9 @@ export default function Credit({
 
   return (
     <Layout meta={meta}>
-      <div className="text-4xl font-medium mt-10 mb-12 dark:text-white">History</div>
+      <div className="mb-12 mt-10 text-4xl font-medium dark:text-white">
+        History
+      </div>
       {isLoading && records.length === 0 ? (
         <div className="darK:text-white mt-20 flex h-60 flex-col items-center justify-center gap-2">
           <div className="history-loader mx-auto mt-10 w-full" />

@@ -189,7 +189,9 @@ const Result = ({ input, token }: ResultProps) => {
             const result = await axios.get(`${BASE_URL}/tasks/${taskId}`);
             if (result.data.task_status === "SUCCESS") {
               clearInterval(id);
-              router.push("/subtitle/" + encodeURIComponent(taskId) + '?fresh=true');
+              router.push(
+                "/subtitle/" + encodeURIComponent(taskId) + "?fresh=true",
+              );
             }
           }, 1000);
           return;
@@ -212,7 +214,7 @@ const Result = ({ input, token }: ResultProps) => {
                 : "The task is currently in progress. You might lose your credits if you exit."}
             </div>
           </ConfirmModal>
-          <div className="break-all pt-4 pb-2 text-2xl font-bold dark:text-white">
+          <div className="break-all pb-2 pt-4 text-2xl font-bold dark:text-white">
             {input.title}
           </div>
           {/* {input.type === "youtube" ? (
@@ -284,15 +286,17 @@ const Result = ({ input, token }: ResultProps) => {
         </div>
       </div>
       {step === "input" && (
-        <Button className="mx-auto mt-10 mb-6 px-8" onClick={submit}>
+        <Button className="mx-auto mb-6 mt-10 px-8" onClick={submit}>
           Generate Transcription
         </Button>
       )}
       {step === "uploading" && (
         <div className="darK:text-white mt-10 flex h-60 flex-col items-center justify-start gap-2">
-          <span className="mb-6 dot-loader text-2xl dark:text-white">Uploading</span>
+          <span className="dot-loader mb-6 text-2xl dark:text-white">
+            Uploading
+          </span>
           <Progress.Root
-            className="bg-black/70 dark:bg-white/50 relative h-[8px] w-[300px] overflow-hidden rounded-full"
+            className="relative h-[8px] w-[300px] overflow-hidden rounded-full bg-black/70 dark:bg-white/50"
             style={{
               // Fix overflow clipping in Safari
               // https://gist.github.com/domske/b66047671c780a238b51c51ffde8d3a0

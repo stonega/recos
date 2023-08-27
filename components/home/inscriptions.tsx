@@ -75,7 +75,7 @@ const Inscriptions = () => {
     "h-12 rounded-full bg-green-200 dark:bg-green-400 text-bae md:text-2xl tracking-wide	px-4 flex flex-row justify-center items-center whitespace-nowrap leading-none overflow-hidden";
   return (
     <>
-      <div className="-mx-4 md:mx-0 flex flex-col space-y-4 md:space-y-10 rounded-none md:rounded-2xl bg-green-300 md:bg-green-600 py-10 dark:bg-green-800">
+      <div className="-mx-4 flex flex-col space-y-4 rounded-none bg-green-300 py-10 dark:bg-green-800 md:mx-0 md:space-y-10 md:rounded-2xl md:bg-green-600">
         <ParallaxText baseVelocity={3}>
           <div className={cl(capsuleClassName)}>行万里路 读万卷书</div>
           <div className={cl(capsuleClassName)}>要敢于去相信</div>
@@ -107,10 +107,18 @@ const Inscriptions = () => {
           <div className={cl(capsuleClassName)}>我们的字是文字的字</div>
         </ParallaxText>
         <ParallaxText baseVelocity={-3}>
-          <div className={cl(capsuleClassName)}>Following in the footsteps of the crucified Christ</div>
-          <div className={cl(capsuleClassName)}>Hey, what&apos;s good, Yeti Nation?</div>
-          <div className={cl(capsuleClassName)}>Following in the footsteps of the crucified Christ</div>
-          <div className={cl(capsuleClassName)}>Hey, what&apos;s good, Yeti Nation?</div>
+          <div className={cl(capsuleClassName)}>
+            Following in the footsteps of the crucified Christ
+          </div>
+          <div className={cl(capsuleClassName)}>
+            Hey, what&apos;s good, Yeti Nation?
+          </div>
+          <div className={cl(capsuleClassName)}>
+            Following in the footsteps of the crucified Christ
+          </div>
+          <div className={cl(capsuleClassName)}>
+            Hey, what&apos;s good, Yeti Nation?
+          </div>
         </ParallaxText>
       </div>
     </>

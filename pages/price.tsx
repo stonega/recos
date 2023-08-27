@@ -72,7 +72,7 @@ export default function PricePage({ products }: { products: any[] }) {
                       .replace("</p>", "")}
                   </span>
                 </div>
-                <div className="flex w-full flex-row justify-between items-center dark:text-white">
+                <div className="flex w-full flex-row items-center justify-between dark:text-white">
                   <span className="font-mono text-4xl">
                     {product.attributes.price_formatted}
                   </span>
