@@ -26,8 +26,8 @@ export function formatDuration(seconds: number): string {
     value < 10 ? "0" + value : value.toString();
 
   return (
-    padWithZero(hours) +
-    ":" +
+    (hours === 0 ? '' : padWithZero(hours) +
+    ":") +
     padWithZero(minutes) +
     ":" +
     padWithZero(remainingSeconds)

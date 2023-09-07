@@ -16,15 +16,22 @@ export default async function handler(
   const query = req.query;
   const page = Number(query.page ?? 1);
   const pageSize = Number(query.page_size ?? 20);
+  const status = query.status as string | undefined;
   const skip = (page - 1) * pageSize;
+  const where: any = {
+    userId: { equals: userId },
+  };
+  if (status) {
+    where.AND = {
+      status: {
+        equals: status,
+      },
+    };
+  }
   const data = await prisma.credit.findMany({
     skip,
     take: pageSize,
-    where: {
-      userId: {
-        equals: userId,
-      },
-    },
+    where,
     orderBy: {
       create_at: "desc",
     },

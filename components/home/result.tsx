@@ -63,7 +63,7 @@ const Result = ({ input, token }: ResultProps) => {
       if (url === "/") throw "error";
       const path = localStorage.getItem("path");
       console.log(`App is changing to ${url} ${step} ${path}`);
-      if (step === "input" && path !== url) {
+      if (step === "uploading" && path !== url) {
         localStorage.setItem("path", url);
         setShowConfirmModal(true);
         throw "error";
@@ -134,26 +134,22 @@ const Result = ({ input, token }: ResultProps) => {
               prompt: option.prompt,
               title: input.title,
               type: input.type,
+              image: input.image
             },
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
           const taskId = response.data.task_id;
-          const result: string[] = await new Promise((resolve, reject) => {
-            const id = setInterval(async () => {
-              const result = await axios.get(`${BASE_URL}/tasks/${taskId}`);
-              if (result.data.task_status === "SUCCESS") {
-                resolve(result.data.task_result);
-                clearInterval(id);
-              }
-            }, 1000);
-          });
-          const finalResult = option.srt
-            ? mergeMultipleSrtStrings(...result)
-            : result.join(" ");
-          router.push("/subtitle/" + taskId);
-          document.title = "Task Completed, " + filename;
+          const id = setInterval(async () => {
+            const result = await axios.get(`${BASE_URL}/tasks/${taskId}`);
+            if (result.data.task_status === "SUCCESS") {
+              clearInterval(id);
+              router.push(
+                "/subtitle/" + encodeURIComponent(taskId) + "?fresh=true",
+              );
+            }
+          }, 1000);
           return;
         } catch (error) {
           setStep("input");
@@ -287,7 +283,7 @@ const Result = ({ input, token }: ResultProps) => {
       </div>
       {step === "input" && (
         <Button className="mx-auto mb-6 mt-10 px-8" onClick={submit}>
-          Generate Transcription
+          Transcript
         </Button>
       )}
       {step === "uploading" && (

@@ -1,5 +1,5 @@
 import { dateFromNow } from "@/lib/utils";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { CreditHistory } from "types";
 import { formatDuration } from "utils";
@@ -7,8 +7,12 @@ interface HistoryCardProps {
   history: CreditHistory;
 }
 const HistoryCard = ({ history }: HistoryCardProps) => {
+  const router = useRouter()
+  function toDetailPage() {
+    router.push(`/subtitle/${encodeURIComponent(history.id)}`)
+  }
   return (
-    <div className="mt-4 flex flex-row justify-between">
+    <div className="py-4 flex flex-row justify-between hover:bg-green-300 dark:hover:bg-green-800 hover:px-2 cursor-pointer transition-all" onClick={toDetailPage}>
       <div className="flex flex-col">
         <div className="text-xl dark:text-white">
           {history.name === "" ? "Unknown" : history.name}
@@ -16,7 +20,6 @@ const HistoryCard = ({ history }: HistoryCardProps) => {
         <div className="text-sm opacity-70 dark:text-white">
           {dateFromNow(history.create_at)}
         </div>
-        <Link href={`/subtitle/${encodeURIComponent(history.id)}`}>Read</Link>
       </div>
       <div className="flex flex-col items-end">
         <div className="text-lg dark:text-white">Credit {history.credit}</div>

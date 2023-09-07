@@ -23,10 +23,11 @@ export default function Home() {
             Hi, Transcript any podcast you love to text and discover even more!
           </div>
           <Button
-            className="mb-20 rounded-xl border-green-400 py-4 text-2xl font-bold md:mb-40"
+            className="mb-20 border-2 border-green-400 py-4 text-2xl font-bold md:mb-0"
             onClick={() => router.push("/dashboard")}
+            outlined={ true }
           >
-            Have a try
+            Get Started
           </Button>
         </div>
         <Inscriptions />

@@ -47,6 +47,7 @@ model User {
   accounts       Account[]
   sessions       Session[]
   credit_history Credit[]
+  lang           String   @default("en-US")
 }
 
 model VerificationToken {
@@ -67,19 +68,9 @@ model Credit {
   audio_length Int      @default(0)
   audio_url    String   @default("")
   prompt       String   @default("")
+  audio_image  String   @default("")
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status       String   @default("pending")
 
   @@index([userId])
-}
-
-model Subtitle {
-  id              String   @id @default(cuid())
-  create_at       DateTime @default(now())
-  task_id         String
-  subtitle_id     Int
-  text            String
-  start_timestamp String
-  end_timestamp   String
-
-  @@index([id, task_id])
 }

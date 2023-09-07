@@ -1,9 +1,9 @@
 import Layout from "@/components/layout";
 import { CreditHistory, Meta } from "types";
-import useSWR from "swr";
 import HistoryCard from "@/components/credit/history-card";
 import { useEffect, useState } from "react";
 import { getToken } from "next-auth/jwt";
+import { useCredits } from "hooks/use-api";
 
 export async function getServerSideProps(context: any) {
   const token = await getToken({ req: context.req, raw: true });
@@ -22,26 +22,6 @@ export async function getServerSideProps(context: any) {
   };
 }
 
-function useCredits(page: number, pageSize: number, token: string) {
-  const request = async (): Promise<CreditHistory[]> => {
-    const response = await fetch(
-      `/api/credit_history?page=${page}&page_size=${pageSize}`,
-    );
-    const result = await response.json();
-    return result.data;
-  };
-
-  const { data, error, isLoading } = useSWR(
-    () => `/api/credit_history?page=${page}&page_size=${pageSize}`,
-    request,
-  );
-  return {
-    data,
-    isLoading,
-    error,
-  };
-}
-
 export default function Credit({ token }: { token: string }) {
   const meta: Meta = {
     description: "Podcast to text.",
@@ -53,7 +33,7 @@ export default function Credit({ token }: { token: string }) {
   const [records, setRecords] = useState<CreditHistory[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
-  const { data, isLoading, error } = useCredits(page, 20, token);
+  const { data, isLoading, error } = useCredits(page, 20, undefined, token);
 
   useEffect(() => {
     if (!data) return;
@@ -82,7 +62,7 @@ export default function Credit({ token }: { token: string }) {
         </div>
       ) : (
         <>
-          <div className="flex flex-col space-y-3 divide-y divide-solid divide-green-400">
+          <div className="flex flex-col divide-y divide-solid divide-green-400">
             {records &&
               records.map((item) => {
                 return (

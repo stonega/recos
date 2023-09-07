@@ -69,6 +69,8 @@ export const SearchPodcast = ({ onResult }: SearchPodcastProps) => {
           input: episode.audioUrl,
           duration: episode.length,
           prompt: episode.podcast.title + episode.title + episode.description,
+          image: episode.podcast.imageUrl,
+          type: 'podcast'
         });
       } catch (error) {
         if (error instanceof Error) toast.error(error.message);

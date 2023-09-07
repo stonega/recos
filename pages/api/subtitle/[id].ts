@@ -3,7 +3,6 @@ import { getToken } from "next-auth/jwt";
 import { prismaMongo } from "../../../lib/prisma";
 
 const secret = process.env.SECRET;
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -18,5 +17,8 @@ export default async function handler(
     where: { task_id: taskId },
     orderBy: { id: "asc" },
   });
-  res.status(200).json({ data: subtitles });
+  const document = await prismaMongo.summary.findFirst({
+    where: { task_id: taskId },
+  });
+  res.status(200).json({ data: { subtitles, summary: document?.summary, recos: document?.recos } });
 }

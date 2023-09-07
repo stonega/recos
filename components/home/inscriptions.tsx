@@ -1,4 +1,5 @@
 import cl from "classnames";
+import Image from "next/image";
 import { useRef } from "react";
 import {
   motion,
@@ -70,55 +71,45 @@ function ParallaxText({ children, baseVelocity = 100 }: ParallaxProps) {
   );
 }
 
-const Inscriptions = () => {
+const InscriptionItem = ({src, text} : {src: string,text: string}) => {
+
   const capsuleClassName =
-    "h-12 rounded-full bg-green-200 dark:bg-green-400 text-bae md:text-2xl tracking-wide	px-4 flex flex-row justify-center items-center whitespace-nowrap leading-none overflow-hidden";
+    "h-12 rounded-full bg-green-200 dark:bg-green-400 md:text-xl tracking-wide px-4 flex flex-row justify-center items-center whitespace-nowrap leading-none";
+  return <div className={cl(capsuleClassName)}>
+    <Image src={src} width={30} height={30} unoptimized alt={text} className="rounded-full mx-2"/>
+    <span className="mr-2">{text}</span>
+  </div>
+}
+
+const Inscriptions = () => {
   return (
     <>
       <div className="-mx-4 flex flex-col space-y-4 rounded-none bg-green-300 py-10 dark:bg-green-800 md:mx-0 md:space-y-10 md:rounded-2xl md:bg-green-600">
         <ParallaxText baseVelocity={3}>
-          <div className={cl(capsuleClassName)}>行万里路 读万卷书</div>
-          <div className={cl(capsuleClassName)}>要敢于去相信</div>
-          <div className={cl(capsuleClassName)}>Houston we have a podcast</div>
-          <div className={cl(capsuleClassName)}>行万里路 读万卷书</div>
-          <div className={cl(capsuleClassName)}>要敢于去相信</div>
-          <div className={cl(capsuleClassName)}>Houston we have a podcast</div>
+          <InscriptionItem text="行万里路 读万卷书" src="https://lushu-book.vercel.app/img/logo.jpg"/>
+          <InscriptionItem text="要敢于去相信" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIWmezFeb7NGRPQ8S2AYBdpwzVb16YvmwxOxJRkKp1ud6aymWW"/>
+          <InscriptionItem text="Houston we have a podcast" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQCDEysr0dNqI8klEvYKNfs4H1sjQ0kUcV_Wmy8vgsp2wMgIUJQ"/>
+          <InscriptionItem text="行万里路 读万卷书" src="https://lushu-book.vercel.app/img/logo.jpg"/>
+          <InscriptionItem text="要敢于去相信" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIWmezFeb7NGRPQ8S2AYBdpwzVb16YvmwxOxJRkKp1ud6aymWW"/>
+          <InscriptionItem text="Houston we have a podcast" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQCDEysr0dNqI8klEvYKNfs4H1sjQ0kUcV_Wmy8vgsp2wMgIUJQ"/>
         </ParallaxText>
         <ParallaxText baseVelocity={-3}>
-          <div className={cl(capsuleClassName)}>
-            Hello and welcome to our brand new arseblog arsecast
-          </div>
-          <div className={cl(capsuleClassName)}>This is JS party</div>
-          <div className={cl(capsuleClassName)}>
-            Hello and welcome to our brand new arseblog arsecast
-          </div>
-          <div className={cl(capsuleClassName)}>This is JS party</div>
+          <InscriptionItem text="Hello and welcome to our brand new arseblog arsecast" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcS4ryNTGc_AMI3XDy5cZxzE0XdS4R5XbcojqLzoJYSvhpZbSZOf"/>
+          <InscriptionItem text="This is JS party" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYQbBpZWBsd2mXR2N5EKDbY4nUNF8AV2_2XE53BdBNZvCm5maC"/>
+          <InscriptionItem text="Hello and welcome to our brand new arseblog arsecast" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcS4ryNTGc_AMI3XDy5cZxzE0XdS4R5XbcojqLzoJYSvhpZbSZOf"/>
+          <InscriptionItem text="This is JS party" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYQbBpZWBsd2mXR2N5EKDbY4nUNF8AV2_2XE53BdBNZvCm5maC"/>
         </ParallaxText>
         <ParallaxText baseVelocity={3}>
-          <div className={cl(capsuleClassName)}>我是一直在找酒喝的钱老板</div>
-          <div className={cl(capsuleClassName)}>
-            在这里 我们用你的声音讲述你的故事
-          </div>
-          <div className={cl(capsuleClassName)}>我们的字是文字的字</div>
-          <div className={cl(capsuleClassName)}>我是一直在找酒喝的钱老板</div>
-          <div className={cl(capsuleClassName)}>
-            在这里 我们用你的声音讲述你的故事
-          </div>
-          <div className={cl(capsuleClassName)}>我们的字是文字的字</div>
+          <InscriptionItem text="我是一直在找酒喝的钱老板" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdauM5j6FxPksbpxNkNP1FbB0M2wqQkddjgZc8o8xbTZyVh4tN"/>
+          <InscriptionItem text="我们的字是文字的字" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQa582Hcero1WCB6_XNSzD0ReJ5iATP_8pPX1fFPtPfMoY8KeE"/>
+          <InscriptionItem text="我是一直在找酒喝的钱老板" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdauM5j6FxPksbpxNkNP1FbB0M2wqQkddjgZc8o8xbTZyVh4tN"/>
+          <InscriptionItem text="我们的字是文字的字" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQa582Hcero1WCB6_XNSzD0ReJ5iATP_8pPX1fFPtPfMoY8KeE"/>
         </ParallaxText>
-        <ParallaxText baseVelocity={-3}>
-          <div className={cl(capsuleClassName)}>
-            Following in the footsteps of the crucified Christ
-          </div>
-          <div className={cl(capsuleClassName)}>
-            Hey, what&apos;s good, Yeti Nation?
-          </div>
-          <div className={cl(capsuleClassName)}>
-            Following in the footsteps of the crucified Christ
-          </div>
-          <div className={cl(capsuleClassName)}>
-            Hey, what&apos;s good, Yeti Nation?
-          </div>
+        <ParallaxText baseVelocity={3}>
+          <InscriptionItem text="我是一直在找酒喝的钱老板" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdauM5j6FxPksbpxNkNP1FbB0M2wqQkddjgZc8o8xbTZyVh4tN"/>
+          <InscriptionItem text="我们的字是文字的字" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQa582Hcero1WCB6_XNSzD0ReJ5iATP_8pPX1fFPtPfMoY8KeE"/>
+          <InscriptionItem text="我是一直在找酒喝的钱老板" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdauM5j6FxPksbpxNkNP1FbB0M2wqQkddjgZc8o8xbTZyVh4tN"/>
+          <InscriptionItem text="我们的字是文字的字" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQa582Hcero1WCB6_XNSzD0ReJ5iATP_8pPX1fFPtPfMoY8KeE"/>
         </ParallaxText>
       </div>
     </>

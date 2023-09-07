@@ -10,6 +10,7 @@ import { SearchYoutube } from "@/components/home/search-youtube";
 import Result from "@/components/home/result";
 import { useState } from "react";
 import { getToken } from "next-auth/jwt";
+import RecentTranscriptions from "@/components/dashboard/recent-transcriptions";
 
 export async function getServerSideProps(context: any) {
   const token = await getToken({ req: context.req, raw: true });
@@ -56,6 +57,8 @@ export default function Home({ token }: { token: any }) {
           <SearchAudio onResult={(result) => setResult(result)}></SearchAudio>
         )}
         {result && <Result input={result} token={token} />}
+        {!result && <RecentTranscriptions token={token} status="pending"/>}
+        {!result && <RecentTranscriptions token={token} status="completed"/>}
       </div>
     </Layout>
   );
