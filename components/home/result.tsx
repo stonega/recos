@@ -1,11 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Button from "../shared/button";
-import {
-  formatDuration,
-  getFee,
-  getCredit,
-  getTime,
-} from "utils";
+import { formatDuration, getFee, getCredit, getTime } from "utils";
 import { toast } from "sonner";
 import { AudioInput, TranscriptOption } from "types";
 import { ofetch } from "ofetch";
@@ -13,7 +8,7 @@ import InfoCard from "../shared/info-card";
 import * as Progress from "@radix-ui/react-progress";
 import { useSession } from "next-auth/react";
 import { useConfirmModal } from "../shared/confirm-modal";
-import { XCircle } from 'lucide-react'
+import { XCircle } from "lucide-react";
 import axios from "axios";
 import { useRouter } from "next/router";
 interface ResultProps {
@@ -41,20 +36,32 @@ const Result = ({ input, token, closeResult }: ResultProps) => {
     const path = localStorage.getItem("path");
     if (path && path !== "/") {
       router.push(path!);
-    } else {
-      setStep(() => "input");
-      setResult(() => "");
     }
-  }, []);
+  }, [router]);
   const { setShowConfirmModal, ConfirmModal } = useConfirmModal(onConfirm);
-  const [result, setResult] = useState("");
   const { data: session } = useSession();
-  const filename = useMemo(() => {
-    if (typeof input.input === "string") {
-      return input.title;
-    }
-    return input.title.split(".").slice(0, -1).join(".");
-  }, [input]);
+  let id: number | NodeJS.Timer;
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      if (url === "/") throw "error";
+      const path = localStorage.getItem("path");
+      console.log(`App is changing to ${url} ${step} ${path}`);
+      if (step === "uploading" && path !== url) {
+        localStorage.setItem("path", url);
+        onConfirm();
+        throw "error";
+      } else {
+        clearInterval(id);
+        return;
+      }
+    };
+    const removeListener = () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+      localStorage.removeItem("path");
+    };
+    router.events.on("routeChangeStart", handleRouteChange);
+    return removeListener;
+  }, [router.events, setShowConfirmModal, step]);
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
@@ -94,15 +101,10 @@ const Result = ({ input, token, closeResult }: ResultProps) => {
     getAudioDuration();
   }, [getAudioDuration, input.input]);
 
-  const handleBack = () => {
-    setShowConfirmModal(true);
+  const close = () => {
+    clearInterval(id);
+    closeResult();
   };
-  const audioSource = useMemo(() => {
-    if (typeof input.input === "string") {
-      return input.input;
-    }
-    return URL.createObjectURL(input.input);
-  }, [input.input]);
 
   const submit = async () => {
     if (!session) {
@@ -131,14 +133,14 @@ const Result = ({ input, token, closeResult }: ResultProps) => {
               prompt: option.prompt,
               title: input.title,
               type: input.type,
-              image: input.image
+              image: input.image,
             },
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
           const taskId = response.data.task_id;
-          const id = setInterval(async () => {
+          id = setInterval(async () => {
             const result = await axios.get(`${BASE_URL}/tasks/${taskId}`);
             if (result.data.task_status === "SUCCESS") {
               clearInterval(id);
@@ -178,7 +180,7 @@ const Result = ({ input, token, closeResult }: ResultProps) => {
           );
           setStep("loading");
           const taskId = response.data.task_id;
-          const id = setInterval(async () => {
+          id = setInterval(async () => {
             const result = await axios.get(`${BASE_URL}/tasks/${taskId}`);
             if (result.data.task_status === "SUCCESS") {
               clearInterval(id);
@@ -198,9 +200,9 @@ const Result = ({ input, token, closeResult }: ResultProps) => {
   };
   return (
     <>
-      <div className="border-1 mt-6 min-h-[10rem] w-full relative rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
-        <div className="absolute top-4 right-4 cursor-pointer opacity-75">
-          <XCircle onClick={closeResult}/>
+      <div className="border-1 relative mt-6 min-h-[10rem] w-full rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
+        <div className="absolute right-4 top-4 cursor-pointer opacity-75">
+          <XCircle onClick={close} />
         </div>
         <div className="flex flex-col items-center justify-start gap-2 p-2">
           <ConfirmModal>

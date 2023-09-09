@@ -26,7 +26,7 @@ const TaskButton = ({ task, taskId, handleTask }: TaskButtonProps) => {
       className="flex cursor-pointer flex-row transition ease-in-out delay-150 items-center space-x-4 rounded-full border-none bg-green-400 px-6 py-2 font-semibold dark:bg-green-600"
       onClick={() => handleTask(task)}
     >
-      <span>✨ {task.toUpperCase()}</span>
+      ✨ <span className="leading-none ml-2">{task.toUpperCase()}</span>
       {status === "pending" ? (
         <LoadingCircle />
       ) : status === "success" ? (
