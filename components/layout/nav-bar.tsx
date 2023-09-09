@@ -16,11 +16,11 @@ const NavBar = () => {
     <div className="my-4 flex w-full max-w-6xl items-center justify-between px-2 md:px-2">
       <div className="flex flex-row items-center">
         <Link href="/">
-          <span className="text-black-600 flex items-center px-4 font-serif text-2xl font-bold dark:text-green-400 md:px-0 md:text-4xl">
+          <span className="text-black-600 flex items-center px-4 font-serif text-2xl font-bold dark:text-green-600 md:px-0 md:text-4xl">
             Recos.
           </span>
         </Link>
-        <span className="rounded-full  bg-green-300 px-2 py-1 text-sm">
+        <span className="rounded-full  bg-green-300 dark:bg-green-600 px-2 py-1 text-sm">
           Beta
         </span>
         <ThemeModeButton></ThemeModeButton>
@@ -31,7 +31,7 @@ const NavBar = () => {
           Dashboard
         </Link>
         <Link
-          href="/price"
+          href="/pricing"
           className="hidden text-xl underline underline-offset-8 hover:text-green-600 hover:decoration-wavy dark:text-white md:block"
         >
           Pricing

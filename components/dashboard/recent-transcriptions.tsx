@@ -22,11 +22,18 @@ const RecentTranscriptions = ({ token, status }: RecentTranscriptionsProps) => {
   if (!isLoading && data?.length === 0) return null;
   return (
     <>
-      <div className="mt-8 dark:text-white flex flex-row justify-between items-center">
+      <div className="mt-8 flex flex-row items-center justify-between dark:text-white">
         <span className="text-2xl font-semibold">
           {status === "pending" ? "Pending" : "Recent"}
         </span>
-        {status === "completed" && <Link href="/credit" className="text-green-600 underline underline-offset-4 hover:text-green-600 hover:decoration-wavy">View All</Link>}
+        {status === "completed" && (
+          <Link
+            href="/credit"
+            className="text-green-600 underline underline-offset-4 hover:text-green-600 hover:decoration-wavy"
+          >
+            View All
+          </Link>
+        )}
       </div>
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
         {isLoading ? (
@@ -34,10 +41,10 @@ const RecentTranscriptions = ({ token, status }: RecentTranscriptionsProps) => {
             <>
               <div className="card" key={index}>
                 <div className="flex animate-pulse flex-col">
-                  <div className="mt-2 h-4 w-[20%] rounded-md bg-gray-800 md:bg-gray-200"></div>
-                  <div className="text-md mt-2 h-4 w-full rounded-md bg-gray-800 md:bg-gray-200"></div>
-                  <div className="mt-2 h-4 w-[60%] rounded-md bg-gray-800 md:bg-gray-200"></div>
-                  <div className="mt-2 h-4 w-[30%] rounded-md bg-gray-800 md:bg-gray-200"></div>
+                  <div className="mt-2 h-4 w-[20%] rounded-md bg-black/50"></div>
+                  <div className="text-md mt-2 h-4 w-full rounded-md bg-black/50"></div>
+                  <div className="mt-2 h-4 w-[60%] rounded-md bg-black/50"></div>
+                  <div className="mt-2 h-4 w-[30%] rounded-md bg-black/50"></div>
                 </div>
               </div>
             </>
@@ -69,8 +76,8 @@ const RecentTranscriptions = ({ token, status }: RecentTranscriptionsProps) => {
                     <div className="mb-2 line-clamp-1 text-xl">{item.name}</div>
                     {status === "pending" ? (
                       <div className="flex animate-pulse flex-col">
-                        <div className="text-md h-4 w-full rounded-md bg-gray-800 md:bg-gray-200"></div>
-                        <div className="mt-2 h-4 w-[60%] rounded-md bg-gray-800 md:bg-gray-200"></div>
+                        <div className="text-md h-4 w-full rounded-md bg-black/50"></div>
+                        <div className="mt-2 h-4 w-[60%] rounded-md bg-black/50"></div>
                       </div>
                     ) : (
                       <TranscriptionContent taskId={item.id} />

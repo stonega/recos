@@ -9,19 +9,22 @@ datasource db {
 }
 
 model subtitle {
-  id_                    String  @id @default(auto()) @map("_id") @db.ObjectId
-  endTimestamp           String  @map("end_time")
-  id                     Int
-  startTimestamp         String  @map("start_time")
-  task_id                String
-  text                   String
-  time                   String
-  defaultTranslationText String? @map("default_translation_text")
+  id_            String  @id @default(auto()) @map("_id") @db.ObjectId
+  endTimestamp   String  @map("end_time")
+  id             Int
+  startTimestamp String  @map("start_time")
+  task_id        String
+  text           String
+  time           String
+  translation    String? @map("default_translation_text")
 }
 
 model summary {
-  id_     String @id @default(auto()) @map("_id") @db.ObjectId
-  task_id String
-  summary String?
-  recos String?
+  id_             String  @id @default(auto()) @map("_id") @db.ObjectId
+  task_id         String
+  summary         String?
+  recos           String?
+  translateStatus String? @map("translate_status")
+  summaryStatus   String? @map("summary_status")
+  recosStatus     String? @map("recos_status")
 }

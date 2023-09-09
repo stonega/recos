@@ -28,7 +28,7 @@ const WhatIsRecos = () => {
       <div className="border-t-2 border-green-500 py-2"></div>
       {data.qas.map((item, index) => (
         <div key={item.question}>
-          <div className="my-4 text-xl font-bold text-green-400 dark:text-green-600">
+          <div className="my-4 text-xl font-bold">
             {item.question}
           </div>
           <div className="text-lg dark:text-white">

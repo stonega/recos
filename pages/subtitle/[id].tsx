@@ -5,17 +5,66 @@ import useSWR from "swr";
 import { CreditHistory, Meta } from "types";
 import SrtItemCard from "@/components/subtitle/srt-item-card";
 import Confetti from "@/components/shared/confetti";
-import { AudioPlayer } from "@/components/subtitle/audio-player";
+import AudioPlayer from "@/components/subtitle/audio-player";
 import { saveAs } from "file-saver";
-import { use, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { AudioProvider } from "@/components/subtitle/audio-provider";
 import Tooltip from "@/components/shared/tooltip";
 import { toast } from "sonner";
+import { getToken } from "next-auth/jwt";
+import TaskButton from "@/components/subtitle/task-button";
+import { ofetch } from "ofetch";
+import { AnimatePresence, motion } from "framer-motion";
+import { FADE_DOWN_ANIMATION_SETTINGS } from "@/lib/constants";
+import { prisma } from "../../lib/prisma";
 
 const FILE_SERVER =
   "https://recos-audio-slice-production.up.railway.app/files/";
 const BASE_URL = "https://recos-audio-slice-production.up.railway.app";
-const SubtitlePage = () => {
+
+export async function getServerSideProps(context: any) {
+  const token = await getToken({ req: context.req, raw: true });
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+  const id = context.query.id as string;
+  const record = await prisma?.credit.findFirst({ where: { id } });
+
+  return {
+    props: {
+      token,
+      record: {
+        id: record?.id,
+        name: record?.name,
+        audio_url: record?.audio_url,
+        type: record?.type,
+        audio_length: record?.audio_length,
+      },
+    },
+  };
+}
+
+const SubtitlePage = ({
+  token,
+  record,
+}: {
+  token: any;
+  record: CreditHistory;
+}) => {
+  console.log(record);
+  const audioPlayerData = {
+    title: record.name,
+    audio: {
+      src: record.audio_url.startsWith("http")
+        ? record.audio_url
+        : FILE_SERVER + record.audio_url,
+    },
+  };
   const router = useRouter();
   const id = router.query.id as string;
   const request = async (url: string) => {
@@ -29,21 +78,21 @@ const SubtitlePage = () => {
   );
   const [showTranslation, setShowTranslation] = useState(false);
 
-  const { data } = useSWR<{
+  const { data, mutate } = useSWR<{
     summary: string;
     recos: string;
     subtitles: SrtItem[];
+    translateStatus?: string;
+    summaryStatus?: string;
+    recosStatus?: string;
   }>(() => `/api/subtitle/${encodeURIComponent(id)}`, request);
-  const { data: record } = useSWR<CreditHistory>(
-    () => `/api/record/${encodeURIComponent(id)}`,
-    request,
-  );
+
   const handleExportSrt = () => {
     if (!data) return "";
     const content = data.subtitles
       .map(
         (subtitle) =>
-          `${subtitle.subtitle_id}\n${subtitle.startTimestamp} --> ${subtitle.endTimestamp}\n${subtitle.text}`,
+          `${subtitle.id}\n${subtitle.startTimestamp} --> ${subtitle.endTimestamp}\n${subtitle.text}`,
       )
       .join("\n\n");
     const blob = new Blob([content], {
@@ -60,23 +109,35 @@ const SubtitlePage = () => {
     saveAs(blob, `${record?.name}.txt`);
   };
 
-  const handleTask = (task: string) => {
-    if (task === "translate" && data?.subtitles[0].defaultTranslationText) {
-      setActiveTab(undefined);
-      setShowTranslation(true);
+  const handleTask = async (task: string) => {
+    if (task === "translate" && data?.subtitles[0].translation) {
+      setShowTranslation(() => !showTranslation);
       return;
     }
     if (task === "recos" && data?.recos) {
+      if (activeTab === task) {
+        setActiveTab(undefined);
+        return;
+      }
       setActiveTab(task as any);
       return;
     }
     if (task === "summary" && data?.summary) {
+      if (activeTab === task) {
+        setActiveTab(undefined);
+        return;
+      }
       setActiveTab(task as any);
       return;
     }
-    toast.success("Request sent successfully! Check back later.");
     const url = `${BASE_URL}/subtitles/${task}/${encodeURIComponent(id)}`;
-    fetch(url);
+    const { task_id } = await ofetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    mutate({ ...data, [`${task}Status`]: task_id });
+    toast.success("Request sent successfully! Check back later.");
   };
 
   const meta: Meta = {
@@ -84,93 +145,76 @@ const SubtitlePage = () => {
     ogUrl: "http://recos.stonegate.me",
     title: "Recos.",
   };
-  const audioPlayerData = useMemo(
-    () =>
-      record
-        ? {
-            title: record.name,
-            audio: {
-              src: record.audio_url.startsWith("http")
-                ? record.audio_url
-                : FILE_SERVER + record.audio_url,
-            },
-          }
-        : undefined,
-    [record],
-  );
 
   return (
     <AudioProvider>
       <Layout meta={meta}>
         {isFresh && <Confetti />}
-        {record && (
-          <>
-            <div className="mb-10 mt-10 dark:text-white">
-              <div className="flex flex-row items-center justify-between">
-                <div className="text-4xl">{record.name}</div>
-                <div className="flex flex-row">
-                  <Tooltip content="Export pure text">
-                    <button
-                      className="button px-2"
-                      onClick={() => handleExportText()}
-                    >
-                      TXT
-                    </button>
-                  </Tooltip>
-                  <Tooltip content="Export srt file">
-                    <button
-                      className="button px-2"
-                      onClick={() => handleExportSrt()}
-                    >
-                      SRT
-                    </button>
-                  </Tooltip>
-                  {/* <Tooltip content="Export PDF">
-            <PDFExportButton json={json} name={title}></PDFExportButton>
-          </Tooltip> */}
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-        <div className="mb-4 flex flex-row space-x-2">
-          <div
-            className="cursor-pointer rounded-full border-none bg-green-400 px-6 py-2 font-semibold dark:bg-green-600"
-            onClick={() => handleTask("translate")}
-          >
-            ✨ Translate
-          </div>
-          <div
-            className="cursor-pointer rounded-full border-none bg-green-400 px-4 py-2 font-semibold dark:bg-green-600"
-            onClick={() => handleTask("summary")}
-          >
-            ✨ Summary
-          </div>
-          <div
-            className="cursor-pointer rounded-full border-none bg-green-400 px-4 py-2 font-semibold dark:bg-green-600"
-            onClick={() => handleTask("recos")}
-          >
-            ✨ Recos
+        <div className="my-10 flex flex-row items-center justify-between">
+          <div className="text-4xl dark:text-white">{record.name}</div>
+          <div className="flex flex-row">
+            <Tooltip content="Export pure text">
+              <button
+                className="button px-2"
+                onClick={() => handleExportText()}
+              >
+                TXT
+              </button>
+            </Tooltip>
+            <Tooltip content="Export srt file">
+              <button className="button px-2" onClick={() => handleExportSrt()}>
+                SRT
+              </button>
+            </Tooltip>
           </div>
         </div>
-        {record && <AudioPlayer audio={audioPlayerData} />}
-        <div className="mr-8"></div>
-        {activeTab === "recos"
-          ? data && <div className="mt-8 text-xl leading-10">{data.recos}</div>
-          : activeTab === "summary"
-          ? data && (
-              <div className="mt-8 text-xl leading-10">{data.summary}</div>
-            )
-          : data &&
-            data.subtitles.map((subtitle) => {
-              return (
-                <SrtItemCard
-                  key={subtitle.id}
-                  srtItem={subtitle}
-                  showTranslation={showTranslation}
-                />
-              );
-            })}
+        <AudioPlayer audio={audioPlayerData} />
+        <div className="my-6 flex flex-row space-x-2">
+          <TaskButton
+            task="translate"
+            handleTask={handleTask}
+            taskId={data?.translateStatus}
+          />
+          <TaskButton
+            task="summary"
+            handleTask={handleTask}
+            taskId={data?.summaryStatus}
+          />
+          <TaskButton
+            task="recos"
+            handleTask={handleTask}
+            taskId={data?.recosStatus}
+          />
+        </div>
+        <AnimatePresence>
+          {activeTab === "recos"
+            ? data && (
+                <motion.div
+                  className="my-8 rounded-md border-2 border-green-400 p-2 text-xl leading-10 dark:text-white"
+                  {...FADE_DOWN_ANIMATION_SETTINGS}
+                >
+                  {data.recos}
+                </motion.div>
+              )
+            : activeTab === "summary" &&
+              data && (
+                <motion.div
+                  className="my-8 rounded-md border-2 border-green-400 p-4 text-xl leading-10 dark:text-white"
+                  {...FADE_DOWN_ANIMATION_SETTINGS}
+                >
+                  {data.summary}
+                </motion.div>
+              )}
+        </AnimatePresence>
+        {data?.subtitles.map((subtitle) => {
+          return (
+            <SrtItemCard
+              key={subtitle.id}
+              srtItem={subtitle}
+              showTranslation={showTranslation}
+            />
+          );
+        })}
       </Layout>
     </AudioProvider>
   );

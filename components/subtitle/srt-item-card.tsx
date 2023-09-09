@@ -1,6 +1,6 @@
 import { SrtItem, convertTimeToSeconds, parseTimestamp } from "utils";
 import classnames from "classnames";
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef } from "react";
 import { AudioPlayerContext } from "./audio-provider";
 
 const SrtItemCard = ({
@@ -30,23 +30,21 @@ const SrtItemCard = ({
     }
   }, [containerElement, active, player?.setSrtItem]);
 
-  const activeClassName = useMemo(() => {
-    return active ? "text-green-600 font-bold" : "";
-  }, [active]);
   return (
     <>
       <div
         ref={containerElement}
-        className="mt-2 flex flex-row items-start border-b-2 border-b-green-600 py-2 dark:text-white"
+        className={classnames(
+          "pt-2 flex flex-row items-start border-b-2 border-b-green-400 py-2 dark:text-white",
+          { "bg-green-400 transition-colors": active },
+        )}
       >
         <div className="mr-4">{parseTimestamp(srtItem.startTimestamp!)}</div>
         <div className="flex flex-col items-start space-y-2">
-          <div className={classnames("font-serifs text-xl", activeClassName)}>
-            {srtItem.text}
-          </div>
+          <div className="font-serifs text-xl">{srtItem.text}</div>
           {showTranslation && (
-            <div className={classnames("font-serifs text-md", activeClassName)}>
-              {srtItem.defaultTranslationText}
+            <div className="font-serifs text-md">
+              {srtItem.translation}
             </div>
           )}
         </div>

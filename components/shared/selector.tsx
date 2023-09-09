@@ -6,6 +6,8 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@radix-ui/react-icons";
+import { motion } from "framer-motion";
+import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
 
 interface SelectorProps {
   label: string;
@@ -23,32 +25,37 @@ const Selector = ({
 }: SelectorProps) => (
   <Select.Root onValueChange={onSelect} defaultValue={active}>
     <Select.Trigger
-      className="hover:bg-mauve3 data-[placeholder]:text-violet9 text-normal inline-flex h-[35px] items-center justify-center gap-[5px] rounded bg-white px-[15px] leading-none outline-none dark:bg-[#101010]"
+      className="text-normal inline-flex h-[35px] items-center justify-center rounded bg-green-400 px-[15px] leading-none outline-none hover:bg-green-300 dark:bg-green-600"
       aria-label={label}
     >
-      <Select.Value placeholder={placeholder}  />
-      <Select.Icon className="text-violet11">
+      <Select.Value placeholder={placeholder} />
+      <Select.Icon>
         <ChevronDownIcon />
       </Select.Icon>
     </Select.Trigger>
     <Select.Portal>
-      <Select.Content className="overflow-hidden rounded-md border-2 border-green-500 bg-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
-        <Select.ScrollUpButton className="text-violet11 flex h-[25px] cursor-default items-center justify-center bg-white">
-          <ChevronUpIcon />
-        </Select.ScrollUpButton>
-        <Select.Viewport className="p-[5px]">
-          <Select.Group>
-            {options.map((option) => (
-              <SelectItem value={option.value} key={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </Select.Group>
-        </Select.Viewport>
-        <Select.ScrollDownButton className="text-violet11 flex h-[25px] cursor-default items-center justify-center bg-white">
-          <ChevronDownIcon />
-        </Select.ScrollDownButton>
-      </Select.Content>
+      <motion.div
+        className="relative inline-block text-left"
+        {...FADE_IN_ANIMATION_SETTINGS}
+      >
+        <Select.Content className="overflow-hidden rounded-md border-2 border-green-500 bg-white shadow-md dark:bg-[#101010]  dark:text-white">
+          <Select.ScrollUpButton className="text-violet11 flex h-[25px] cursor-default items-center justify-center bg-white">
+            <ChevronUpIcon />
+          </Select.ScrollUpButton>
+          <Select.Viewport className="p-[5px]">
+            <Select.Group>
+              {options.map((option) => (
+                <SelectItem value={option.value} key={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </Select.Group>
+          </Select.Viewport>
+          <Select.ScrollDownButton className="text-violet11 flex h-[25px] cursor-default items-center justify-center bg-white">
+            <ChevronDownIcon />
+          </Select.ScrollDownButton>
+        </Select.Content>
+      </motion.div>
     </Select.Portal>
   </Select.Root>
 );

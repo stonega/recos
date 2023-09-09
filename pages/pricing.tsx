@@ -1,5 +1,4 @@
 import Layout from "@/components/layout";
-import Button from "@/components/shared/button";
 import { ofetch } from "ofetch";
 import { ArrowRight } from "lucide-react";
 import { Meta } from "types";
@@ -18,8 +17,6 @@ export async function getServerSideProps() {
       },
     );
     const products = await response.json();
-    // @ts-ignore
-    // console.log({ products: products.data });
     return products.data;
   }
   const products = await getProducts();
@@ -31,7 +28,7 @@ export async function getServerSideProps() {
   };
 }
 
-export default function PricePage({ products }: { products: any[] }) {
+export default function PricingPage({ products }: { products: any[] }) {
   const meta: Meta = {
     description: "Podcast to text.",
     ogUrl: "http://recos.stonegate.me",
@@ -49,7 +46,7 @@ export default function PricePage({ products }: { products: any[] }) {
   return (
     <Layout meta={meta}>
       <div className="flex flex-col items-center">
-        <h1 className="mt-16 text-center text-4xl font-bold text-green-600 md:text-5xl">
+        <h1 className="mt-16 bg-gradient-to-r from-green-600 to-[#9D4DFF] bg-clip-text text-center text-4xl font-bold leading-[3rem] text-transparent md:text-6xl">
           Transparent and affordable price
         </h1>
         <h1 className="mt-6 text-center text-3xl dark:text-white">
@@ -60,24 +57,28 @@ export default function PricePage({ products }: { products: any[] }) {
             products.map((product: any) => (
               <div
                 key={product.id}
-                className="flex h-[400px] w-full flex-col items-center justify-between rounded-lg border-2 border-green-700 bg-green-200 p-8 dark:bg-green-900 md:w-[400px]"
+                className="flex h-[400px] w-full flex-col items-start justify-between rounded-lg bg-green-400 p-8 shadow-md dark:bg-green-900 md:w-[350px]"
               >
                 <div className="flex flex-col dark:text-white">
-                  <span className="text-3xl font-bold">
+                  <span className="text-4xl font-bold">
                     {product.attributes.name}
                   </span>
-                  <span className="mt-10 text-2xl">
+                  <span className="text-xl">
                     {product.attributes.description
                       .replace("<p>", "")
                       .replace("</p>", "")}
                   </span>
+                  <ul className="mt-6 list-disc list-inside">
+                    <li>Translate transcription</li>
+                    <li>Summary transcription</li>
+                  </ul>
                 </div>
                 <div className="flex w-full flex-row items-center justify-between dark:text-white">
-                  <span className="font-mono text-4xl">
+                  <span className="font-mono text-4xl slashed-zero">
                     {product.attributes.price_formatted}
                   </span>
                   <div
-                    className="group cursor-pointer flex-row rounded-md text-lg font-normal text-green-600"
+                    className="group cursor-pointer flex-row rounded-md text-lg font-normal"
                     onClick={() => getCredits(product.id)}
                   >
                     <span className="text-2xl font-bold">Checkout</span>

@@ -56,9 +56,15 @@ export default function Home({ token }: { token: any }) {
         ) : (
           <SearchAudio onResult={(result) => setResult(result)}></SearchAudio>
         )}
-        {result && <Result input={result} token={token} />}
-        {!result && <RecentTranscriptions token={token} status="pending"/>}
-        {!result && <RecentTranscriptions token={token} status="completed"/>}
+        {result && (
+          <Result
+            input={result}
+            token={token}
+            closeResult={() => setResult(undefined)}
+          />
+        )}
+        {!result && <RecentTranscriptions token={token} status="pending" />}
+        {!result && <RecentTranscriptions token={token} status="completed" />}
       </div>
     </Layout>
   );

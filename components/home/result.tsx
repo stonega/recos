@@ -5,23 +5,21 @@ import {
   getFee,
   getCredit,
   getTime,
-  mergeMultipleSrtStrings,
-  getYoutubeId,
 } from "utils";
 import { toast } from "sonner";
 import { AudioInput, TranscriptOption } from "types";
 import { ofetch } from "ofetch";
 import InfoCard from "../shared/info-card";
 import * as Progress from "@radix-ui/react-progress";
-import ResultEditor from "./result-editor";
-import Confetti from "../shared/confetti";
 import { useSession } from "next-auth/react";
 import { useConfirmModal } from "../shared/confirm-modal";
+import { XCircle } from 'lucide-react'
 import axios from "axios";
 import { useRouter } from "next/router";
 interface ResultProps {
   input: AudioInput;
   token: string;
+  closeResult: () => void;
 }
 
 type Step = "input" | "downloading" | "uploading" | "loading" | "result";
@@ -33,7 +31,7 @@ const DEFAULT_OPTION: TranscriptOption = {
   srt: true,
 };
 
-const Result = ({ input, token }: ResultProps) => {
+const Result = ({ input, token, closeResult }: ResultProps) => {
   const [step, setStep] = useState<Step>("input");
   const [progress, setProgress] = useState(0);
   const [option, setOption] = useState<TranscriptOption>(DEFAULT_OPTION);
@@ -111,7 +109,6 @@ const Result = ({ input, token }: ResultProps) => {
       router.push("/login");
       return;
     }
-    let audioFiles = [input.input];
     if (session) {
       const credits = getCredit(duration);
       const own = await ofetch("/api/credit");
@@ -201,7 +198,10 @@ const Result = ({ input, token }: ResultProps) => {
   };
   return (
     <>
-      <div className="border-1 mt-6 min-h-[10rem] w-full rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
+      <div className="border-1 mt-6 min-h-[10rem] w-full relative rounded-md border border-green-400 bg-white/40 dark:bg-black/40">
+        <div className="absolute top-4 right-4 cursor-pointer opacity-75">
+          <XCircle onClick={closeResult}/>
+        </div>
         <div className="flex flex-col items-center justify-start gap-2 p-2">
           <ConfirmModal>
             <div>

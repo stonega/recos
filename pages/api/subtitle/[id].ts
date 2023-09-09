@@ -20,5 +20,14 @@ export default async function handler(
   const document = await prismaMongo.summary.findFirst({
     where: { task_id: taskId },
   });
-  res.status(200).json({ data: { subtitles, summary: document?.summary, recos: document?.recos } });
+  res.status(200).json({
+    data: {
+      subtitles,
+      summary: document?.summary,
+      recos: document?.recos,
+      summaryStatus: document?.summaryStatus,
+      translateStatus: document?.translateStatus,
+      recosStatus: document?.recosStatus,
+    },
+  });
 }

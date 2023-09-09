@@ -39,28 +39,21 @@ export default function UserDropdown() {
               <p className="text-sm">Dashboard</p>
             </Link> */}
             <Link
-              href="/price"
-              className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100 dark:hover:bg-gray-800"
+              href="/pricing"
+              className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100 dark:hover:bg-green-800/30"
             >
               <Beer className="h-4 w-4" />
               <p className="text-sm">Get Credits</p>
             </Link>
             <Link
-              href="/credit"
-              className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100 dark:hover:bg-gray-800"
-            >
-              <BarChart4 className="h-4 w-4" />
-              <p className="text-sm">History</p>
-            </Link>
-            <Link
               href="/settings"
-              className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100 dark:hover:bg-green-800/30"
             >
               <SettingsIcon className="h-4 w-4" />
               <p className="text-sm">Settings</p>
             </Link>
             <button
-              className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100 dark:hover:bg-green-800/30"
               onClick={() => signOut({ redirect: false })}
             >
               <LogOut className="h-4 w-4" />

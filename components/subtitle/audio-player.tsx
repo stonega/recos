@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { AudioData, useAudioPlayer } from "./audio-provider";
@@ -29,7 +28,7 @@ function formatHumanTime(seconds: number) {
   }, ${s} second${s === 1 ? "" : "s"}`;
 }
 
-export function AudioPlayer({ audio }: { audio?: AudioData }) {
+function AudioPlayer({ audio }: { audio?: AudioData }) {
   const player = useAudioPlayer(audio);
   const wasPlayingRef = useRef(false);
   const [currentTime, setCurrentTime] = useState(player.currentTime);
@@ -107,10 +106,10 @@ export function AudioPlayer({ audio }: { audio?: AudioData }) {
           </div>
           <div className="flex items-center gap-4">
             <div className="flex cursor-pointer items-center">
-              <AlignVerticalSpaceAroundIcon
-                size={14}
-                onClick={() => player?.scrollToSrtItem?.()}
-              />
+              {/* <AlignVerticalSpaceAroundIcon
+                size="14"
+                onClick={player?.scrollToSrtItem}
+              /> */}
             </div>
           </div>
         </div>
@@ -118,3 +117,5 @@ export function AudioPlayer({ audio }: { audio?: AudioData }) {
     </div>
   );
 }
+
+export default AudioPlayer;

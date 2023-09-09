@@ -68,3 +68,11 @@ export const truncate = (str: string, length: number) => {
 export const dateFromNow = (date: string) => {
   return dayjs(date).fromNow(); // 22 years ago
 };
+
+export function return_url(context: any) {
+  if (process.env.NODE_ENV === "production") {
+    return `https://${context.req.rawHeaders[1]}`;
+  } else if (process.env.NODE_ENV === "development") {
+    return "http://localhost:3000";
+  }
+}
