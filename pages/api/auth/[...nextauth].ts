@@ -36,7 +36,10 @@ export const authOptions: NextAuthOptions = {
       allowDangerousEmailAccountLinking: true,
     }),
   ],
-  secret: process.env.SECRET,
+  pages: {
+    signIn: "/login",
+     error: '/api/auth/error',
+  },
   session: { strategy: "jwt" },
   callbacks: {
     async session({ session, user, token }) {
