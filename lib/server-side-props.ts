@@ -17,7 +17,6 @@ export async function getServerSideProps(context: any) {
     );
     const products = await response.json();
     // @ts-ignore
-    // console.log({ products: products.data });
     return { products: products.data };
   }
   const [token, { products }] = await Promise.all([

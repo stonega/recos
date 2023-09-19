@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AudioInput } from "types";
 
 interface SearchAudioProps {
@@ -7,6 +7,7 @@ interface SearchAudioProps {
 export const SearchAudio = ({ onResult }: SearchAudioProps) => {
   const [files, setFiles] = useState<FileList | null>(null);
   const [msg, setMsg] = useState("");
+  const fileInput = useRef(null);
 
   useEffect(() => {
     if (files && files.length > 0) {
@@ -25,7 +26,8 @@ export const SearchAudio = ({ onResult }: SearchAudioProps) => {
     <div className="flex flex-col gap-4">
       <div className="relative flex flex-col">
         <input
-          className="input block cursor-pointer 
+          className="input block 
+          cursor-pointer
             p-0
             file:mr-5
             file:border-0
@@ -37,6 +39,7 @@ export const SearchAudio = ({ onResult }: SearchAudioProps) => {
             "
           aria-describedby="file_input_help"
           id="file_input"
+          ref={fileInput}
           type="file"
           onChange={(e) => setFiles(e.target.files)}
         />

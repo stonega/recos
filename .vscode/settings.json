@@ -22,5 +22,8 @@
     "untar",
     "webm",
     "zustand"
+  ],
+  "i18n-ally.localesPaths": [
+    "public/locales"
   ]
 }

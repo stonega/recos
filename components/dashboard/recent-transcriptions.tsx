@@ -62,8 +62,8 @@ const RecentTranscriptions = ({ token, status }: RecentTranscriptionsProps) => {
                     <div className="flex flex-col">
                       {status === "pending" ? (
                         <div className="mb-2 text-sm opacity-70">
-                          <span className="dot-loader mr-4">Transcript</span>
                           <span>{dateFromNow(item.create_at)}</span>
+                          <span className="dot-loader ml-4">Transcript</span>
                         </div>
                       ) : (
                         <div className="mb-2 text-sm opacity-70">
@@ -74,9 +74,9 @@ const RecentTranscriptions = ({ token, status }: RecentTranscriptionsProps) => {
                         {item.name}
                       </div>
                       {status === "pending" ? (
-                        <div className="flex animate-pulse flex-col">
-                          <div className="text-md h-4 w-full rounded-md bg-black/50"></div>
-                          <div className="mt-2 h-4 w-[60%] rounded-md bg-black/50"></div>
+                        <div className="flex flex-col">
+                          <div className="text-md h-4 w-full rounded-md bg-black/20"></div>
+                          <div className="mt-2 h-4 w-[60%] rounded-md bg-black/20"></div>
                         </div>
                       ) : (
                         <TranscriptionContent taskId={item.id} />

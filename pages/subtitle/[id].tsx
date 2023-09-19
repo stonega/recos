@@ -56,7 +56,6 @@ const SubtitlePage = ({
   token: any;
   record: CreditHistory;
 }) => {
-  console.log(record);
   const audioPlayerData = {
     title: record.name,
     audio: {
@@ -92,7 +91,7 @@ const SubtitlePage = ({
     const content = data.subtitles
       .map(
         (subtitle) =>
-          `${subtitle.id}\n${subtitle.startTimestamp} --> ${subtitle.endTimestamp}\n${subtitle.text}`,
+          `${subtitle.id}\n${subtitle.startTimestamp} --> ${subtitle.endTimestamp}\n${subtitle.translation}`,
       )
       .join("\n\n");
     const blob = new Blob([content], {

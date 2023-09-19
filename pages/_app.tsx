@@ -6,13 +6,14 @@ import cx from "classnames";
 import { Inter } from "@next/font/google";
 import { Toaster } from "sonner";
 import { SessionProvider } from "next-auth/react";
+import { appWithTranslation } from 'next-i18next'
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });
 
-export default function MyApp({
+function MyApp({
   Component,
   pageProps: { ...pageProps },
 }: AppProps<{}>) {
@@ -30,3 +31,5 @@ export default function MyApp({
     </>
   );
 }
+
+export default appWithTranslation(MyApp)

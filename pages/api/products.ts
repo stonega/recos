@@ -16,7 +16,6 @@ export default async function handler(
       const products = await client.listAllProducts({
         storeId: "25044",
       });
-      console.log(products);
       res.status(200).json({ products: products.data });
     } catch (err) {
       console.error(err);

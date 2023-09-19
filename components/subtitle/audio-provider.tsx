@@ -148,7 +148,6 @@ export function AudioProvider({ children }: AudioProviderProps) {
       },
       seek(time: number) {
         if (!playerRef.current) return;
-        console.log(time);
         playerRef.current.currentTime = time;
       },
       playbackRate(rate: number) {
