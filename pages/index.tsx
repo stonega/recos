@@ -18,7 +18,6 @@ export async function getServerSideProps(context: any) {
   if (userId) user = await prisma?.user.findFirst({ where: { id: userId } });
   return {
     props: {
-      token,
       ...(await serverSideTranslations(user?.lang ?? "en", ["homepage", "common"])),
     },
   };

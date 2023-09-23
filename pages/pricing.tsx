@@ -3,8 +3,11 @@ import { ofetch } from "ofetch";
 import { ArrowRight } from "lucide-react";
 import { Meta } from "types";
 import { ListIcon } from "@/components/shared/icons/list-icon";
+import { getToken } from "next-auth/jwt";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: any) {
   async function getProducts() {
     const response = await fetch(
       "https://api.lemonsqueezy.com/v1/products?filter[store_id]=25044",
@@ -21,10 +24,19 @@ export async function getServerSideProps() {
     return products.data;
   }
   const products = await getProducts();
+  const secret = process.env.SECRET;
+  const token = await getToken({ req: context.req, secret });
+  const userId = token?.sub as unknown as string;
+  let user;
+  if (userId) user = await prisma?.user.findFirst({ where: { id: userId } });
 
   return {
     props: {
       products,
+      ...(await serverSideTranslations(user?.lang ?? "en", [
+        "pricing",
+        "common",
+      ])),
     },
   };
 }
@@ -35,6 +47,7 @@ export default function PricingPage({ products }: { products: any[] }) {
     ogUrl: "http://recos.studio",
     title: "Pricing",
   };
+  const { t } = useTranslation("pricing");
 
   const getCredits = async (productId: string) => {
     const checkoutData = await ofetch("/api/checkout", {
@@ -48,10 +61,10 @@ export default function PricingPage({ products }: { products: any[] }) {
     <Layout meta={meta}>
       <div className="flex flex-col items-center">
         <h1 className="mt-16 bg-gradient-to-r from-green-600 to-[#9D4DFF] bg-clip-text text-center text-4xl font-bold leading-[3rem] text-transparent md:text-6xl">
-          Transparent and affordable price
+          {t("title")}
         </h1>
         <h1 className="mt-6 text-center text-3xl dark:text-white">
-          One credit for one minute audio, free for first 20 minutes
+          {t("description")}
         </h1>
         <div className="mt-24 flex flex-col items-center justify-start space-y-10 md:flex-row md:space-x-6 md:space-y-0">
           {products &&
@@ -67,7 +80,7 @@ export default function PricingPage({ products }: { products: any[] }) {
                   <span className="my-4 font-mono text-4xl slashed-zero">
                     {product.attributes.price_formatted}
                   </span>
-                  <ul className="mt-2 list-inside text-xl space-y-2">
+                  <ul className="mt-2 list-inside space-y-2 text-xl">
                     <li className="flex items-center">
                       <ListIcon />
                       {product.attributes.description

@@ -7,9 +7,11 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
 import { ofetch } from "ofetch";
+import { useTranslation } from "next-i18next";
 
 export default function UserDropdown() {
   const { data: session } = useSession();
+  const { t } = useTranslation("common");
   const { email, image, name } = session?.user || {};
   const [openPopover, setOpenPopover] = useState(false);
   const [credit, setCredit] = useState(0);
@@ -43,21 +45,23 @@ export default function UserDropdown() {
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100 dark:hover:bg-green-800/30"
             >
               <Beer className="h-4 w-4" />
-              <p className="text-sm">Get Credits</p>
+              <p className="text-sm">{t(
+                "get-credit"
+              )}</p>
             </Link>
             <Link
               href="/settings"
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100 dark:hover:bg-green-800/30"
             >
               <SettingsIcon className="h-4 w-4" />
-              <p className="text-sm">Settings</p>
+              <p className="text-sm">{t("settings")}</p>
             </Link>
             <button
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100 dark:hover:bg-green-800/30"
               onClick={() => signOut({ redirect: false })}
             >
               <LogOut className="h-4 w-4" />
-              <p className="text-sm">Logout</p>
+              <p className="text-sm">{t("logout")}</p>
             </button>
           </div>
         }

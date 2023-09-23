@@ -8,7 +8,6 @@ import Selector from "@/components/shared/selector";
 import { useTranslation } from "next-i18next";
 import { prisma } from "../lib/prisma";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useRouter } from "next/router";
 import { animate, motion, useMotionValue, useTransform } from "framer-motion";
 
 export async function getServerSideProps(context: any) {
@@ -35,19 +34,19 @@ export default function Setting({ setting }: { setting: { lang: string } }) {
     ogUrl: "http://recos.studio",
     title: "Settings",
   };
-  const { i18n, t } = useTranslation("settings");
+  const { i18n, t } = useTranslation(["settings", "common"]);
   const credit = useMotionValue(0);
   const currentCredit = useTransform(credit, (latest: number) =>
     Math.round(latest),
   );
-  const [used, setUsed] = useState(0);
+  const used = useMotionValue(0);
+  const usedCredit = useTransform(used, (latest: number) => Math.round(latest));
   const [language, setLanguage] = useState<string | undefined>(setting.lang);
-  const router = useRouter();
 
   useAsyncEffect(async () => {
-    const { credit: c, used } = await ofetch("/api/credit");
-    const control = animate(credit, c);
-    setUsed(used);
+    const { credit: c, used: u } = await ofetch("/api/credit");
+    animate(credit, c);
+    animate(used, u);
     // return control.stop;
   }, []);
 
@@ -60,32 +59,42 @@ export default function Setting({ setting }: { setting: { lang: string } }) {
           lang: value,
         }),
       });
-      location.reload();
+      console.log("Refresh");
+      
+      location.replace(location.href);
     },
     [i18n],
   );
   const options = [
     {
-      label: "Simplified Chinese",
-      value: "zh-CN",
+      label: "English",
+      value: "en",
     },
     {
-      label: "English",
-      value: "en-US",
+      label: "Chinese",
+      value: "zh",
     },
     {
       label: "Japanese",
-      value: "ja-JP",
+      value: "ja",
     },
+    {
+      label: "German",
+      value: "de",
+    },
+    {
+      label: 'French',
+      value: 'fr'
+    }
   ];
 
   return (
     <Layout meta={meta}>
       <div className="mb-8 mt-10 text-4xl font-medium dark:text-white">
-        {t("settings")}
+        {t("settings", { ns: "common" })}
       </div>
       <div className="mt-4 flex flex-row items-center justify-between space-x-20 dark:text-white md:justify-start">
-        <div className="my-2 text-2xl">{t("language")}</div>
+        <div className="my-2 text-2xl">{t("language", { ns: "common" })}</div>
         <Selector
           options={options}
           label="Language"
@@ -105,9 +114,9 @@ export default function Setting({ setting }: { setting: { lang: string } }) {
           </div>
           <div className="card w-80 items-center dark:text-white">
             <div className="text-xl font-bold">Total Used Credit</div>
-            <div className="mt-4 text-6xl slashed-zero text-green-600">
-              {used}
-            </div>
+            <motion.div className="mt-4 text-6xl slashed-zero text-green-600">
+              {usedCredit}
+            </motion.div>
           </div>
         </div>
       </div>

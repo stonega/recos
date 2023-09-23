@@ -19,6 +19,7 @@ export default async function handler(
       where: { id: userId },
       data: { lang },
     });
+    res.status(200).json({});
   } else {
     const user = await prisma?.user.findFirst({ where: { id: userId } });
     res.status(200).json({ lang: user?.lang });

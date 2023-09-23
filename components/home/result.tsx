@@ -35,7 +35,7 @@ const Result = ({ input, token, closeResult }: ResultProps) => {
   const onConfirm = useCallback(() => {
     const path = localStorage.getItem("path");
     if (path && path !== "/") {
-      router.push(path!);
+      router.push(path!, undefined, { scroll: true });
     }
   }, [router]);
   const { setShowConfirmModal, ConfirmModal } = useConfirmModal(onConfirm);

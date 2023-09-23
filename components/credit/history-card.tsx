@@ -7,12 +7,17 @@ interface HistoryCardProps {
   history: CreditHistory;
 }
 const HistoryCard = ({ history }: HistoryCardProps) => {
-  const router = useRouter()
+  const router = useRouter();
   function toDetailPage() {
-    router.push(`/subtitle/${encodeURIComponent(history.id)}`)
+    router.push(`/subtitle/${encodeURIComponent(history.id)}`, undefined, {
+      scroll: false,
+    });
   }
   return (
-    <div className="py-4 flex flex-row justify-between hover:bg-green-300 dark:hover:bg-green-800 hover:px-2 cursor-pointer transition-all" onClick={toDetailPage}>
+    <div
+      className="flex cursor-pointer flex-row justify-between py-4 transition-all hover:bg-green-300 hover:px-2 dark:hover:bg-green-800"
+      onClick={toDetailPage}
+    >
       <div className="flex flex-col">
         <div className="text-xl dark:text-white">
           {history.name === "" ? "Unknown" : history.name}
