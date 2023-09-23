@@ -11,7 +11,7 @@ export default function Home({
 }) {
   const meta: Meta = {
     description: "Podcast to text.",
-    ogUrl: "http://recos.stonegate.me",
+    ogUrl: "http://recos.studio",
     title: "Privacy policy",
   };
 

@@ -25,7 +25,7 @@ export async function getServerSideProps(context: any) {
 export default function Credit({ token }: { token: string }) {
   const meta: Meta = {
     description: "Podcast to text.",
-    ogUrl: "http://recos.stonegate.me",
+    ogUrl: "http://recos.studio",
     title: "Credit",
   };
 

@@ -2,6 +2,7 @@ import Layout from "@/components/layout";
 import { ofetch } from "ofetch";
 import { ArrowRight } from "lucide-react";
 import { Meta } from "types";
+import { ListIcon } from "@/components/shared/icons/list-icon";
 
 export async function getServerSideProps() {
   async function getProducts() {
@@ -31,7 +32,7 @@ export async function getServerSideProps() {
 export default function PricingPage({ products }: { products: any[] }) {
   const meta: Meta = {
     description: "Podcast to text.",
-    ogUrl: "http://recos.stonegate.me",
+    ogUrl: "http://recos.studio",
     title: "Pricing",
   };
 
@@ -52,7 +53,7 @@ export default function PricingPage({ products }: { products: any[] }) {
         <h1 className="mt-6 text-center text-3xl dark:text-white">
           One credit for one minute audio, free for first 20 minutes
         </h1>
-        <div className="mt-24 flex flex-col items-center justify-start space-y-10 md:flex-row md:space-x-10 md:space-y-0">
+        <div className="mt-24 flex flex-col items-center justify-start space-y-10 md:flex-row md:space-x-6 md:space-y-0">
           {products &&
             products.map((product: any) => (
               <div
@@ -60,23 +61,34 @@ export default function PricingPage({ products }: { products: any[] }) {
                 className="flex h-[400px] w-full flex-col items-start justify-between rounded-lg bg-green-400 p-8 shadow-md dark:bg-green-900 md:w-[350px]"
               >
                 <div className="flex flex-col dark:text-white">
-                  <span className="text-4xl font-bold">
+                  <div className="w-auto rounded-full text-2xl font-bold text-[#0f763d] dark:text-[#88f58d]">
                     {product.attributes.name}
+                  </div>
+                  <span className="my-4 font-mono text-4xl slashed-zero">
+                    {product.attributes.price_formatted}
                   </span>
-                  <span className="text-xl">
-                    {product.attributes.description
-                      .replace("<p>", "")
-                      .replace("</p>", "")}
-                  </span>
-                  <ul className="mt-6 list-disc list-inside">
-                    <li>Translate transcription</li>
-                    <li>Summary transcription</li>
+                  <ul className="mt-2 list-inside text-xl space-y-2">
+                    <li className="flex items-center">
+                      <ListIcon />
+                      {product.attributes.description
+                        .replace("<p>", "")
+                        .replace("</p>", "")}
+                    </li>
+                    <li className="flex items-center">
+                      <ListIcon />
+                      Translate transcription
+                    </li>
+                    <li className="flex items-start">
+                      <ListIcon />
+                      Get summary
+                    </li>
+                    <li className="flex items-center">
+                      <ListIcon />
+                      Export srt file
+                    </li>
                   </ul>
                 </div>
                 <div className="flex w-full flex-row items-center justify-between dark:text-white">
-                  <span className="font-mono text-4xl slashed-zero">
-                    {product.attributes.price_formatted}
-                  </span>
                   <div
                     className="group cursor-pointer flex-row rounded-md text-lg font-normal"
                     onClick={() => getCredits(product.id)}

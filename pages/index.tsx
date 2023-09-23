@@ -5,14 +5,33 @@ import Features from "@/components/home/features";
 import Button from "@/components/shared/button";
 import { useRouter } from "next/router";
 import Inscriptions from "@/components/home/inscriptions";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { getToken } from "next-auth/jwt";
+import { prisma } from "../lib/prisma";
+
+export async function getServerSideProps(context: any) {
+  const secret = process.env.SECRET;
+  const token = await getToken({ req: context.req, secret });
+  const userId = token?.sub as unknown as string;
+  let user;
+  if (userId) user = await prisma?.user.findFirst({ where: { id: userId } });
+  return {
+    props: {
+      token,
+      ...(await serverSideTranslations(user?.lang ?? "en", ["homepage", "common"])),
+    },
+  };
+}
 
 export default function Home() {
   const meta: Meta = {
     description: "Podcast to text.",
-    ogUrl: "http://recos.stonegate.me",
+    ogUrl: "https://recos.studio",
     title: "Recos.",
   };
   const router = useRouter();
+  const { t } = useTranslation("homepage");
 
   return (
     <Layout meta={meta}>
@@ -20,14 +39,14 @@ export default function Home() {
       <div className="flex flex-col md:grid md:grid-cols-2">
         <div className="flex flex-col items-center md:items-start">
           <div className="mb-20 text-center text-4xl font-bold leading-[3rem] text-green-600 md:text-left">
-            Hi, Transcript any podcast you love to text and discover even more!
+            {t("slogan")}
           </div>
           <Button
             className="mb-20 border-2 border-green-400 py-4 text-2xl font-bold md:mb-0"
             onClick={() => router.push("/dashboard")}
-            outlined={ true }
+            outlined={true}
           >
-            Get Started
+            {t("start-button")}
           </Button>
         </div>
         <Inscriptions />

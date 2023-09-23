@@ -4,7 +4,7 @@ import { Meta } from "types";
 const TermsPage = () => {
   const meta: Meta = {
     description: "Podcast to text.",
-    ogUrl: "http://recos.stonegate.me",
+    ogUrl: "http://recos.studio",
     title: "Recos.",
   };
   return (

@@ -3,6 +3,7 @@ import ThemeModeButton from "./theme-mode-button";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import UserDropdown from "./user-dropdown";
+import { useTranslation } from "next-i18next";
 
 export interface NavBarProps {
   providers: any;
@@ -11,6 +12,7 @@ export interface NavBarProps {
 const NavBar = () => {
   const { data } = useSession();
   const pathname = usePathname();
+  const { t } = useTranslation("common");
 
   return (
     <div className="my-4 flex w-full max-w-6xl items-center justify-between px-2 md:px-2">
@@ -20,7 +22,7 @@ const NavBar = () => {
             Recos.
           </span>
         </Link>
-        <span className="rounded-full  bg-green-300 dark:bg-green-600 px-2 py-1 text-sm">
+        <span className="rounded-full  bg-green-300 px-2 py-1 text-sm dark:bg-green-600">
           Beta
         </span>
         <ThemeModeButton></ThemeModeButton>
@@ -28,13 +30,13 @@ const NavBar = () => {
           href="/dashboard"
           className="mx-8 hidden text-xl underline underline-offset-8 hover:text-green-600 hover:decoration-wavy dark:text-white md:block"
         >
-          Dashboard
+          {t("dashboard")}
         </Link>
         <Link
           href="/pricing"
           className="hidden text-xl underline underline-offset-8 hover:text-green-600 hover:decoration-wavy dark:text-white md:block"
         >
-          Pricing
+          {t("pricing")}
         </Link>
       </div>
       {pathname?.includes("/login") ? null : (
@@ -44,7 +46,7 @@ const NavBar = () => {
               className="cursor-pointer hover:opacity-80 dark:text-white"
               href="/login"
             >
-              LOG IN
+              {t("sign-in")}
             </Link>
           ) : (
             <UserDropdown />

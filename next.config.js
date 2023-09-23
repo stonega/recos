@@ -4,7 +4,7 @@ const { i18n } = require('./next-i18next.config')
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  i18n,
+  // i18n,
   images: {
     domains: [
       "recommends.stonegate.me",
@@ -16,7 +16,7 @@ const nextConfig = {
     return [
       {
         source: "/github",
-        destination: "https://github.com/stonega/recommends",
+        destination: "https://github.com/stonega/recos",
         permanent: false,
       },
     ];

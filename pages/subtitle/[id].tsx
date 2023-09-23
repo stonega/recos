@@ -91,7 +91,7 @@ const SubtitlePage = ({
     const content = data.subtitles
       .map(
         (subtitle) =>
-          `${subtitle.id}\n${subtitle.startTimestamp} --> ${subtitle.endTimestamp}\n${subtitle.translation}`,
+          `${subtitle.id}\n${subtitle.startTimestamp} --> ${subtitle.endTimestamp}\n${subtitle.text}`,
       )
       .join("\n\n");
     const blob = new Blob([content], {
@@ -141,7 +141,7 @@ const SubtitlePage = ({
 
   const meta: Meta = {
     description: "Podcast to text.",
-    ogUrl: "http://recos.stonegate.me",
+    ogUrl: "http://recos.studio",
     title: "Recos.",
   };
 
