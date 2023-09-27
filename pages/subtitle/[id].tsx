@@ -17,14 +17,16 @@ import { ofetch } from "ofetch";
 import { AnimatePresence, motion } from "framer-motion";
 import { FADE_DOWN_ANIMATION_SETTINGS } from "@/lib/constants";
 import { prisma } from "../../lib/prisma";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 const FILE_SERVER =
   "https://recos-audio-slice-production.up.railway.app/files/";
 const BASE_URL = "https://recos-audio-slice-production.up.railway.app";
 
 export async function getServerSideProps(context: any) {
-  const token = await getToken({ req: context.req, raw: true });
-  if (!token) {
+  const accessToken = await getToken({ req: context.req, raw: true });
+  if (!accessToken) {
     return {
       redirect: {
         destination: "/login",
@@ -34,17 +36,26 @@ export async function getServerSideProps(context: any) {
   }
   const id = context.query.id as string;
   const record = await prisma?.credit.findFirst({ where: { id } });
+  const secret = process.env.SECRET;
+  const token = await getToken({ req: context.req, secret });
+  const userId = token?.sub as unknown as string;
+  const user = await prisma?.user.findFirst({ where: { id: userId } });
 
   return {
     props: {
-      token,
+      token: accessToken,
       record: {
         id: record?.id,
+        task_id: record?.task_id,
         name: record?.name,
         audio_url: record?.audio_url,
         type: record?.type,
         audio_length: record?.audio_length,
       },
+      ...(await serverSideTranslations(user?.lang ?? "en", [
+        "subtitle",
+        "common",
+      ])),
     },
   };
 }
@@ -76,7 +87,7 @@ const SubtitlePage = ({
     undefined,
   );
   const [showTranslation, setShowTranslation] = useState(false);
-
+  const { t } = useTranslation(["subtitle", "common"]);
   const { data, mutate } = useSWR<{
     summary: string;
     recos: string;
@@ -84,7 +95,7 @@ const SubtitlePage = ({
     translateStatus?: string;
     summaryStatus?: string;
     recosStatus?: string;
-  }>(() => `/api/subtitle/${encodeURIComponent(id)}`, request);
+  }>(() => `/api/subtitle/${encodeURIComponent(record["task_id"])}`, request);
 
   const handleExportSrt = () => {
     if (!data) return "";
@@ -109,7 +120,7 @@ const SubtitlePage = ({
   };
 
   const handleTask = async (task: string) => {
-    if (task === "translate" && data?.subtitles[0].translation) {
+    if (task === "translate" && data?.translateStatus) {
       setShowTranslation(() => !showTranslation);
       return;
     }
@@ -130,6 +141,7 @@ const SubtitlePage = ({
       return;
     }
     const url = `${BASE_URL}/subtitles/${task}/${encodeURIComponent(id)}`;
+    mutate({ ...data, [`${task}Status`]: "pending" });
     const { task_id } = await ofetch(url, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -138,6 +150,18 @@ const SubtitlePage = ({
     mutate({ ...data, [`${task}Status`]: task_id });
     toast.success("Request sent successfully! Check back later.");
   };
+
+  async function retry() {
+    await ofetch(
+      `${BASE_URL}/transcript-task/retry/${encodeURIComponent(id)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    toast.success("Request sent successfully! Check back later.");
+  }
 
   const meta: Meta = {
     description: "Podcast to text.",
@@ -163,6 +187,11 @@ const SubtitlePage = ({
             <Tooltip content="Export srt file">
               <button className="button px-2" onClick={() => handleExportSrt()}>
                 SRT
+              </button>
+            </Tooltip>
+            <Tooltip content="Retry">
+              <button className="button px-2" onClick={() => retry()}>
+                Retry
               </button>
             </Tooltip>
           </div>

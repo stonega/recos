@@ -1,5 +1,7 @@
 import { getToken } from "next-auth/jwt";
 import { getProviders } from "next-auth/react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { prisma } from '../lib/prisma'
 
 export async function getServerSideProps(context: any) {
   const providers = await getProviders();
@@ -39,4 +41,16 @@ export async function getServerSideProps(context: any) {
       products,
     },
   };
+}
+
+export async function getTranslationProps(context: any, namespace?: string) {
+  const secret = process.env.SECRET;
+  const token = await getToken({ req: context.req, secret });
+  const userId = token?.sub as unknown as string;
+  let user;
+  if (userId) user = await prisma?.user.findFirst({ where: { id: userId } });
+  return await serverSideTranslations(
+    user?.lang ?? "en",
+    namespace ? [namespace, "common"] : ["common"],
+  );
 }

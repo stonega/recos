@@ -3,9 +3,9 @@ import { useCredits } from "hooks/use-api";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { YoutubeIcon, FileAudio } from "lucide-react";
-import { formatDuration } from "utils";
 import TranscriptionContent from "./transcription-content";
 import Link from "next/link";
+import { useTranslation } from "next-i18next";
 
 interface RecentTranscriptionsProps {
   token: string;
@@ -13,6 +13,7 @@ interface RecentTranscriptionsProps {
 }
 const RecentTranscriptions = ({ token, status }: RecentTranscriptionsProps) => {
   const router = useRouter();
+  const { t } = useTranslation("dashboard");
   const { data, isLoading, error } = useCredits(
     1,
     status === "pending" ? 1000 : 6,
@@ -23,16 +24,19 @@ const RecentTranscriptions = ({ token, status }: RecentTranscriptionsProps) => {
   return (
     <>
       <div className="mt-8 flex flex-row items-center justify-between dark:text-white">
-        <span className="text-2xl font-semibold">
-          {status === "pending" ? "Pending" : "Recent"}
+        <span className="text-2xl font-semibold text-green-600">
+          {status === "pending" ? t("pending") : t("recent")}
         </span>
         {status === "completed" && (
-          <Link
-            href="/credit"
-            className="text-green-600 underline underline-offset-4 hover:text-green-600 hover:decoration-wavy"
-          >
-            View All
-          </Link>
+          <div>
+            <Link
+              href="/credit"
+              className="text-green-600 underline underline-offset-4 hover:text-green-600 hover:decoration-wavy"
+              scroll={false}
+            >
+              {t("view-all")}
+            </Link>
+          </div>
         )}
       </div>
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">

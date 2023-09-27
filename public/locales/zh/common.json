@@ -1,9 +1,9 @@
 {
-  "dashboard": "仪表板",
-  "pricing": "价钱",
+  "dashboard": "主页",
+  "pricing": "定价",
   "sign-in": "登入",
   "settings": "设置",
   "language": "语言",
-  "get-credit": "获得信用",
+  "get-credit": "获得积分",
   "logout": "登出"
 }

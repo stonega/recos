@@ -21,7 +21,7 @@ const WhatIsRecos = () => {
   return (
     <div className="mt-20">
       <div className="my-8 text-4xl font-bold text-green-600 dark:text-green-600">
-        Why choose Recos.
+        Why choose Recos
       </div>
       <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
         {data.features.map((item) => (

@@ -18,7 +18,6 @@ interface ResultProps {
 }
 
 type Step = "input" | "downloading" | "uploading" | "loading" | "result";
-const DEFAULT_PROMPT = "Add punctuation marks and format the text.";
 const BASE_URL = "https://recos-audio-slice-production.up.railway.app";
 const DEFAULT_OPTION: TranscriptOption = {
   prompt: "",

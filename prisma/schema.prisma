@@ -47,7 +47,7 @@ model User {
   accounts       Account[]
   sessions       Session[]
   credit_history Credit[]
-  lang           String   @default("en-US")
+  lang           String    @default("en-US")
 }
 
 model VerificationToken {
@@ -71,6 +71,7 @@ model Credit {
   audio_image  String   @default("")
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   status       String   @default("pending")
+  task_id      String   @default("")
 
   @@index([userId])
 }

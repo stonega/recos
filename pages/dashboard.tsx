@@ -11,12 +11,10 @@ import Result from "@/components/home/result";
 import { useState } from "react";
 import { getToken } from "next-auth/jwt";
 import RecentTranscriptions from "@/components/dashboard/recent-transcriptions";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { prisma } from '../lib/prisma'
+import { getTranslationProps } from "@/lib/server-side-props";
 
 export async function getServerSideProps(context: any) {
-  const secret = process.env.SECRET;
-  const token = await getToken({ req: context.req, secret });
+  const token = await getToken({ req: context.req, raw: true });
   if (!token) {
     return {
       redirect: {
@@ -25,12 +23,10 @@ export async function getServerSideProps(context: any) {
       },
     };
   }
-  const userId = token?.sub as unknown as string;
-  const user = await prisma?.user.findFirst({ where: { id: userId } });
   return {
     props: {
       token,
-      ...(await serverSideTranslations(user?.lang ?? "en", ["common"])),
+      ...(await getTranslationProps(context, "dashboard"))
     },
   };
 }

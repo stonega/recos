@@ -1,3 +1,4 @@
+import { useTranslation } from "next-i18next";
 import useSWR from "swr";
 import { SrtItem } from "utils";
 

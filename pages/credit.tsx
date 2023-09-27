@@ -4,10 +4,11 @@ import HistoryCard from "@/components/credit/history-card";
 import { useEffect, useState } from "react";
 import { getToken } from "next-auth/jwt";
 import { useCredits } from "hooks/use-api";
+import { getTranslationProps } from "@/lib/server-side-props";
 
 export async function getServerSideProps(context: any) {
-  const token = await getToken({ req: context.req, raw: true });
-  if (!token) {
+  const accessToken = await getToken({ req: context.req, raw: true });
+  if (!accessToken) {
     return {
       redirect: {
         destination: "/login",
@@ -17,7 +18,8 @@ export async function getServerSideProps(context: any) {
   }
   return {
     props: {
-      token,
+      token: accessToken,
+      ...(await getTranslationProps(context, "credit"))
     },
   };
 }
@@ -62,7 +64,7 @@ export default function Credit({ token }: { token: string }) {
         </div>
       ) : (
         <>
-          <div className="flex flex-col divide-y divide-solid divide-green-400">
+          <div className="flex flex-col">
             {records &&
               records.map((item) => {
                 return (
