@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "ahooks",
     "Autentication",
     "Autosize",
     "cellspacing",
@@ -9,13 +10,23 @@
     "Kcdfxsh",
     "Lemonsqueezy",
     "LISTENNOTE",
+    "maxage",
+    "motionone",
     "mpga",
+    "Playfair",
     "PODCHASER",
     "Recos",
+    "scrollend",
+    "scrollyfills",
     "Squeezy",
     "srts",
     "untar",
     "webm",
     "zustand"
-  ]
+  ],
+  "i18n-ally.localesPaths": [
+    "public/locales"
+  ],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.sourceLanguage": "zh-CN"
 }

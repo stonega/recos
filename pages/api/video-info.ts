@@ -14,14 +14,16 @@ export default async function handler(
         const response = await ofetch(
           `https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${id}&key=${process.env.YOUTUBE_API_KEY}`,
         );
-        if(response.items.length === 0) {
+        if (response.items.length === 0) {
           res.status(404).json({ data: "not found" });
         }
         const duration = response.items[0].contentDetails.duration;
         const title = response.items[0].snippet.title;
         const description = response.items[0].snippet.description;
         res.status(200).json({
-          title, length: parseYoutubeDuration(duration), description
+          title,
+          length: parseYoutubeDuration(duration),
+          description,
         });
       } catch (e) {
         console.log(e);

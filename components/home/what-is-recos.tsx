@@ -25,12 +25,13 @@ const data = {
 const WhatIsRecos = () => {
   return (
     <div className="mt-20">
+      <div className="my-8 text-4xl font-bold text-green-600 dark:text-green-600">
+        FAQS
+      </div>
       <div className="border-t-2 border-green-500 py-2"></div>
       {data.qas.map((item, index) => (
         <div key={item.question}>
-          <div className="my-4 text-xl font-bold text-green-400 dark:text-green-600">
-            {item.question}
-          </div>
+          <div className="my-4 text-xl font-bold">{item.question}</div>
           <div className="text-lg dark:text-white">
             {item.answer}{" "}
             {index == 2 && (

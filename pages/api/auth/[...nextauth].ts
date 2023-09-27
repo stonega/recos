@@ -1,10 +1,12 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
-import EmailProvider, { SendVerificationRequestParams } from "next-auth/providers/email";
+import EmailProvider, {
+  SendVerificationRequestParams,
+} from "next-auth/providers/email";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import nodemailer from "nodemailer"
-import prisma from "@/lib/prisma";
+import nodemailer from "nodemailer";
+import { prisma } from "@/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -12,7 +14,7 @@ export const authOptions: NextAuthOptions = {
     EmailProvider({
       server: process.env.EMAIL_SERVER,
       from: process.env.EMAIL_FROM,
-      sendVerificationRequest
+      sendVerificationRequest,
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -34,7 +36,10 @@ export const authOptions: NextAuthOptions = {
       allowDangerousEmailAccountLinking: true,
     }),
   ],
-  secret: process.env.SECRET,
+  pages: {
+    signIn: "/login",
+     error: '/api/auth/error',
+  },
   session: { strategy: "jwt" },
   callbacks: {
     async session({ session, user, token }) {
@@ -46,21 +51,20 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-
 async function sendVerificationRequest({
   identifier: email,
   url,
   provider: { server, from },
 }: SendVerificationRequestParams) {
-  const { host } = new URL(url)
-  const transport = nodemailer.createTransport(server)
+  const { host } = new URL(url);
+  const transport = nodemailer.createTransport(server);
   await transport.sendMail({
     to: email,
     from,
     subject: `Sign in to ${host}`,
     text: text({ url, host }),
     html: html({ url, host, email }),
-  })
+  });
 }
 
 // Email HTML body
@@ -69,15 +73,15 @@ function html({ url, host, email }: Record<"url" | "host" | "email", string>) {
   // email address and the domain from being turned into a hyperlink by email
   // clients like Outlook and Apple mail, as this is confusing because it seems
   // like they are supposed to click on their email address to sign in.
-  const escapedEmail = `${email.replace(/\./g, "&#8203;.")}`
-  const escapedHost = `${host.replace(/\./g, "&#8203;.")}`
+  const escapedEmail = `${email.replace(/\./g, "&#8203;.")}`;
+  const escapedHost = `${host.replace(/\./g, "&#8203;.")}`;
 
   // Some simple styling options
-  const textColor = "#444444"
-  const mainBackgroundColor = "#dcfce7"
-  const buttonBackgroundColor = "#4ade80"
-  const buttonBorderColor = "#86efac"
-  const buttonTextColor = "#000"
+  const textColor = "#444444";
+  const mainBackgroundColor = "#dcfce7";
+  const buttonBackgroundColor = "#4ade80";
+  const buttonBorderColor = "#86efac";
+  const buttonTextColor = "#000";
 
   return `
 <body>
@@ -109,12 +113,12 @@ function html({ url, host, email }: Record<"url" | "host" | "email", string>) {
     </tr>
   </table>
 </body>
-`
+`;
 }
 
 // Email Text body (fallback for email clients that don't render HTML, e.g. feature phones)
 function text({ url, host }: Record<"url" | "host", string>) {
-  return `Sign in to ${host}\n${url}\n\n`
+  return `Sign in to ${host}\n${url}\n\n`;
 }
 
 export default NextAuth(authOptions);

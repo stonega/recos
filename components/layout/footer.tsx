@@ -28,14 +28,22 @@ const Footer = () => {
         </a>
       </div>
       <span className="mb-2 text-center text-gray-500">
-        Made with ❤️ by Stone © 2023 Recos.
+        Made with ❤️ © 2023 Recos.
       </span>
-      <Link
-        href="/privacy"
-        className="mb-4 text-gray-500 underline decoration-solid"
-      >
-        Privacy
-      </Link>
+      <div className="flex flex-row gap-4">
+        <Link
+          href="/privacy"
+          className="mb-4 text-gray-500 underline decoration-solid"
+        >
+          Privacy
+        </Link>
+        <Link
+          href="/terms"
+          className="mb-4 text-gray-500 underline decoration-solid"
+        >
+          Terms of Use
+        </Link>
+      </div>
     </div>
   );
 };

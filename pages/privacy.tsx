@@ -11,14 +11,14 @@ export default function Home({
 }) {
   const meta: Meta = {
     description: "Podcast to text.",
-    ogUrl: "http://recos.stonegate.me",
+    ogUrl: "http://recos.studio",
     title: "Privacy policy",
   };
 
   return (
-    <Layout meta={meta} providers={providers} products={products}>
+    <Layout meta={meta}>
       <div className="mb-0 md:mb-20"></div>
-      <article className="prose font-mono dark:text-white lg:prose-sm">
+      <article className="prose font-mono lg:prose-sm dark:text-white">
         <h1 className="dark:text-white">Privacy Policy</h1>
         <p>
           Recos is an audio transcription app that allows users to transcribe

@@ -1,56 +1,43 @@
 import Layout from "@/components/layout";
 import { CreditHistory, Meta } from "types";
-import useSWR from "swr";
-import { ArrowLeftCircle } from "lucide-react";
-import Link from "next/link";
 import HistoryCard from "@/components/credit/history-card";
 import { useEffect, useState } from "react";
+import { getToken } from "next-auth/jwt";
+import { useCredits } from "hooks/use-api";
+import { getTranslationProps } from "@/lib/server-side-props";
 
-export { getServerSideProps } from "lib/server-side-props";
-
-function useCredits(page: number, pageSize: number, token: string) {
-  const request = async (): Promise<CreditHistory[]> => {
-    const response = await fetch(
-      `/api/credit_history?page=${page}&page_size=${pageSize}`,
-    );
-    const result = await response.json();
-    return result.data;
-  };
-
-  const { data, error, isLoading } = useSWR(
-    () => `/api/credit_history?page=${page}&page_size=${pageSize}`,
-    request,
-  );
+export async function getServerSideProps(context: any) {
+  const accessToken = await getToken({ req: context.req, raw: true });
+  if (!accessToken) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
   return {
-    data,
-    isLoading,
-    error,
+    props: {
+      token: accessToken,
+      ...(await getTranslationProps(context, "credit"))
+    },
   };
 }
 
-export default function Credit({
-  providers,
-  token,
-  products,
-}: {
-  providers: any;
-  products: any[];
-  token: string;
-}) {
+export default function Credit({ token }: { token: string }) {
   const meta: Meta = {
     description: "Podcast to text.",
-    ogUrl: "http://recos.stonegate.me",
-    title: "Credit history",
+    ogUrl: "http://recos.studio",
+    title: "Credit",
   };
 
   const [page, setPage] = useState(1);
   const [records, setRecords] = useState<CreditHistory[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
-  const { data, isLoading, error } = useCredits(page, 10, token);
+  const { data, isLoading, error } = useCredits(page, 20, undefined, token);
 
   useEffect(() => {
-    console.log(data);
     if (!data) return;
     if (data.length > 0) {
       setRecords((records) => {
@@ -67,13 +54,9 @@ export default function Credit({
   }, [data]);
 
   return (
-    <Layout meta={meta} providers={providers} products={products}>
-      <div className="mb-8 flex flex-row justify-between dark:text-white">
-        <Link className="flex flex-row items-center text-xl" href="/">
-          <ArrowLeftCircle className="inline" />
-          <span className="ml-2">Credits Usage</span>
-        </Link>
-        <div className="flex flex-row"></div>
+    <Layout meta={meta}>
+      <div className="mb-12 mt-10 text-4xl font-medium dark:text-white">
+        History
       </div>
       {isLoading && records.length === 0 ? (
         <div className="darK:text-white mt-20 flex h-60 flex-col items-center justify-center gap-2">
@@ -81,7 +64,7 @@ export default function Credit({
         </div>
       ) : (
         <>
-          <div className="flex flex-col space-y-3 divide-y divide-solid divide-green-400">
+          <div className="flex flex-col">
             {records &&
               records.map((item) => {
                 return (

@@ -13,7 +13,8 @@ export interface AudioInput {
   duration: number; // in seconds
   prompt?: string;
   transcript?: string;
-  type?: 'audio' | 'youtube';
+  type?: "audio" | "youtube" | "podcast";
+  image?: string
 }
 
 export interface Episode {
@@ -50,9 +51,14 @@ export type TranscriptOption = {
 
 export type CreditHistory = {
   audio_length: number;
+  task_id: string
   create_at: string;
+  audio_url: string;
+  audio_image: string;
+  status: 'pending' | 'completed' | 'failed';
   id: string;
   name: string;
   title: string;
   credit: number;
+  type: 'audio' | 'youtube' | 'podcast';
 };

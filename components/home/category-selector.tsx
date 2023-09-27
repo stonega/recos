@@ -20,7 +20,7 @@ export const CategorySelector = ({ onSelect }: CategorySelectorProps) => {
       <ToggleGroup.Item
         className={classNames(
           toggleGroupItemClasses,
-          "bg-white/40 data-[state=on]:bg-green-400 dark:bg-black/40 dark:text-white dark:data-[state=on]:bg-green-400 dark:data-[state=on]:text-black",
+          "bg-green-100 data-[state=on]:bg-green-400 dark:bg-black/40 dark:text-white dark:data-[state=on]:bg-green-600 dark:data-[state=on]:text-black",
         )}
         value="podcast"
         aria-label="Podcast"
@@ -30,17 +30,17 @@ export const CategorySelector = ({ onSelect }: CategorySelectorProps) => {
       <ToggleGroup.Item
         className={classNames(
           toggleGroupItemClasses,
-          "bg-white/40 data-[state=on]:bg-green-400 dark:bg-black/40 dark:text-white dark:data-[state=on]:bg-green-400 dark:data-[state=on]:text-black",
+          "bg-green-100 data-[state=on]:bg-green-400 dark:bg-black/40 dark:text-white dark:data-[state=on]:bg-green-600 dark:data-[state=on]:text-black",
         )}
         value="audio"
         aria-label="Audio"
       >
-        Audio
+        File
       </ToggleGroup.Item>
       <ToggleGroup.Item
         className={classNames(
           toggleGroupItemClasses,
-          "bg-white/40 data-[state=on]:bg-green-400 dark:bg-black/40 dark:text-white dark:data-[state=on]:bg-green-400 dark:data-[state=on]:text-black",
+          "bg-green-100 data-[state=on]:bg-green-400 dark:bg-black/40 dark:text-white dark:data-[state=on]:bg-green-400 dark:data-[state=on]:text-black",
         )}
         value="youtube"
         aria-label="YouTube"

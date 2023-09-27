@@ -20,7 +20,9 @@ export const SearchYoutube = ({ onResult }: SearchYoutubeProps) => {
 
   const submit = useCallback(
     async (link: string) => {
-      const videoInfo = await ofetch<VideoInfo>('/api/video-info?platform=youtube&link=' + link);
+      const videoInfo = await ofetch<VideoInfo>(
+        "/api/video-info?platform=youtube&link=" + link,
+      );
       try {
         setIsSubmitting(true);
         setLink("");
@@ -29,7 +31,7 @@ export const SearchYoutube = ({ onResult }: SearchYoutubeProps) => {
           input: link,
           duration: videoInfo.length,
           prompt: videoInfo.description,
-          type: 'youtube'
+          type: "youtube",
         });
       } catch (error) {
         if (error instanceof Error) toast.error(error.message);
@@ -48,8 +50,11 @@ export const SearchYoutube = ({ onResult }: SearchYoutubeProps) => {
         value={link}
         onChange={(e) => setLink(e.target.value)}
       />
-      <div onClick={() => submit(link)} className="absolute cursor-pointer flex flex-col justify-center items-center font-bold right-0 top-0 bg-green-200 h-[calc(100%-4px)] w-24 m-[2px] rounded-r-[4px] hover:bg-green-300">
-        {isSubmitting ? <LoadingCircle /> : 'Search'}
+      <div
+        onClick={() => submit(link)}
+        className="absolute right-0 top-0 m-[2px] flex h-[calc(100%-4px)] w-24 cursor-pointer flex-col items-center justify-center rounded-r-[4px] bg-green-200 font-bold hover:bg-green-300"
+      >
+        {isSubmitting ? <LoadingCircle /> : "Search"}
       </div>
     </div>
   );

@@ -67,7 +67,7 @@ const ResultEditor = ({ text, title, srt, onBack }: EditorProps) => {
 
   return (
     <>
-      <div className="mt-16 mb-8 flex flex-row justify-between dark:text-white">
+      <div className="mb-8 mt-16 flex flex-row justify-between dark:text-white">
         <button className="flex flex-row items-center text-xl" onClick={onBack}>
           <ArrowLeftCircle className="inline" />
           <span className="ml-2" onClick={onBack}>
@@ -113,7 +113,9 @@ const ResultEditor = ({ text, title, srt, onBack }: EditorProps) => {
           </span>
         </div> */}
       <div className="relative whitespace-pre-wrap">
-        <span className="dark:text-white leading-10 text-xl font-serif">{content}</span>
+        <span className="font-serif text-xl leading-10 dark:text-white">
+          {content}
+        </span>
         {srt && (
           <div className="absolute right-4 top-2 flex flex-row">
             <label htmlFor="srt" className="mr-2 text-lg">

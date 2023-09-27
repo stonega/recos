@@ -1,5 +1,5 @@
 import { forwardRef, RefObject } from "react";
-import classNames from "classnames";
+import classnames from "classnames";
 import Link from "next/link";
 import { LoadingCircle, LoadingSpinner } from "./icons";
 
@@ -10,6 +10,7 @@ interface ButtonProps {
   className?: string;
   disabled?: boolean;
   loading?: boolean;
+  outlined?: boolean;
   href?: string;
   type?: "button" | "submit" | "reset";
   onClick?: (event?: React.MouseEvent<HTMLElement, MouseEvent>) => any;
@@ -26,6 +27,7 @@ const Button = forwardRef(function Button(
     onClick,
     href,
     loading = false,
+    outlined = false,
   }: ButtonProps,
   buttonRef,
 ) {
@@ -42,7 +44,7 @@ const Button = forwardRef(function Button(
       break;
   }
   const basicClassName =
-    "relative transition-ease flex flex-row space-x-2 items-center bg-green-600 text-black whitespace-nowrap hover:text-black w-auto font-bold text-center border-2 rounded-lg border-none active:border-transparent outline-green-500 active:outline active:outline-2 active:outline-offset-4";
+    "relative transition-ease flex flex-row space-x-2 items-center text-black whitespace-nowrap hover:text-black w-auto font-bold text-center  rounded-lg active:border-transparent outline-green-500 active:outline active:outline-2 active:outline-offset-4";
   const props = {
     onClick,
     type,
@@ -54,7 +56,11 @@ const Button = forwardRef(function Button(
       <Link href={href}>
         <a
           {...props}
-          className={classNames(basicClassName, sizeClassName, className)}
+          className={classnames(
+            basicClassName,
+            sizeClassName,
+            className,
+          )}
         >
           {children}
         </a>
@@ -63,7 +69,16 @@ const Button = forwardRef(function Button(
   return (
     <button
       {...props}
-      className={classNames(basicClassName, sizeClassName, className)}
+      className={classnames(
+        basicClassName,
+        sizeClassName,
+        {
+          "bg-green-500 border-none": !outlined,
+          "border-2 border-green-400 bg-green-200 dark:bg-green-600": outlined,
+        },
+
+        className,
+      )}
     >
       <span>{children}</span>
       {loading && <LoadingCircle />}

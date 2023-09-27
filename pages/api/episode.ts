@@ -67,7 +67,6 @@ export default async function handler(
 
       try {
         const response = await searchPodcast(search as string, page as string);
-        console.log(response.data);
         res.status(200).json(response.data);
       } catch (e) {
         console.log(e);

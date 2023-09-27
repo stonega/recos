@@ -1,7 +1,12 @@
-type SrtItem = {
+export type SrtItem = {
   id: number;
   time: string;
   text: string;
+  startTimestamp?: string;
+  endTimestamp?: string;
+  subtitle_id?: number;
+  position?: number;
+  translation?: string
 };
 
 type SrtTimestamp = string;
@@ -27,6 +32,28 @@ function convertTimeToMilliseconds(timeStr: SrtTimestamp): number {
     parseInt(minutes) * 60 * 1000 +
     parseInt(s) * 1000 +
     parseInt(ms)
+  );
+}
+
+export function convertTimeToSeconds(timeStr: SrtTimestamp): number {
+  const [hours, minutes, seconds] = timeStr.split(":");
+  const [s, ms] = seconds.split(",");
+
+  return parseInt(hours) * 60 * 60 + parseInt(minutes) * 60 + parseInt(s);
+}
+
+export function parseTimestamp(timeStr: SrtTimestamp): string {
+  const [hours, minutes, seconds] = timeStr.split(":");
+  const [s] = seconds.split(",");
+  if (Number(hours) === 0) {
+    return `${minutes.padStart(2, "0")}:${s.padStart(2, "0")}`;
+  }
+  return (
+    hours.padStart(2, "0") +
+    ":" +
+    minutes.padStart(2, "0") +
+    ":" +
+    s.padStart(2, "0")
   );
 }
 
