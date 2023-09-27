@@ -4,4 +4,11 @@
 
 # Recos
 
+![](public/screenshot.png)
+
+Recos is a web app that transcribes audio content into text using Whisper API.
+
+
+---
+
 Powered by vercel & openai.

@@ -3,7 +3,7 @@ const data = {
     {
       question: "What does Recos do?",
       answer:
-        "Recos is a web app that transcribes audio content into text using Whisper API. You can use your own OpenAI API key, or login to use credits.",
+        "Recos is a web app that transcribes audio content into text using Whisper API.",
     },
     {
       question: "What file formats does Recos support?",
