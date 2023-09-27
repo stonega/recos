@@ -6,6 +6,7 @@ import { ListIcon } from "@/components/shared/icons/list-icon";
 import { getToken } from "next-auth/jwt";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import { prisma } from "../lib/prisma";
 
 export async function getServerSideProps(context: any) {
   async function getProducts() {
