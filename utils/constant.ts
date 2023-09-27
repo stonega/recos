@@ -1,5 +1,3 @@
-export const LOCAL_STORAGE_API_KEY = "open-api-key";
-
 export const LANGUAGES = [
   "Afrikaans",
   "Arabic",

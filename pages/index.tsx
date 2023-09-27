@@ -37,7 +37,7 @@ export default function Home() {
       <div className="mb-0 md:mb-20"></div>
       <div className="flex flex-col md:grid md:grid-cols-2">
         <div className="flex flex-col items-center md:items-start">
-          <div className="mb-20 text-center text-4xl font-bold leading-[3rem] text-green-600 md:text-left">
+          <div className="mb-10 md:mb-20 text-center text-4xl font-bold leading-[3rem] text-green-600 md:text-left">
             {t("slogan")}
           </div>
           <Button

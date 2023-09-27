@@ -30,7 +30,7 @@ const TaskButton = ({ task, taskId, handleTask }: TaskButtonProps) => {
 
   return (
     <div
-      className="flex cursor-pointer flex-row items-center space-x-4 rounded-full border-none bg-green-400 px-6 py-2 font-semibold transition delay-150 ease-in-out dark:bg-green-600"
+      className="flex cursor-pointer flex-row items-center space-x-4 rounded-full border-none bg-green-400 px-6 py-2 font-semibold transition delay-150 ease-in-out dark:bg-green-800"
       onClick={() => handleTask(task)}
     >
       ✨ <span className="ml-2 leading-none">{task.toUpperCase()}</span>

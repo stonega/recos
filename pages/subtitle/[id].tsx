@@ -173,31 +173,31 @@ const SubtitlePage = ({
     <AudioProvider>
       <Layout meta={meta}>
         {isFresh && <Confetti />}
-        <div className="my-10 flex flex-row items-center justify-between">
+        <div className="mt-0 md:mt-10 mb-6 flex flex-col items-center justify-between space-y-2 md:flex-row">
           <div className="text-4xl dark:text-white">{record.name}</div>
-          <div className="flex flex-row">
+          <div className="flex flex-row justify-start w-full md:w-auto">
             <Tooltip content="Export pure text">
               <button
-                className="button px-2"
+                className="px-2"
+                style={{ display: "block" }}
                 onClick={() => handleExportText()}
               >
                 TXT
               </button>
             </Tooltip>
             <Tooltip content="Export srt file">
-              <button className="button px-2" onClick={() => handleExportSrt()}>
+              <button
+                className="px-2"
+                style={{ display: "block" }}
+                onClick={() => handleExportSrt()}
+              >
                 SRT
-              </button>
-            </Tooltip>
-            <Tooltip content="Retry">
-              <button className="button px-2" onClick={() => retry()}>
-                Retry
               </button>
             </Tooltip>
           </div>
         </div>
         <AudioPlayer audio={audioPlayerData} />
-        <div className="my-6 flex flex-row space-x-2 overflow-x-scroll md:overflow-hidden">
+        <div className="flex flex-row space-x-2 overflow-x-scroll py-4 md:overflow-hidden">
           <TaskButton
             task="translate"
             handleTask={handleTask}

@@ -1,7 +1,7 @@
 export const ListIcon = () => {
   return (
     <svg
-      className="mr-2 h-6 w-6 flex-shrink-0 text-green-200 dark:text-green-600"
+      className="mr-2 h-6 w-6 flex-shrink-0 text-black dark:text-green-600"
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="currentColor"

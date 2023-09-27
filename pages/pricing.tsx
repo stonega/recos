@@ -75,10 +75,10 @@ export default function PricingPage({ products }: { products: any[] }) {
                 className="flex h-[400px] w-full flex-col items-start justify-between rounded-lg bg-green-400 p-8 shadow-md dark:bg-green-900 md:w-[350px]"
               >
                 <div className="flex flex-col dark:text-white">
-                  <div className="w-auto rounded-full text-2xl font-bold text-[#0f763d] dark:text-[#88f58d]">
+                  <div className="w-auto rounded-full text-2xl font-bold text-[#1a3b29] dark:text-[#e1fde2]">
                     {product.attributes.name}
                   </div>
-                  <span className="my-4 font-mono text-4xl slashed-zero">
+                  <span className="my-4 font-mono font-bold text-4xl slashed-zero">
                     {product.attributes.price_formatted}
                   </span>
                   <ul className="mt-2 list-inside space-y-2 text-xl">

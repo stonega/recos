@@ -43,7 +43,7 @@ function AudioPlayer({ audio }: { audio?: AudioData }) {
   };
 
   return (
-    <div className="sticky top-10 flex items-center gap-6 rounded-md bg-green-300 px-4 py-4 backdrop-blur-lg dark:bg-green-900 md:px-6">
+    <div className="sticky top-4 md:top-10 flex items-center gap-6 rounded-md bg-green-300 px-4 py-4 backdrop-blur-lg dark:bg-green-900 md:px-6 dark:text-white/80">
       <div className="mb-[env(safe-area-inset-bottom)] flex flex-1 flex-col gap-3 overflow-hidden p-1">
         <span
           className="mt-4 truncate text-center text-xl font-bold leading-6 md:mt-0 md:text-left"

@@ -1,19 +1,34 @@
 import { dateFromNow } from "@/lib/utils";
 import { RotateCcwIcon } from "lucide-react";
 import { useRouter } from "next/router";
+import { ofetch } from "ofetch";
 import React from "react";
+import { toast } from "sonner";
 import { CreditHistory } from "types";
 import { formatDuration } from "utils";
 interface HistoryCardProps {
   history: CreditHistory;
+  token: string;
 }
-const HistoryCard = ({ history }: HistoryCardProps) => {
+const BASE_URL = "https://recos-audio-slice-production.up.railway.app";
+const HistoryCard = ({ history, token }: HistoryCardProps) => {
   const router = useRouter();
   function toDetailPage() {
     if (history.status != "completed") return;
     router.push(`/subtitle/${encodeURIComponent(history.id)}`, undefined, {
       scroll: false,
     });
+  }
+  async function retry(id: string) {
+    await ofetch(
+      `${BASE_URL}/transcript-task/retry/${encodeURIComponent(id)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    toast.success("Request sent successfully! Check back later.");
   }
   return (
     <div
@@ -43,9 +58,12 @@ const HistoryCard = ({ history }: HistoryCardProps) => {
             <span className="inline text-red-600 group-hover:hidden">
               Failed
             </span>
-            <span className="button hidden group-hover:inline">
+            <span
+              className="button hidden group-hover:inline"
+              onClick={() => retry(history.id)}
+            >
               Retry
-              <RotateCcwIcon className="inline ml-2" size={14}/>
+              <RotateCcwIcon className="ml-2 inline" size={14} />
             </span>
           </>
         )}

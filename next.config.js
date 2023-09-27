@@ -7,7 +7,7 @@ const nextConfig = {
   // i18n,
   images: {
     domains: [
-      "recommends.stonegate.me",
+      "recos.studio",
       "avatars.dicebear.com",
       "avatars.githubusercontent.com ",
     ],
