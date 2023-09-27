@@ -17,7 +17,7 @@ const NavBar = () => {
   return (
     <div className="my-4 flex w-full max-w-6xl items-center justify-between px-2 md:px-2">
       <div className="flex flex-row items-center">
-        <Link href="/">
+        <Link href="/" scroll={false}>
           <span className="text-black-600 flex items-center px-4 font-serif text-2xl font-bold dark:text-green-600 md:px-0 md:text-4xl">
             Recos.
           </span>
@@ -28,12 +28,14 @@ const NavBar = () => {
         <ThemeModeButton></ThemeModeButton>
         <Link
           href="/dashboard"
+          scroll={false}
           className="mx-8 hidden text-xl underline underline-offset-8 hover:text-green-600 hover:decoration-wavy dark:text-white md:block"
         >
           {t("dashboard")}
         </Link>
         <Link
           href="/pricing"
+          scroll={false}
           className="hidden text-xl underline underline-offset-8 hover:text-green-600 hover:decoration-wavy dark:text-white md:block"
         >
           {t("pricing")}
@@ -43,6 +45,7 @@ const NavBar = () => {
         <div className="flex flex-row items-center">
           {!data ? (
             <Link
+              scroll={false}
               className="cursor-pointer hover:opacity-80 dark:text-white"
               href="/login"
             >
