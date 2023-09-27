@@ -197,7 +197,7 @@ const SubtitlePage = ({
           </div>
         </div>
         <AudioPlayer audio={audioPlayerData} />
-        <div className="my-6 flex flex-row space-x-2">
+        <div className="my-6 flex flex-row space-x-2 overflow-x-scroll">
           <TaskButton
             task="translate"
             handleTask={handleTask}

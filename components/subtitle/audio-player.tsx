@@ -106,10 +106,10 @@ function AudioPlayer({ audio }: { audio?: AudioData }) {
           </div>
           <div className="flex items-center gap-4">
             <div className="flex cursor-pointer items-center">
-              {/* <AlignVerticalSpaceAroundIcon
+              <AlignVerticalSpaceAroundIcon
                 size="14"
                 onClick={player?.scrollToSrtItem}
-              /> */}
+              />
             </div>
           </div>
         </div>
