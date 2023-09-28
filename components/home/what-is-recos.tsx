@@ -3,7 +3,7 @@ const data = {
     {
       question: "What does Recos do?",
       answer:
-        "Recos is a web app that transcribes audio content into text using Whisper API. You can use your own OpenAI API key, or login to use credits.",
+        "Recos is a web app that transcribes audio content into text using Whisper API.",
     },
     {
       question: "What file formats does Recos support?",
@@ -26,12 +26,12 @@ const WhatIsRecos = () => {
   return (
     <div className="mt-20">
       <div className="my-8 text-4xl font-bold text-green-600 dark:text-green-600">
-        FAQS
+        FAQ
       </div>
       <div className="border-t-2 border-green-500 py-2"></div>
       {data.qas.map((item, index) => (
         <div key={item.question}>
-          <div className="my-4 text-xl font-bold">{item.question}</div>
+          <div className="my-4 text-xl font-bold dark:text-white">{item.question}</div>
           <div className="text-lg dark:text-white">
             {item.answer}{" "}
             {index == 2 && (

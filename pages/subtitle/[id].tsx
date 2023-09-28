@@ -19,6 +19,8 @@ import { FADE_DOWN_ANIMATION_SETTINGS } from "@/lib/constants";
 import { prisma } from "../../lib/prisma";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import next from "next";
+import { nextTick } from "process";
 
 const FILE_SERVER =
   "https://recos-audio-slice-production.up.railway.app/files/";
@@ -95,7 +97,7 @@ const SubtitlePage = ({
     translateStatus?: string;
     summaryStatus?: string;
     recosStatus?: string;
-  }>(() => `/api/subtitle/${encodeURIComponent(record["task_id"])}`, request);
+  }>(`/api/subtitle/${encodeURIComponent(record["task_id"])}`, request);
 
   const handleExportSrt = () => {
     if (!data) return "";
@@ -120,6 +122,16 @@ const SubtitlePage = ({
   };
 
   const handleTask = async (task: string) => {
+    if (
+      (task === "translate" && !data?.translateStatus) ||
+      (task === "summary" && !data?.summary) ||
+      (task === "recos" && !data?.recos)
+    ) {
+      const d = await request(
+        `/api/subtitle/${encodeURIComponent(record["task_id"])}`,
+      );
+      mutate(d);
+    }
     if (task === "translate" && data?.translateStatus) {
       setShowTranslation(() => !showTranslation);
       return;
@@ -147,21 +159,9 @@ const SubtitlePage = ({
         Authorization: `Bearer ${token}`,
       },
     });
-    mutate({ ...data, [`${task}Status`]: task_id });
+    // mutate({ ...data, [`${task}Status`]: task_id });
     toast.success("Request sent successfully! Check back later.");
   };
-
-  async function retry() {
-    await ofetch(
-      `${BASE_URL}/transcript-task/retry/${encodeURIComponent(id)}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    toast.success("Request sent successfully! Check back later.");
-  }
 
   const meta: Meta = {
     description: "Podcast to text.",
@@ -173,31 +173,31 @@ const SubtitlePage = ({
     <AudioProvider>
       <Layout meta={meta}>
         {isFresh && <Confetti />}
-        <div className="my-10 flex flex-row items-center justify-between">
+        <div className="mb-6 mt-0 flex flex-col items-center justify-between space-y-2 md:mt-10 md:flex-row">
           <div className="text-4xl dark:text-white">{record.name}</div>
-          <div className="flex flex-row">
+          <div className="flex w-full flex-row justify-start md:w-auto">
             <Tooltip content="Export pure text">
               <button
-                className="button px-2"
+                className="px-2"
+                style={{ display: "block" }}
                 onClick={() => handleExportText()}
               >
                 TXT
               </button>
             </Tooltip>
             <Tooltip content="Export srt file">
-              <button className="button px-2" onClick={() => handleExportSrt()}>
+              <button
+                className="px-2"
+                style={{ display: "block" }}
+                onClick={() => handleExportSrt()}
+              >
                 SRT
-              </button>
-            </Tooltip>
-            <Tooltip content="Retry">
-              <button className="button px-2" onClick={() => retry()}>
-                Retry
               </button>
             </Tooltip>
           </div>
         </div>
         <AudioPlayer audio={audioPlayerData} />
-        <div className="my-6 flex flex-row space-x-2 overflow-x-scroll md:overflow-hidden">
+        <div className="flex flex-row space-x-2 overflow-x-scroll py-4 md:overflow-hidden">
           <TaskButton
             task="translate"
             handleTask={handleTask}
@@ -218,7 +218,7 @@ const SubtitlePage = ({
           {activeTab === "recos"
             ? data && (
                 <motion.div
-                  className="my-8 rounded-md border-2 border-green-400 p-2 text-xl leading-10 dark:text-white"
+                  className="mb-8 mt-4 rounded-md border-2 border-green-400 p-2 text-xl leading-10 dark:text-white"
                   {...FADE_DOWN_ANIMATION_SETTINGS}
                 >
                   {data.recos}
@@ -227,22 +227,23 @@ const SubtitlePage = ({
             : activeTab === "summary" &&
               data && (
                 <motion.div
-                  className="my-8 rounded-md border-2 border-green-400 p-4 text-xl leading-10 dark:text-white"
+                  className="mb-8 mt-4 rounded-md border-2 border-green-400 p-4 text-xl leading-10 dark:text-white"
                   {...FADE_DOWN_ANIMATION_SETTINGS}
                 >
                   {data.summary}
                 </motion.div>
               )}
         </AnimatePresence>
-        {data?.subtitles.map((subtitle) => {
-          return (
-            <SrtItemCard
-              key={subtitle.id}
-              srtItem={subtitle}
-              showTranslation={showTranslation}
-            />
-          );
-        })}
+        {data?.subtitles &&
+          data?.subtitles.map((subtitle) => {
+            return (
+              <SrtItemCard
+                key={subtitle.id}
+                srtItem={subtitle}
+                showTranslation={showTranslation}
+              />
+            );
+          })}
       </Layout>
     </AudioProvider>
   );

@@ -90,7 +90,7 @@ export default function Setting({ setting }: { setting: { lang: string } }) {
 
   return (
     <Layout meta={meta}>
-      <div className="mb-8 mt-10 text-4xl font-medium dark:text-white">
+      <div className="mb-6 mt-0 md:mt-10 text-4xl font-medium dark:text-white">
         {t("settings", { ns: "common" })}
       </div>
       <div className="mt-4 flex flex-row items-center justify-between space-x-20 dark:text-white md:justify-start">

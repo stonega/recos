@@ -7,8 +7,8 @@ import { useCredits } from "hooks/use-api";
 import { getTranslationProps } from "@/lib/server-side-props";
 
 export async function getServerSideProps(context: any) {
-  const accessToken = await getToken({ req: context.req, raw: true });
-  if (!accessToken) {
+  const token = await getToken({ req: context.req, raw: true });
+  if (!token) {
     return {
       redirect: {
         destination: "/login",
@@ -18,7 +18,7 @@ export async function getServerSideProps(context: any) {
   }
   return {
     props: {
-      token: accessToken,
+      token,
       ...(await getTranslationProps(context, "credit"))
     },
   };
@@ -55,7 +55,7 @@ export default function Credit({ token }: { token: string }) {
 
   return (
     <Layout meta={meta}>
-      <div className="mb-12 mt-10 text-4xl font-medium dark:text-white">
+      <div className="mb-6 mt-0 md:mt-10 text-4xl font-medium dark:text-white">
         History
       </div>
       {isLoading && records.length === 0 ? (
@@ -69,7 +69,7 @@ export default function Credit({ token }: { token: string }) {
               records.map((item) => {
                 return (
                   <div key={item.id}>
-                    <HistoryCard history={item} />
+                    <HistoryCard history={item} token={token} />
                   </div>
                 );
               })}
