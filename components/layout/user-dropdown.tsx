@@ -1,17 +1,19 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { Beer, LogOut, BarChart4, SettingsIcon } from "lucide-react";
+import { Beer, LogOut, SettingsIcon } from "lucide-react";
 import Popover from "@/components/shared/popover";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
 import { ofetch } from "ofetch";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 export default function UserDropdown() {
   const { data: session } = useSession();
   const { t } = useTranslation("common");
+  const router = useRouter();
   const { email, image, name } = session?.user || {};
   const [openPopover, setOpenPopover] = useState(false);
   const [credit, setCredit] = useState(0);
@@ -23,6 +25,13 @@ export default function UserDropdown() {
     getToken();
   });
 
+  function logout() {
+    signOut({ redirect: false });
+    if (router.pathname !== "/") {
+      router.push("/");
+    }
+  }
+
   if (!email) return null;
 
   return (
@@ -32,7 +41,7 @@ export default function UserDropdown() {
     >
       <Popover
         content={
-          <div className="w-full rounded-md bg-white dark:bg-[#101010] dark:text-white p-2 sm:w-40">
+          <div className="w-full rounded-md bg-white p-2 dark:bg-[#101010] dark:text-white sm:w-40">
             {/* <Link
               className="flex items-center justify-start space-x-2 relative w-full rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
               href="/dashboard"
@@ -45,9 +54,7 @@ export default function UserDropdown() {
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100 dark:hover:bg-green-800/30"
             >
               <Beer className="h-4 w-4" />
-              <p className="text-sm">{t(
-                "get-credit"
-              )}</p>
+              <p className="text-sm">{t("get-credit")}</p>
             </Link>
             <Link
               href="/settings"
@@ -58,7 +65,7 @@ export default function UserDropdown() {
             </Link>
             <button
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100 dark:hover:bg-green-800/30"
-              onClick={() => signOut({ redirect: false })}
+              onClick={() => logout()}
             >
               <LogOut className="h-4 w-4" />
               <p className="text-sm">{t("logout")}</p>
