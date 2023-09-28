@@ -1,7 +1,7 @@
 import { getToken } from "next-auth/jwt";
 import { getProviders } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { prisma } from '../lib/prisma'
+import { prisma } from "../lib/prisma";
 
 export async function getServerSideProps(context: any) {
   const providers = await getProviders();
@@ -53,4 +53,17 @@ export async function getTranslationProps(context: any, namespace?: string) {
     user?.lang ?? "en",
     namespace ? [namespace, "common"] : ["common"],
   );
+}
+
+export async function getTokenProps(context: any) {
+  const token = await getToken({ req: context.req, raw: true });
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+  return { token };
 }

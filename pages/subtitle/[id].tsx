@@ -7,45 +7,28 @@ import SrtItemCard from "@/components/subtitle/srt-item-card";
 import Confetti from "@/components/shared/confetti";
 import AudioPlayer from "@/components/subtitle/audio-player";
 import { saveAs } from "file-saver";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { AudioProvider } from "@/components/subtitle/audio-provider";
 import Tooltip from "@/components/shared/tooltip";
 import { toast } from "sonner";
-import { getToken } from "next-auth/jwt";
 import TaskButton from "@/components/subtitle/task-button";
 import { ofetch } from "ofetch";
 import { AnimatePresence, motion } from "framer-motion";
 import { FADE_DOWN_ANIMATION_SETTINGS } from "@/lib/constants";
 import { prisma } from "../../lib/prisma";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
-import next from "next";
-import { nextTick } from "process";
+import { getTokenProps, getTranslationProps } from "@/lib/server-side-props";
 
 const FILE_SERVER =
   "https://recos-audio-slice-production.up.railway.app/files/";
 const BASE_URL = "https://recos-audio-slice-production.up.railway.app";
 
 export async function getServerSideProps(context: any) {
-  const accessToken = await getToken({ req: context.req, raw: true });
-  if (!accessToken) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
   const id = context.query.id as string;
   const record = await prisma?.credit.findFirst({ where: { id } });
-  const secret = process.env.SECRET;
-  const token = await getToken({ req: context.req, secret });
-  const userId = token?.sub as unknown as string;
-  const user = await prisma?.user.findFirst({ where: { id: userId } });
 
   return {
     props: {
-      token: accessToken,
       record: {
         id: record?.id,
         task_id: record?.task_id,
@@ -54,10 +37,8 @@ export async function getServerSideProps(context: any) {
         type: record?.type,
         audio_length: record?.audio_length,
       },
-      ...(await serverSideTranslations(user?.lang ?? "en", [
-        "subtitle",
-        "common",
-      ])),
+      ...(await getTokenProps(context)),
+      ...(await getTranslationProps(context, "subtitle")),
     },
   };
 }
@@ -69,6 +50,12 @@ const SubtitlePage = ({
   token: any;
   record: CreditHistory;
 }) => {
+  const meta: Meta = {
+    description: "Podcast to text.",
+    ogUrl: "http://recos.studio",
+    title: "Recos.",
+  };
+
   const audioPlayerData = {
     title: record.name,
     audio: {
@@ -154,19 +141,13 @@ const SubtitlePage = ({
     }
     const url = `${BASE_URL}/subtitles/${task}/${encodeURIComponent(id)}`;
     mutate({ ...data, [`${task}Status`]: "pending" });
-    const { task_id } = await ofetch(url, {
+    await ofetch(url, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     // mutate({ ...data, [`${task}Status`]: task_id });
     toast.success("Request sent successfully! Check back later.");
-  };
-
-  const meta: Meta = {
-    description: "Podcast to text.",
-    ogUrl: "http://recos.studio",
-    title: "Recos.",
   };
 
   return (
