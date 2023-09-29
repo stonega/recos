@@ -7,6 +7,7 @@ import { useRef, useState } from "react";
 import { getToken } from "next-auth/jwt";
 import LoadingCircle from "@/components/shared/icons/loading-circle";
 import Link from "next/link";
+import { getTranslationProps } from "@/lib/server-side-props";
 
 export async function getServerSideProps(context: any) {
   const providers = await getProviders();
@@ -22,6 +23,7 @@ export async function getServerSideProps(context: any) {
   return {
     props: {
       providers,
+      ...(await getTranslationProps(context, "login")),
     },
   };
 }

@@ -17,7 +17,7 @@ function parseTime(seconds: number) {
 }
 
 function formatTime(seconds: number[], totalSeconds: number[] = seconds) {
-  const totalWithoutLeadingZeroes = totalSeconds[0] === 0 ? 2 : 1;
+  const totalWithoutLeadingZeroes = 3- totalSeconds.findIndex((x) => x > 0);
   return seconds
     .slice(seconds.length - totalWithoutLeadingZeroes)
     .map((x) => x.toString().padStart(2, "0"))
